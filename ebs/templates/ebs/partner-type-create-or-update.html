@@ -1,0 +1,10 @@
+{% extends "ebs/base.html" %}
+{% block title %}Partner Types{% endblock %}
+{% block content %}
+    <h1> TYPE:  {{ type_instance.partner_type }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_table }}
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}

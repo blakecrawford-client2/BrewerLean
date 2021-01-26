@@ -14,8 +14,21 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path,include
+from django.views.generic import TemplateView
+from ebs.views import *
+from ebs.views.master_data_partners_views import PartnerTypesList
+from ebs.views.master_data_partners_views import PartnerTypeUpdateView,PartnerTypeCreateView
 
 urlpatterns = [
+    path('',TemplateView.as_view(template_name="ebs/index.html")),
     path('admin/', admin.site.urls),
+    path('accounts/', include('allauth.urls')),
+    # path('partner-type/create', partner_type_create, name='partner_type_create'),
+    # path('partner-type/list', partner_type_grid, name='partner_type_list'),
+    # path('partner-type/update/<int:pk>', partner_type_edit, name='partner_type_edit'),
+    path('partner-types/', include ('ebs.urls')),
+    # path('partner-types/', PartnerTypesList.as_view()),
+    # path('partner-types/create', PartnerTypeCreateView.as_view()),
+    # path('partner-types/update/<int:pk>', PartnerTypeUpdateView.as_view()),
 ]

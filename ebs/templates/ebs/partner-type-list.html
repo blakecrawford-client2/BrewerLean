@@ -1,0 +1,18 @@
+{% extends "ebs/base.html" %}
+{% block title %}Partner Types{% endblock %}
+{% block content %}
+
+<table class="table table-striped">
+    <tr>
+        <th><h3>Partner Type</h3></th>
+        <th><button type="button" class="btn btn-primary">Add</button></th>
+    </tr>
+{% for x in partner_type_list %}
+<tr>
+    <td>{{x.partner_type}}</td>
+    <td><button type="button" class="btn btn-warning">Edit</button></td>
+</tr>
+{% endfor %}
+</table>
+
+{% endblock %}
