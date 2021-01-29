@@ -15,6 +15,7 @@ class Partner(models.Model):
         verbose_name_plural = 'Partners'
 
     partner_name = models.CharField(max_length=100)
+    partner_short_code = models.CharField(max_length=4, null=True)
     partner_type = models.ForeignKey(PartnerType, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):

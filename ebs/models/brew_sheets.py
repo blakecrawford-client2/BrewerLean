@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import datetime, timedelta
 
 from ebs.models.master_data_products import Product
 from ebs.models.master_data_facilities import Tank, Staff
@@ -9,14 +10,22 @@ class SchedulePattern(models.Model):
     class Meta:
         verbose_name_plural = 'Schedule Patterns'
 
-    pattern_name = models.CharField(max_length=25)
-    pattern_total_days = models.IntegerField(null=True)
-    offset_yeast_crash = models.IntegerField(null=True)
-    offset_yeast_harvest = models.IntegerField(null=True)
-    offset_dryhop = models.IntegerField(null=True)
-    offset_final_crash = models.IntegerField(null=True)
-    offset_transfer = models.IntegerField(null=True)
-    offset_package = models.IntegerField(null=True)
+    pattern_name = models.CharField(max_length=25,
+                                    verbose_name='Pattern Name')
+    pattern_total_days = models.IntegerField(null=True,
+                                             verbose_name='Number of Days in the Pattern')
+    offset_yeast_crash = models.IntegerField(null=True,
+                                             verbose_name='Days Offset for Yeast Crash')
+    offset_yeast_harvest = models.IntegerField(null=True,
+                                               verbose_name='Days Offset for Yeat Harvest')
+    offset_dryhop = models.IntegerField(null=True,
+                                        verbose_name='Days Offset for Dry Hop')
+    offset_final_crash = models.IntegerField(null=True,
+                                             verbose_name='Days Offset for Final Crash')
+    offset_transfer = models.IntegerField(null=True,
+                                          verbose_name='Days Offset for Transfer')
+    offset_package = models.IntegerField(null=True,
+                                         verbose_name='Days Offset for Package')
     last_modified_on = models.DateField(auto_now=True)
     last_modified_by = models.ForeignKey(User,
                                          null=True,
@@ -39,55 +48,149 @@ class Batch(models.Model):
     class Meta:
         verbose_name_plural = 'Batches'
 
-    batch_product = models.ForeignKey(Product, null=True, on_delete=models.SET_NULL)
-    brewer = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL)
-    total_batch_size = models.ForeignKey(BatchSize, null=True, on_delete=models.SET_NULL)
-    schedule_pattern = models.ForeignKey(SchedulePattern, null=True, on_delete=models.SET_NULL)
-    qty_turns = models.IntegerField(null=True)
-    qty_brew_days = models.IntegerField(null=True)
-    is_dh = models.BooleanField()
-    qty_dh_days = models.IntegerField(null=True)
-    target_fv = models.ForeignKey(Tank, null=True, on_delete=models.SET_NULL, related_name='+')
-    target_bt = models.ForeignKey(Tank, null=True, on_delete=models.SET_NULL, related_name='+')
-    obeer_batch = models.IntegerField(null=True)
-    obeer_mpn = models.IntegerField(null=True)
+    batch_product = models.ForeignKey(Product,
+                                      null=True,
+                                      on_delete=models.SET_NULL,
+                                      verbose_name='Product')
+    brewer = models.ForeignKey(Staff,
+                               null=True,
+                               on_delete=models.SET_NULL,
+                               verbose_name='Brewer')
+    total_batch_size = models.ForeignKey(BatchSize,
+                                         null=True,
+                                         on_delete=models.SET_NULL,
+                                         verbose_name='Total Volume (BBLs)')
+    schedule_pattern = models.ForeignKey(SchedulePattern,
+                                         null=True,
+                                         on_delete=models.SET_NULL,
+                                         verbose_name='Schedule Pattern')
+    plan_start_day = models.DateField(default=datetime.now,
+                                      verbose_name='Planned Start Date')
+    qty_turns = models.IntegerField(null=True,
+                                    verbose_name='Number of Turns')
+    qty_brew_days = models.IntegerField(null=True,
+                                        verbose_name='Number of Brew Days')
+    is_dh = models.BooleanField(verbose_name='Is is Dry-Hopped?')
+    qty_dh_days = models.IntegerField(null=True,
+                                      blank=True,
+                                      verbose_name='How Many DH Days')
+    target_fv = models.ForeignKey(Tank,
+                                  null=True,
+                                  on_delete=models.SET_NULL,
+                                  related_name='+',
+                                  verbose_name='Target Fermenter')
+    target_bt = models.ForeignKey(Tank,
+                                  null=True,
+                                  on_delete=models.SET_NULL,
+                                  related_name='+',
+                                  verbose_name='Target Brite')
+    obeer_batch = models.IntegerField(null=True,
+                                      blank=True,
+                                      verbose_name='OBeer Batch #')
+    obeer_mpn = models.IntegerField(null=True,
+                                    blank=True,
+                                    verbose_name='OBeer MPN')
     last_modified_on = models.DateField(auto_now=True)
     last_modified_by = models.ForeignKey(User,
                                          null=True,
                                          on_delete=models.SET_NULL,
                                          default=1)
 
+    def save(self, *args, **kwargs):
+        if self.pk is None:
+            super(Batch, self).save(*args, **kwargs)
+            spattern = self.schedule_pattern
+            plan_dates = BatchPlanDates.create(self)
+            plan_dates.brew_date = self.plan_start_day
+            plan_dates.yeast_crash_date = self.plan_start_day + timedelta(days=spattern.offset_yeast_crash)
+            plan_dates.yeast_harvest_date = self.plan_start_day + timedelta(days=spattern.offset_yeast_harvest)
+            plan_dates.dryhop_date = self.plan_start_day + timedelta(days=spattern.offset_dryhop)
+            plan_dates.final_crash_date = self.plan_start_day + timedelta(days=spattern.offset_final_crash)
+            plan_dates.transfer_date = self.plan_start_day + timedelta(days=spattern.offset_transfer)
+            plan_dates.package_date = self.plan_start_day + timedelta(days=spattern.offset_package)
+        else:
+            super(Batch, self).save(*args, **kwargs)
+            spattern = self.schedule_pattern
+            plan_dates = self.dates
+            plan_dates.brew_date = self.plan_start_day
+            plan_dates.yeast_crash_date = self.plan_start_day + timedelta(days=spattern.offset_yeast_crash)
+            plan_dates.yeast_harvest_date = self.plan_start_day + timedelta(days=spattern.offset_yeast_harvest)
+            plan_dates.dryhop_date = self.plan_start_day + timedelta(days=spattern.offset_dryhop)
+            plan_dates.final_crash_date = self.plan_start_day + timedelta(days=spattern.offset_final_crash)
+            plan_dates.transfer_date = self.plan_start_day + timedelta(days=spattern.offset_transfer)
+            plan_dates.package_date = self.plan_start_day + timedelta(days=spattern.offset_package)
+        plan_dates.save()
+
     def __str__(self):
-        return self.batch_product.ownership.partner_name + '::' + self.batch_product
+        if self.obeer_batch is not None:
+            return_name = self.batch_product.ownership.partner_name \
+                          + '::' + self.batch_product.product_name + '::' \
+                          + self.obeer_batch.__str__()
+        else:
+            return_name = self.batch_product.ownership.partner_name \
+                          + '::' + self.batch_product.product_name \
+                          + '::NO BATCH'
+        return return_name
 
 class BatchPlanDates(models.Model):
     class Meta:
         verbose_name_plural = 'Batch Plan Dates'
 
-    batch = models.ForeignKey(Batch, null=True, on_delete=models.SET_NULL)
-    brew_date = models.DateField(null=True)
-    yeast_crash_date = models.DateField(null=True)
-    yeast_harvest_date = models.DateField(null=True)
-    dryhop_date = models.DateField(null=True)
-    final_crash_date = models.DateField(null=True)
-    transfer_date = models.DateField(null=True)
-    package_date = models.DateField(null=True)
+    batch = models.OneToOneField(Batch,
+                                 null=True,
+                                 on_delete=models.SET_NULL,
+                                 related_name='dates')
+    brew_date = models.DateField(null=True,
+                                 verbose_name='Plan Brew Date')
+    yeast_crash_date = models.DateField(null=True,
+                                        verbose_name='Plan Yeast Crash Date')
+    yeast_harvest_date = models.DateField(null=True,
+                                          verbose_name='Plan Yeast Harvest Date')
+    dryhop_date = models.DateField(null=True,
+                                   verbose_name='Plan DH Date')
+    final_crash_date = models.DateField(null=True,
+                                        verbose_name='Plan Final Crash Date')
+    transfer_date = models.DateField(null=True,
+                                     verbose_name='Plan Transfer Date')
+    package_date = models.DateField(null=True,
+                                    verbose_name='Plan Package Date')
+
+    @classmethod
+    def create(cls, batch):
+        plan_rtn = cls(batch=batch)
+        return plan_rtn
 
     def __str__(self):
-        return self.brew_date
+        return self.brew_date.__str__()
 
 class BatchActualDates(models.Model):
     class Meta:
         verbose_name_plural = 'Batch Actual Dates'
 
-    batch = models.ForeignKey(Batch, null=True, on_delete=models.SET_NULL)
-    brew_date = models.DateField(null=True)
-    yeast_crash_date = models.DateField(null=True)
-    yeast_harvest_date = models.DateField(null=True)
-    dryhop_date = models.DateField(null=True)
-    final_crash_date = models.DateField(null=True)
-    transfer_date = models.DateField(null=True)
-    package_date = models.DateField(null=True)
+    batch = models.ForeignKey(Batch,
+                              null=True,
+                              on_delete=models.SET_NULL)
+    brew_date = models.DateField(null=True,
+                                 blank=True,
+                                 verbose_name='Actual Brew Date')
+    yeast_crash_date = models.DateField(null=True,
+                                        blank=True,
+                                        verbose_name='Actual Yeast Crash Date')
+    yeast_harvest_date = models.DateField(null=True,
+                                          blank=True,
+                                          verbose_name='Actual Yeast Harvest Date')
+    dryhop_date = models.DateField(null=True,
+                                   blank=True,
+                                   verbose_name='Actual DH Date')
+    final_crash_date = models.DateField(null=True,
+                                        blank=True,
+                                        verbose_name='Actual Final Crash Date')
+    transfer_date = models.DateField(null=True,
+                                     blank=True,
+                                     verbose_name='Actual Transfer Date')
+    package_date = models.DateField(null=True,
+                                    blank=True,
+                                    verbose_name='Actual Package Date')
     last_modified_on = models.DateField(auto_now=True)
     last_modified_by = models.ForeignKey(User,
                                          null=True,
@@ -95,16 +198,34 @@ class BatchActualDates(models.Model):
                                          default=1)
 
     def __str__(self):
-        return self.brew_date
+        if self.batch.obeer_batch is not None:
+            return_name = self.batch.batch_product.ownership.partner_name \
+                          + '::' + self.batch.batch_product.product_name \
+                          + '::' + self.batch.obeer_batch.__str__()
+        else:
+            return_name = self.batch.batch_product.ownership.partner_name \
+                          + '::' + self.batch.batch_product.product_name \
+                          + '::NO BATCH'
+        return return_name
 
 class BatchRawMaterialsLog(models.Model):
     class Meta:
         verbose_name_plural = 'Batch Raw Materials Logs'
 
-    batch = models.ForeignKey(Batch, null=True, on_delete=models.SET_NULL)
-    material = models.ForeignKey(Material, null=True, on_delete=models.SET_NULL)
-    material_qty = models.CharField(max_length=25, null=True)
-    material_lot = models.CharField(max_length=100, null=True)
+    batch = models.ForeignKey(Batch,
+                              null=True,
+                              on_delete=models.SET_NULL)
+    material = models.ForeignKey(Material,
+                                 null=True,
+                                 on_delete=models.SET_NULL,
+                                 verbose_name='Raw Material')
+    material_qty = models.CharField(max_length=25,
+                                    null=True,
+                                    verbose_name='Quantity')
+    material_lot = models.CharField(max_length=100,
+                                    null=True,
+                                    blank=True,
+                                    verbose_name='Lot Number')
     last_modified_on = models.DateField(auto_now=True)
     last_modified_by = models.ForeignKey(User,
                                          null=True,
@@ -112,23 +233,70 @@ class BatchRawMaterialsLog(models.Model):
                                          default=1)
 
     def __str__(self):
-        return self.material.material_name
+        if self.batch.obeer_batch is not None:
+            return_name = self.batch.batch_product.ownership.partner_name \
+                          + '::' + self.batch.batch_product.product_name \
+                          + '::' + self.batch.obeer_batch.__str__() \
+                          + '::' + self.material.material_name
+        else:
+            return_name = self.batch.batch_product.ownership.partner_name \
+                          + '::' + self.batch.batch_product.product_name \
+                          + '::NO BATCH' \
+                          + '::' + self.material.material_name
+        return return_name
 
 class BatchWortQC(models.Model):
     class Meta:
         verbose_name_plural = 'Batch Wort QC Data'
 
     batch = models.ForeignKey(Batch, null=True, on_delete=models.SET_NULL)
-    brewer = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL)
-    turn = models.IntegerField(null=False)
-    temp_mash = models.DecimalField(max_digits=4, decimal_places=1)
-    ph_mash = models.DecimalField(max_digits=2, decimal_places=1)
-    volume_strike = models.DecimalField(max_digits=3, decimal_places=0)
-    volume_sparge = models.DecimalField(max_digits=3, decimal_places=0)
-    volume_postboil = models.DecimalField(max_digits=3, decimal_places=0)
-    extract_first_runnings = models.DecimalField(max_digits=3, decimal_places=1)
-    extract_preboil = models.DecimalField(max_digits=3, decimal_places=1)
-    extract_postboil = models.DecimalField(max_digits=3, decimal_places=1)
+    brewer = models.ForeignKey(Staff,
+                               null=True,
+                               on_delete=models.SET_NULL,
+                               verbose_name='Brewer')
+    turn = models.IntegerField(null=True,
+                               blank=True,
+                               verbose_name='Turn No.')
+    temp_mash = models.DecimalField(max_digits=4,
+                                    decimal_places=1,
+                                    null=True,
+                                    blank=True,
+                                    verbose_name='Mash Temp')
+    ph_mash = models.DecimalField(max_digits=2,
+                                  decimal_places=1,
+                                  null=True,
+                                  blank=True,
+                                  verbose_name='Mash pH')
+    volume_strike = models.DecimalField(max_digits=3,
+                                        decimal_places=0,
+                                        null=True,
+                                        blank=True,
+                                        verbose_name='Stike Water Volume')
+    volume_sparge = models.DecimalField(max_digits=3,
+                                        decimal_places=0,
+                                        null=True,
+                                        blank=True,
+                                        verbose_name='Sparge Water Volume')
+    volume_postboil = models.DecimalField(max_digits=3,
+                                          decimal_places=0,
+                                          null=True,
+                                          blank=True,
+                                          verbose_name='Post-boil Volume')
+    extract_first_runnings = models.DecimalField(max_digits=3,
+                                                 decimal_places=1,
+                                                 null=True,
+                                                 blank=True,
+                                                 verbose_name='First Runnings P')
+    extract_preboil = models.DecimalField(max_digits=3,
+                                          decimal_places=1,
+                                          null=True,
+                                          blank=True,
+                                          verbose_name='Pre-Boil P')
+    extract_postboil = models.DecimalField(max_digits=3,
+                                           decimal_places=1,
+                                           null=True,
+                                           blank=True,
+                                           verbose_name='Post-Boil P')
     last_modified_on = models.DateField(auto_now=True)
     last_modified_by = models.ForeignKey(User,
                                          null=True,
@@ -136,19 +304,49 @@ class BatchWortQC(models.Model):
                                          default=1)
 
     def __str__(self):
-        return self.turn
+        if self.batch.obeer_batch is not None:
+            return_name = self.batch.batch_product.ownership.partner_name \
+                          + '::' + self.batch.batch_product.product_name \
+                          + '::' + self.batch.obeer_batch.__str__() \
+                          + '::' + self.turn.__str__()
+        else:
+            return_name = self.batch.batch_product.ownership.partner_name \
+                          + '::' + self.batch.batch_product.product_name \
+                          + '::NO BATCH' \
+                          + '::' + self.turn.__str__()
+        return return_name
 
 class BatchYeastPitch(models.Model):
     class Meta:
         verbose_name_plural = 'Batch Yeast Pitches'
 
     batch = models.ForeignKey(Batch, null=True, on_delete=models.SET_NULL)
-    staff = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL)
-    yeast = models.ForeignKey(Material, null=True, on_delete=models.SET_NULL)
-    yeast_qty = models.DecimalField(max_digits=4, null=True, decimal_places=1)
-    yeast_source = models.CharField(max_length=100, null=True)
-    yeast_pitch_temp = models.DecimalField(max_digits=3, null=True, decimal_places=1)
-    yeast_pitch_turn = models.IntegerField(null=True)
+    staff = models.ForeignKey(Staff,
+                              null=True,
+                              on_delete=models.SET_NULL,
+                              blank=True,
+                              verbose_name='Who Pitched?')
+    yeast = models.ForeignKey(Material,
+                              null=True,
+                              on_delete=models.SET_NULL,
+                              blank=True,
+                              verbose_name='Yeast')
+    yeast_qty = models.CharField(max_length=100,
+                                 null=True,
+                                 blank=True,
+                                 verbose_name='Quantity')
+    yeast_source = models.CharField(max_length=100,
+                                    null=True,
+                                    blank=True,
+                                    verbose_name='Source')
+    yeast_pitch_temp = models.DecimalField(max_digits=3,
+                                           null=True,
+                                           decimal_places=1,
+                                           blank=True,
+                                           verbose_name='Pitch Temp')
+    yeast_pitch_turn = models.IntegerField(null=True,
+                                           blank=True,
+                                           verbose_name='Pitch on Turn')
     last_modified_on = models.DateField(auto_now=True)
     last_modified_by = models.ForeignKey(User,
                                          null=True,
@@ -156,7 +354,17 @@ class BatchYeastPitch(models.Model):
                                          default=1)
 
     def __str__(self):
-        return self.yeast.material_name
+        if self.batch.obeer_batch is not None:
+            return_name = self.batch.batch_product.ownership.partner_name \
+                          + '::' + self.batch.batch_product.product_name \
+                          + '::' + self.batch.obeer_batch.__str__() \
+                          + '::' + self.yeast.material_name
+        else:
+            return_name = self.batch.batch_product.ownership.partner_name \
+                          + '::' + self.batch.batch_product.product_name \
+                          + '::NO BATCH' \
+                          + '::' + self.yeast.material_name
+        return return_name
 
 class BatchFermentationQC(models.Model):
     class Meta:
@@ -164,13 +372,39 @@ class BatchFermentationQC(models.Model):
 
     batch = models.ForeignKey(Batch, null=True, on_delete=models.SET_NULL)
     date = models.DateField(null=True)
-    staff = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL)
-    extract_apparent = models.DecimalField(max_digits=3, decimal_places=1, null=True)
-    sg_real_calculated = models.DecimalField(max_digits=4, decimal_places=3, null=True)
-    ph = models.DecimalField(max_digits=3, decimal_places=2, null=True)
-    temp_sv = models.DecimalField(max_digits=4, decimal_places=1, null=True)
-    temp_pv = models.DecimalField(max_digits=4, decimal_places=1, null=True)
-    extract_real = models.DecimalField(max_digits=3, decimal_places=1, null=True)
+    staff = models.ForeignKey(Staff,
+                              null=True,
+                              on_delete=models.SET_NULL,
+                              verbose_name='Who')
+    extract_apparent = models.DecimalField(max_digits=3,
+                                           decimal_places=1,
+                                           null=True,
+                                           verbose_name='Apparent Extract')
+    sg_real_calculated = models.DecimalField(max_digits=4,
+                                             decimal_places=3,
+                                             null=True,
+                                             blank=True,
+                                             verbose_name='Calculated SG')
+    ph = models.DecimalField(max_digits=3,
+                             decimal_places=2,
+                             null=True,
+                             blank=True,
+                             verbose_name='Current pH')
+    temp_sv = models.DecimalField(max_digits=4,
+                                  decimal_places=1,
+                                  null=True,
+                                  blank=True,
+                                  verbose_name='Temp Set Value')
+    temp_pv = models.DecimalField(max_digits=4,
+                                  decimal_places=1,
+                                  null=True,
+                                  blank=True,
+                                  verbose_name='Temp Process Value')
+    extract_real = models.DecimalField(max_digits=3,
+                                       decimal_places=1,
+                                       null=True,
+                                       blank=True,
+                                       verbose_name='Calculated Real Extract')
     last_modified_on = models.DateField(auto_now=True)
     last_modified_by = models.ForeignKey(User,
                                          null=True,
@@ -178,7 +412,17 @@ class BatchFermentationQC(models.Model):
                                          default=1)
 
     def __str__(self):
-        return self.date
+        if self.batch.obeer_batch is not None:
+            return_name = self.batch.batch_product.ownership.partner_name \
+                          + '::' + self.batch.batch_product.product_name \
+                          + '::' + self.batch.obeer_batch.__str__() \
+                          + '::' + self.date.__str__()
+        else:
+            return_name = self.batch.batch_product.ownership.partner_name \
+                          + '::' + self.batch.batch_product.product_name \
+                          + '::NO BATCH' \
+                          + '::' + self.date.__str__()
+        return return_name
 
 class BatchDOEntry(models.Model):
     class Meta:
@@ -192,9 +436,20 @@ class BatchDOEntry(models.Model):
         TRANSFER = 'TR', 'Transfer'
 
     batch = models.ForeignKey(Batch, null=True, on_delete=models.SET_NULL)
-    do_type = models.CharField(max_length=2, choices=DOType.choices, default=DOType.PREFERM)
-    staff = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL)
-    date = models.DateField(null=True)
+    do_type = models.CharField(max_length=2,
+                               choices=DOType.choices,
+                               default=DOType.PREFERM,
+                               verbose_name='D.O. Measurement Type')
+    do_measurement = models.CharField(max_length=25,
+                                      null=True,
+                                      blank=True,
+                                      verbose_name='D.O. Value')
+    staff = models.ForeignKey(Staff,
+                              null=True,
+                              on_delete=models.SET_NULL,
+                              verbose_name='Who')
+    date = models.DateField(null=True,
+                            verbose_name='Date')
     last_modified_on = models.DateField(auto_now=True)
     last_modified_by = models.ForeignKey(User,
                                          null=True,
@@ -202,15 +457,30 @@ class BatchDOEntry(models.Model):
                                          default=1)
 
     def __str__(self):
-        return self.do_type
+        if self.batch.obeer_batch is not None:
+            return_name = self.batch.batch_product.ownership.partner_name \
+                          + '::' + self.batch.batch_product.product_name \
+                          + '::' + self.batch.obeer_batch.__str__() \
+                          + '::' + self.do_type
+        else:
+            return_name = self.batch.batch_product.ownership.partner_name \
+                          + '::' + self.batch.batch_product.product_name \
+                          + '::NO BATCH' \
+                          + '::' + self.do_type
+        return return_name
 
 class BatchTransfer(models.Model):
     class Meta:
         verbose_name_plural = 'Batch Transfers'
 
     batch = models.ForeignKey(Batch, null=True, on_delete=models.SET_NULL)
-    staff = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL)
-    volume_transfer_approx = models.DecimalField(max_digits=4, decimal_places=1)
+    staff = models.ForeignKey(Staff,
+                              null=True,
+                              on_delete=models.SET_NULL,
+                              verbose_name='Who')
+    volume_transfer_approx = models.DecimalField(max_digits=4,
+                                                 decimal_places=1,
+                                                 verbose_name='Approximate Transfer Volume')
     last_modified_on = models.DateField(auto_now=True)
     last_modified_by = models.ForeignKey(User,
                                          null=True,
@@ -218,7 +488,15 @@ class BatchTransfer(models.Model):
                                          default=1)
 
     def __str__(self):
-        return self.batch.batch_product.ownership + '::' + self.batch.batch_product.product_name
+        if self.batch.obeer_batch is not None:
+            return_name = self.batch.batch_product.ownership.partner_name \
+                          + '::' + self.batch.batch_product.product_name \
+                          + '::' + self.batch.obeer_batch.__str__()
+        else:
+            return_name = self.batch.batch_product.ownership.partner_name \
+                          + '::' + self.batch.batch_product.product_name \
+                          + '::NO BATCH'
+        return return_name
 
 
 class PackagingRun(models.Model):
@@ -226,34 +504,84 @@ class PackagingRun(models.Model):
         verbose_name_plural = 'Packaging Runs'
 
     batch = models.ForeignKey(Batch, null=True, on_delete=models.SET_NULL)
-    staff = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL)
-    carb_vols = models.DecimalField(max_digits=3, decimal_places=2, null=True)
-    filled_halfs = models.IntegerField(null=True)
-    filled_sixtels = models.IntegerField(null=True)
-    skids_kegs = models.IntegerField(null=True)
-    filled_cases = models.IntegerField(null=True)
-    skids_cases = models.IntegerField(null=True)
-    last_modified_on = models.DateField(auto_now=True)
+    staff = models.ForeignKey(Staff,
+                              null=True,
+                              on_delete=models.SET_NULL,
+                              verbose_name='Who')
+    carb_vols = models.DecimalField(max_digits=3,
+                                    decimal_places=2,
+                                    null=True,
+                                    blank=True,
+                                    verbose_name='Carb Volumes')
+    filled_halfs = models.IntegerField(null=True,
+                                       blank=True,
+                                       verbose_name='No. Halfs')
+    filled_sixtels = models.IntegerField(null=True,
+                                         blank=True,
+                                         verbose_name='No. Sixtels')
+    skids_kegs = models.IntegerField(null=True,
+                                     blank=True,
+                                     verbose_name='No. Keg Skids')
+    filled_cases = models.IntegerField(null=True,
+                                       blank=True,
+                                       verbose_name='No. Cases')
+    skids_cases = models.IntegerField(null=True,
+                                      blank=True,
+                                      verbose_name='No. Case Skids')
+    last_modified_on = models.DateField(auto_now=True, blank=True)
     last_modified_by = models.ForeignKey(User,
                                          null=True,
                                          on_delete=models.SET_NULL,
                                          default=1)
 
     def __str__(self):
-        return self.batch.batch_product.ownership + "::" + self.batch.batch_product.product_name
+        if self.batch.obeer_batch is not None:
+            return_name = self.batch.batch_product.ownership.partner_name \
+                          + '::' + self.batch.batch_product.product_name \
+                          + '::' + self.batch.obeer_batch.__str__()
+        else:
+            return_name = self.batch.batch_product.ownership.partner_name \
+                          + '::' + self.batch.batch_product.product_name \
+                          + '::NO BATCH'
+        return return_name
 
 class CanningQC(models.Model):
     class Meta:
         verbose_name_plural = 'Canning QC Data'
 
     batch = models.ForeignKey(Batch, null=True, on_delete=models.SET_NULL)
-    staff = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL)
-    weight_can = models.IntegerField(null=True)
-    measure_seam_height = models.DecimalField(max_digits=5, decimal_places=4, null=True)
-    measure_seam_width = models.DecimalField(max_digits=5, decimal_places=4, null=True)
-    measure_body_hook = models.DecimalField(max_digits=5, decimal_places=4, null=True)
-    measure_cover_hook = models.DecimalField(max_digits=5, decimal_places=4, null=True)
-    do_can = models.DecimalField(max_digits=4, decimal_places=3, null=True)
+    staff = models.ForeignKey(Staff,
+                              null=True,
+                              on_delete=models.SET_NULL,
+                              verbose_name='Who')
+    weight_can = models.IntegerField(null=True,
+                                     blank=True,
+                                     verbose_name='Can Weight')
+    measure_seam_height = models.DecimalField(max_digits=5,
+                                              decimal_places=4,
+                                              null=True,
+                                              blank=True,
+                                              verbose_name='Seam Height')
+    measure_seam_width = models.DecimalField(max_digits=5,
+                                             decimal_places=4,
+                                             null=True,
+                                             blank=True,
+                                             verbose_name='Seam Width')
+    measure_body_hook = models.DecimalField(max_digits=5,
+                                            decimal_places=4,
+                                            null=True,
+                                            blank=True,
+                                            verbose_name='Body Hook')
+    measure_cover_hook = models.DecimalField(max_digits=5,
+                                             decimal_places=4,
+                                             null=True,
+                                             blank=True,
+                                             verbose_name='Cover Hook')
+    do_can = models.DecimalField(max_digits=4,
+                                 decimal_places=3,
+                                 null=True,
+                                 blank=True,
+                                 verbose_name='Can D.O.')
     last_modified_on = models.DateField(auto_now=True)
     last_modified_by = models.ForeignKey(User,
                                          null=True,
@@ -261,4 +589,12 @@ class CanningQC(models.Model):
                                          default=1)
 
     def __str__(self):
-        return self.batch.batch_product.ownership + "::" + self.batch.batch_product.product_name
+        if self.batch.obeer_batch is not None:
+            return_name = self.batch.batch_product.ownership.partner_name \
+                          + '::' + self.batch.batch_product.product_name \
+                          + '::' + self.batch.obeer_batch.__str__()
+        else:
+            return_name = self.batch.batch_product.ownership.partner_name \
+                          + '::' + self.batch.batch_product.product_name \
+                          + '::NO BATCH'
+        return return_name
