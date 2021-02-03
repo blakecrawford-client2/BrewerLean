@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'bootstrap4',
     'bootstrap4_datetime',
+    'widget_tweaks',
+    'bootstrap_datepicker_plus',
 ]
 
 MIDDLEWARE = [
@@ -154,4 +156,8 @@ SOCIALACCOUNT_PROVIDERS = {
             'access_type': 'online',
         }
     }
+}
+
+BOOTSTRAP4 = {
+    'include_jquery':True,
 }
