@@ -160,3 +160,5 @@ SOCIALACCOUNT_PROVIDERS = {
 BOOTSTRAP4 = {
     'include_jquery':True,
 }
+
+#DATE_INPUT_FORMATS = ('%b %d %Y',)

@@ -8,6 +8,7 @@ from ebs.models.master_data_rawmaterials import Material
 
 class SchedulePattern(models.Model):
     class Meta:
+        ordering = ['pattern_name']
         verbose_name_plural = 'Schedule Patterns'
 
     pattern_name = models.CharField(max_length=25,
@@ -45,6 +46,8 @@ class BatchSize(models.Model):
         return self.batch_size_name
 
 class Batch(models.Model):
+    TURN_CHOICES = ((1,1), (2,2), (3,3), (4,4))
+    DAY_CHOICES = ((1,1), (2,2), (3,3), (4,4))
     class BatchStatus(models.TextChoices):
         PLANNING = 'PL', 'Planning'
         INPROCESS = 'IP', 'In Process'
@@ -78,9 +81,11 @@ class Batch(models.Model):
                                       verbose_name='Planned Start Date')
     qty_turns = models.IntegerField(null=True,
                                     blank=True,
+                                    choices=TURN_CHOICES,
                                     verbose_name='Number of Turns')
     qty_brew_days = models.IntegerField(null=True,
                                         blank=True,
+                                        choices=DAY_CHOICES,
                                         verbose_name='Number of Brew Days')
     is_dh = models.BooleanField(verbose_name='Is is Dry-Hopped?',
                                 null=True,
@@ -112,30 +117,6 @@ class Batch(models.Model):
                                          null=True,
                                          on_delete=models.SET_NULL,
                                          default=1)
-
-        # if self.pk is None:
-        #     super(Batch, self).save(*args, **kwargs)
-        #     spattern = self.schedule_pattern
-        #     plan_dates = BatchPlanDates.create(self)
-        #     plan_dates.brew_date = self.plan_start_day
-        #     plan_dates.yeast_crash_date = self.plan_start_day + timedelta(days=spattern.offset_yeast_crash)
-        #     plan_dates.yeast_harvest_date = self.plan_start_day + timedelta(days=spattern.offset_yeast_harvest)
-        #     plan_dates.dryhop_date = self.plan_start_day + timedelta(days=spattern.offset_dryhop)
-        #     plan_dates.final_crash_date = self.plan_start_day + timedelta(days=spattern.offset_final_crash)
-        #     plan_dates.transfer_date = self.plan_start_day + timedelta(days=spattern.offset_transfer)
-        #     plan_dates.package_date = self.plan_start_day + timedelta(days=spattern.offset_package)
-        # else:
-        #     super(Batch, self).save(*args, **kwargs)
-        #     spattern = self.schedule_pattern
-        #     plan_dates = self.dates
-        #     plan_dates.brew_date = self.plan_start_day
-        #     plan_dates.yeast_crash_date = self.plan_start_day + timedelta(days=spattern.offset_yeast_crash)
-        #     plan_dates.yeast_harvest_date = self.plan_start_day + timedelta(days=spattern.offset_yeast_harvest)
-        #     plan_dates.dryhop_date = self.plan_start_day + timedelta(days=spattern.offset_dryhop)
-        #     plan_dates.final_crash_date = self.plan_start_day + timedelta(days=spattern.offset_final_crash)
-        #     plan_dates.transfer_date = self.plan_start_day + timedelta(days=spattern.offset_transfer)
-        #     plan_dates.package_date = self.plan_start_day + timedelta(days=spattern.offset_package)
-        # plan_dates.save()
 
     def __str__(self):
         if self.obeer_batch is not None:
@@ -212,6 +193,11 @@ class BatchActualDates(models.Model):
                                          null=True,
                                          on_delete=models.SET_NULL,
                                          default=1)
+
+    @classmethod
+    def create(cls, batch):
+        act_rtn = cls(batch=batch)
+        return act_rtn
 
     def __str__(self):
         if self.batch.obeer_batch is not None:
