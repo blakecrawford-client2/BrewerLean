@@ -8,7 +8,11 @@ from ebs.views.batch_upcoming_views import UpcomingBatchList, \
     UpcomingBatchCreateView, \
     UpcomingBatchUpdateView, \
     UpcomingBatchStartView
-from ebs.views.batch_inprocess_views import InprocessBatchList, InprocessBatchCreateView
+from ebs.views.batch_inprocess_views import InprocessBatchList, \
+    InprocessBatchCreateView, \
+    InprocessBatchDetailView
+from ebs.views.batch_inprocess_detail_views import AddObeerDataView
+from ebs.views.batch_inprocess_detail_views import RawMaterialsLogView
 
 urlpatterns = [
     #path('', PartnerTypesList.as_view()),
@@ -20,4 +24,8 @@ urlpatterns = [
     path('upcoming/start/<int:pk>', UpcomingBatchStartView.as_view()),
     path('inprocess/', InprocessBatchList.as_view()),
     path('inprocess/create/', InprocessBatchCreateView.as_view()),
+    path('inprocess/detail/<int:pk>', InprocessBatchDetailView.as_view(), name='maintenance'),
+    path('inprocess/detail/obeer/<int:pk>', AddObeerDataView.as_view()),
+    path('inprocess/detail/rawmaterials/<int:pk>', RawMaterialsLogView.as_view()),
+
 ]

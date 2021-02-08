@@ -1,0 +1,76 @@
+{% extends "ebs/base.html" %}
+{% block title %}In Process Batches{% endblock %}
+{% block content %}
+<br/>
+<div class="container-fluid float-left">
+    <div class="row no-gutters">
+        <div class="col-2 text-right float-left border bg-light pr-1">Beer:</div>
+        <div class="col-10 border pl-1">{{ batch.batch_product.product_name }}</div>
+    </div>
+    <div class="row no-gutters">
+        <div class="col-2 text-right float-left border bg-light pr-1">Partner:</div>
+        <div class="col-10 border pl-1">{{ batch.batch_product.ownership.partner_short_code }}</div>
+    </div>
+    <div class="row no-gutters">
+        <div class="col-2 text-right float-left border bg-light pr-1">Number:</div>
+        {% if batch.obeer_batch is None %}
+            <div class="col-4 border pl-1">
+                <a href="/ebs/inprocess/detail/obeer/{{ batch.pk }}">
+                    <button type="button" class="btn btn-primary btn-sm">Add</button>
+                </a>
+            </div>
+        {% else %}
+            <div class="col-4 border pl-1">{{ batch.obeer_batch }}</div>
+        {% endif %}
+        <div class="col-2 text-right border bg-light pr-1">MPN:</div>
+        {% if batch.obeer_batch is None %}
+            <div class="col-4 border pl-1">
+                <button type="button" class="btn btn-primary btn-sm">Add</button>
+            </div>
+        {% else %}
+            <div class="col-4 border pl-1">{{ batch.obeer_mpn }}</div>
+        {% endif %}
+    </div>
+    <div class="row no-gutters">
+        <div class="col-2 text-right float-left border bg-light pr-1">Brew:</div>
+        <div class="col-10 border pl-1">{{ act_dates.brew_date }}</div>
+    </div>
+    <div class="row no-gutters">
+        <div class="col-12 pt-2">
+            <button type="button" class="btn-primary btn-block">Raw Materials Log</button>
+        </div>
+        <div class="col-12 pt-2">
+            <button type="button" class="btn-primary btn-block">Wort QC Entry</button>
+        </div>
+        <div class="col-12 pt-2">
+            <button type="button" class="btn-primary btn-block">Yeast Pitch Entry</button>
+        </div>
+        <div class="col-12 pt-2">
+            <button type="button" class="btn-primary btn-block">Actual Dates</button>
+        </div>
+        <div class="col-12 pt-2">
+            <button type="button" class="btn-primary btn-block">Fermentation QC Entry</button>
+        </div>
+        <div class="col-12 pt-2">
+            <button type="button" class="btn-primary btn-block">Cellar D.O. Entry</button>
+        </div>
+        <div class="col-12 pt-2">
+            <button type="button" class="btn-primary btn-block">Transfer QC Entry</button>
+        </div>
+        <div class="col-12 pt-2">
+            <button type="button" class="btn-primary btn-block">Carbonation QC Entry</button>
+        </div>
+        <div class="col-12 pt-2">
+            <button type="button" class="btn-primary btn-block">Can Run QC Entry</button>
+        </div>
+        <div class="col-12 pt-2">
+            <button type="button" class="btn-primary btn-block">Final Pack-Off</button>
+        </div>
+        <div class="col-12 pt-2">
+            <button type="button" class="btn-danger btn-block">Close This Batch</button>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends "ebs/base.html" %}
+{% block title %}In Process Batch{% endblock %}
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_table }}
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}

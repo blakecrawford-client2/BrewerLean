@@ -1,0 +1,76 @@
+{% extends "ebs/base.html" %}
+{% load bootstrap4 %}
+{% load widget_tweaks %}
+{% block extrahead %}
+    {{ form.media }}
+{% endblock %}
+{% block title %}Maintain Batch{% endblock %}
+{% block content %}
+    <br/>
+    <div class="container-fluid float-left">
+        <div class="row no-gutters">
+            <div class="col-2 text-right float-left border bg-light pr-1">Beer:</div>
+            <div class="col-10 border pl-1">{{ current_batch.batch_product.product_name }}</div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col-2 text-right float-left border bg-light pr-1">Partner:</div>
+            <div class="col-10 border pl-1">{{ current_batch.batch_product.ownership.partner_short_code }}</div>
+        </div>
+        {% if '/obeer' not in request.path %}
+        <div class="row no-gutters">
+            <div class="col-2 text-right float-left border bg-light pr-1">Number:</div>
+            {% if current_batch.obeer_batch is None %}
+                <div class="col-4 border pl-1">
+                    <button type="button" class="btn btn-primary btn-sm">Add</button>
+                </div>
+            {% else %}
+                <div class="col-4 border pl-1">{{ current_batch.obeer_batch }}</div>
+            {% endif %}
+            <div class="col-2 text-right border bg-light pr-1">MPN:</div>
+            {% if current_batch.obeer_batch is None %}
+                <div class="col-4 border pl-1">
+                    <button type="button" class="btn btn-primary btn-sm">Add</button>
+                </div>
+            {% else %}
+                <div class="col-4 border pl-1">{{ current_batch.obeer_mpn }}</div>
+            {% endif %}
+        </div>
+        {% endif %}
+            <br/>
+            <div class="row no-gutters">
+                <div class="col">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {%  if form.non_field_errors %}
+                            <div class="alert alert-danger" role="alert">
+                                {% for error in form.non_field_errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        {% for field in form.visible_fields %}
+                            <div class="form-group">
+                                {{ field.label_tag }}
+                                {% if form.is_bound %}
+                                    {% if field.errors %}
+                                        {% render_field field class='form-control is-invalid' %}
+                                        {% for error in field.errors %}
+                                            <div class="invalid-feedback">
+                                                {{ error }}
+                                            </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        {% render_field field class="form-control is-valid" %}
+                                    {% endif %}
+                                {% else %}
+                                    {% render_field field class="form-control"  %}
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

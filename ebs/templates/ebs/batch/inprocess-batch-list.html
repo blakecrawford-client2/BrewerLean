@@ -1,0 +1,20 @@
+{% extends "ebs/base.html" %}
+{% block title %}In Process Batches{% endblock %}
+{% block content %}
+
+<table class="table table-striped">
+    <tr>
+        <th width="50%"><h3>In Process Batches</h3></th>
+        <th></th>
+        <th width="25%"><a href="" class="btn btn-warning">ADD</a></th>
+    </tr>
+{% for x in inprocess_batch_list %}
+<tr>
+    <td>{{x.batch_product.ownership.partner_name}}</td>
+    <td>{{ x.batch_product.product_name }}</td>
+    <td><a href="/ebs/inprocess/detail/{{ x.id }}" class="btn btn-warning">Edit</a></td>
+</tr>
+{% endfor %}
+</table>
+
+{% endblock %}

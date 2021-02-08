@@ -1,0 +1,24 @@
+{% extends "ebs/base.html" %}
+{% block title %}Upcoming Batches{% endblock %}
+{% block content %}
+
+<table class="table table-striped">
+    <tr>
+        <th width="30%"><h3>Upcoming Batches</h3></th>
+        <th width="10%"></th>
+        <th width="40%"></th>
+        <th width="10%"></th>
+        <th width="10%"><a href="/ebs/upcoming/create/" class="btn btn-primary" role="buton">+</a></th>
+    </tr>
+{% for x in upcoming_batch_list %}
+<tr>
+    <td>{{ x.plan_start_day|date:"d M Y" }}</td>
+    <td>{{x.batch_product.ownership.partner_short_code}}</td>
+    <td>{{ x.batch_product.product_name }}</td>
+    <td><a href="/ebs/upcoming/update/{{ x.id }}"><button type="button" class="btn btn-warning btn-sm">Edit</button></a></td>
+    <td><a href="/ebs/upcoming/start/{{ x.id }}"><button type="button" class="btn btn-success btn-sm">Go!</button></a></td>
+</tr>
+{% endfor %}
+</table>
+
+{% endblock %}

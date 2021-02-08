@@ -1,0 +1,62 @@
+{% extends "ebs/base.html" %}
+{% load bootstrap4 %}
+{% load widget_tweaks %}
+{% block extrahead %}
+    {{ form.media }}
+{% endblock %}
+{% block title %}Batch Raw Materials Log{% endblock %}
+{% block content %}
+    <br/>
+    <div class="container-fluid float-left">
+        <div class="row no-gutters">
+            <div class="col-2 text-right float-left border bg-light pr-1">Beer:</div>
+            <div class="col-10 border pl-1">{{ current_batch.batch_product.product_name }}</div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col-2 text-right float-left border bg-light pr-1">Partner:</div>
+            <div class="col-10 border pl-1">{{ current_batch.batch_product.ownership.partner_short_code }}</div>
+        </div>
+        {% if '/obeer' not in request.path %}
+        <div class="row no-gutters">
+            <div class="col-2 text-right float-left border bg-light pr-1">Number:</div>
+            {% if current_batch.obeer_batch is None %}
+                <div class="col-4 border pl-1">
+                    <button type="button" class="btn btn-primary btn-sm">Add</button>
+                </div>
+            {% else %}
+                <div class="col-4 border pl-1">{{ current_batch.obeer_batch }}</div>
+            {% endif %}
+            <div class="col-2 text-right border bg-light pr-1">MPN:</div>
+            {% if current_batch.obeer_batch is None %}
+                <div class="col-4 border pl-1">
+                    <button type="button" class="btn btn-primary btn-sm">Add</button>
+                </div>
+            {% else %}
+                <div class="col-4 border pl-1">{{ current_batch.obeer_mpn }}</div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <div class="row no-gutters">
+            <br/>
+            <div class="col-12 border pt-2 pl-1"><h4>Raw Materials</h4></div>
+        </div>
+
+        <div class="row no-gutters">
+            <div class="col border bg-light">Material</div>
+            <div class="col border bg-light">Lot</div>
+            <div class="col-3 border bg-light">Qty</div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col border">
+                <span class="float-right">
+                <button type="button" class="btn btn-primary btn-sm">Add</button>
+                </span>
+            </div>
+            <div class="col border">&nbsp;</div>
+            <div class="col-3 border">&nbsp;</div>
+        </div>
+
+    </div>
+
+{% endblock %}
