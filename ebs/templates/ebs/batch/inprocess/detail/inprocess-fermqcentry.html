@@ -4,7 +4,7 @@
 {% block extrahead %}
     {{ form.media }}
 {% endblock %}
-{% block title %}Batch Raw Materials Log{% endblock %}
+{% block title %}Batch Fermentation QC Entries{% endblock %}
 {% block content %}
     <br/>
     <div class="container-fluid float-left">
@@ -19,62 +19,65 @@
         </div>
         <div class="row no-gutters">
             <div class="col-2 text-right float-left border bg-light pr-1">Beer:</div>
-            <div class="col-10 border pl-1">{{ current_batch.batch_product.product_name }}</div>
+            <div class="col-10 border pl-1">{{ batch.batch_product.product_name }}</div>
         </div>
         <div class="row no-gutters">
             <div class="col-2 text-right float-left border bg-light pr-1">Partner:</div>
-            <div class="col-10 border pl-1">{{ current_batch.batch_product.ownership.partner_short_code }}</div>
+            <div class="col-10 border pl-1">{{ batch.batch_product.ownership.partner_short_code }}</div>
         </div>
         {% if '/obeer' not in request.path %}
         <div class="row no-gutters">
             <div class="col-2 text-right float-left border bg-light pr-1">Number:</div>
-            {% if current_batch.obeer_batch is None %}
+            {% if batch.obeer_batch is None %}
                 <div class="col-4 border pl-1">
                     <button type="button" class="btn btn-primary btn-sm">Add</button>
                 </div>
             {% else %}
-                <div class="col-4 border pl-1">{{ current_batch.obeer_batch }}</div>
+                <div class="col-4 border pl-1">{{ batch.obeer_batch }}</div>
             {% endif %}
             <div class="col-2 text-right border bg-light pr-1">MPN:</div>
-            {% if current_batch.obeer_batch is None %}
+            {% if batch.obeer_batch is None %}
                 <div class="col-4 border pl-1">
                     <button type="button" class="btn btn-primary btn-sm">Add</button>
                 </div>
             {% else %}
-                <div class="col-4 border pl-1">{{ current_batch.obeer_mpn }}</div>
+                <div class="col-4 border pl-1">{{ batch.obeer_mpn }}</div>
             {% endif %}
         </div>
         {% endif %}
 
         <div class="row no-gutters">
             <br/>
-            <div class="col-12 border pt-2 pl-1"><h4>Raw Materials</h4></div>
+            <div class="col-12 border pt-2 pl-1"><h4>Fermentation QC Entrties</h4></div>
         </div>
 
         <div class="row no-gutters">
-            <div class="col border bg-light pl-1">Material</div>
-            <div class="col border bg-light pl-1">Lot</div>
-            <div class="col-3 border bg-light pl-1">Qty</div>
+            <div class="col border bg-light pl-1">Date</div>
+            <div class="col border bg-light pl-1">Person</div>
+            <div class="col border bg-light pl-1">RealP</div>
+            <div class="col border bg-light pl-1">&nbsp;</div>
         </div>
-        {% for m in materials %}
+        {% for fqc in fermqcentries %}
         <div class="row no-gutters">
-            <div class="col border pl-1">{{ m.material.material_name }}</div>
-            <div class="col border pl-1">{{ m.material_lot }}</div>
-            <div class="col-3 border pl-1">{{ m.material_qty }}</div>
+            <div class="col border pl-1">{{ fqc.date }}</div>
+            <div class="col border pl-1">{{ fqc.staff.name }}</div>
+            <div class="col border pl-1">{{ fqc.extract_real }}</div>
+            <div class="col border pl-1">
+                <a href="/ebs/inprocess/detail/{{ batch.pk }}/fermqc/update/{{ fqc.id }}">
+                <button type="button" class="btn btn-primary btn-sm">Edit</button>
+                </a>
+            </div>
         </div>
         {% endfor %}
         <div class="row no-gutters">
-            <div class="col border">
+            <div class="col-12 border pt-1 pb-1">
                 <span class="float-right">
-                    <a href="/ebs/inprocess/detail/{{ current_batch.pk }}/rawmaterials/add/">
-                        <button type="button" class="btn btn-primary btn-sm">Add</button>
+                    <a href="/ebs/inprocess/detail/{{ batch.pk }}/fermqc/add/">
+                        <button type="button" class="btn btn-primary">Add</button>
                     </a>
                 </span>
             </div>
-            <div class="col border">&nbsp;</div>
-            <div class="col-3 border">&nbsp;</div>
         </div>
-
     </div>
 
 {% endblock %}

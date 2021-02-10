@@ -4,6 +4,7 @@ from ebs.models.master_data_products import Product
 from ebs.models.brew_sheets import Batch
 from ebs.models.brew_sheets import BatchPlanDates
 from ebs.models.brew_sheets import BatchActualDates
+from ebs.models.brew_sheets import BatchYeastPitch
 from ebs.forms.batch_upcoming_forms import MakeUpcomingBatchForm
 
 class InprocessBatchList(ListView):
@@ -35,8 +36,13 @@ class InprocessBatchDetailView(TemplateView):
         batch = Batch.objects.get(pk=self.kwargs.get('pk'))
         plan_dates = BatchPlanDates.objects.get(batch=batch.id)
         act_dates = BatchActualDates.objects.get(batch=batch.id)
+        try:
+            yeast = BatchYeastPitch.objects.get(batch=batch.id)
+        except BatchYeastPitch.DoesNotExist:
+            yeast = None
         context = super(InprocessBatchDetailView, self).get_context_data(**kwargs)
         context['batch'] = batch
         context['plan_dates'] = plan_dates
         context['act_dates'] = act_dates
+        context['yeast'] = yeast
         return context

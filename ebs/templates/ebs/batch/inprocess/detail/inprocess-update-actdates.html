@@ -1,0 +1,123 @@
+{% extends "ebs/base.html" %}
+{% load bootstrap4 %}
+{% load widget_tweaks %}
+{% block extrahead %}
+{{ form.media }}
+{% endblock %}
+{% block title %}Add Subitem{% endblock %}
+{% block content %}
+<div class="container-fluid float-left">
+    <div class="row no-gutters">
+        <div class="col-12 pb-3 pt-3">
+            <span class="float-right">
+                <a href="{{ request.META.HTTP_REFERER }}">
+                    <button type="button" class="btn btn-warning"><- Back</button>
+                </a>
+            </span>
+        </div>
+    </div>
+    <form method="POST">
+        {% csrf_token %}
+        {%  if form.non_field_errors %}
+            <div class="alert alert-danger" role="alert">
+                {% for error in form.non_field_errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+        {% endif %}
+        <div class="row no-gutters">
+            <div class="col-4 border bg-light pl-1">
+                Date
+            </div>
+            <div class="col-3 border bg-light pl-1">
+                Planned
+            </div>
+            <div class="col-5 border bg-light pl-1">
+                Actual
+            </div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col-4 border bg-light pl-1 pt-3">
+                <h3>Brew</h3>
+            </div>
+            <div class="col-3 border pl-1 pt-4 pb-3">
+                {{ plan_dates.brew_date }}
+            </div>
+            <div class="col-5 border pl-1 pt-3 pb-3">
+                {{ form.brew_date }}
+            </div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col-4 border bg-light pl-1 pt-3">
+                <h3>Yst Crash</h3>
+            </div>
+            <div class="col-3 border pl-1 pt-4 pb-3">
+                {{ plan_dates.yeast_crash_date }}
+            </div>
+            <div class="col-5 border pl-1 pt-3 pb-3">
+                {{ form.yeast_crash_date }}
+            </div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col-4 border bg-light pl-1 pt-3">
+                <h3>Harvest</h3>
+            </div>
+            <div class="col-3 border pl-1 pt-4 pb-3">
+                {{ plan_dates.yeast_harvest_date }}
+            </div>
+            <div class="col-5 border pl-1 pt-3 pb-3">
+                {{ form.yeast_harvest_date }}
+            </div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col-4 border bg-light pl-1 pt-3">
+                <h3>Dry-Hop</h3>
+            </div>
+            <div class="col-3 border pl-1 pt-4 pb-3">
+                {{ plan_dates.dryhop_date }}
+            </div>
+            <div class="col-5 border pl-1 pt-3 pb-3">
+                {{ form.dryhop_date }}
+            </div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col-4 border bg-light pl-1 pt-3">
+                <h3>Final Crash</h3>
+            </div>
+            <div class="col-3 border pl-1 pt-4 pb-3">
+                {{ plan_dates.final_crash_date }}
+            </div>
+            <div class="col-5 border pl-1 pt-3 pt-3">
+                {{ form.final_crash_date }}
+            </div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col-4 border bg-light pl-1 pt-3">
+                <h3>Transfer</h3>
+            </div>
+            <div class="col-3 border pl-1 pt-4 pb-3">
+                {{ plan_dates.transfer_date }}
+            </div>
+            <div class="col-5 border pl-1 pt-3 pt-3">
+                {{ form.transfer_date }}
+            </div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col-4 border bg-light pl-1 pt-3">
+                <h3>Package</h3>
+            </div>
+            <div class="col-3 border pl-1 pt-4 pb-3">
+                {{ plan_dates.package_date }}
+            </div>
+            <div class="col-5 border pl-1 pt-3 pb-3">
+                {{ form.package_date }}
+            </div>
+        </div>
+        <div class="row no-gutters float-right pt-3">
+            <div class="col-12">
+            <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

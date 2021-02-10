@@ -4,6 +4,15 @@
 <br/>
 <div class="container-fluid float-left">
     <div class="row no-gutters">
+        <div class="col-12 pb-1">
+            <span class="float-right">
+                <a href="/ebs/inprocess/">
+                    <button type="button" class="btn btn-warning"><- Back to List</button>
+                </a>
+            </span>
+        </div>
+    </div>
+    <div class="row no-gutters">
         <div class="col-2 text-right float-left border bg-light pr-1">Beer:</div>
         <div class="col-10 border pl-1">{{ batch.batch_product.product_name }}</div>
     </div>
@@ -15,7 +24,7 @@
         <div class="col-2 text-right float-left border bg-light pr-1">Number:</div>
         {% if batch.obeer_batch is None %}
             <div class="col-4 border pl-1">
-                <a href="/ebs/inprocess/detail/obeer/{{ batch.pk }}">
+                <a href="/ebs/inprocess/detail/{{ batch.pk }}/obeer/">
                     <button type="button" class="btn btn-primary btn-sm">Add</button>
                 </a>
             </div>
@@ -23,9 +32,11 @@
             <div class="col-4 border pl-1">{{ batch.obeer_batch }}</div>
         {% endif %}
         <div class="col-2 text-right border bg-light pr-1">MPN:</div>
-        {% if batch.obeer_batch is None %}
+        {% if batch.obeer_mpn is None %}
             <div class="col-4 border pl-1">
-                <button type="button" class="btn btn-primary btn-sm">Add</button>
+                <a href="/ebs/inprocess/detail/{{ batch.pk }}/obeer/">
+                    <button type="button" class="btn btn-primary btn-sm">Add</button>
+                </a>
             </div>
         {% else %}
             <div class="col-4 border pl-1">{{ batch.obeer_mpn }}</div>
@@ -37,37 +48,53 @@
     </div>
     <div class="row no-gutters">
         <div class="col-12 pt-2">
-            <button type="button" class="btn-primary btn-block">Raw Materials Log</button>
+            <a href="/ebs/inprocess/detail/{{ batch.id }}/rawmaterials/">
+            <button type="button" class="btn btn-primary btn-block">Raw Materials Log</button>
+            </a>
         </div>
         <div class="col-12 pt-2">
-            <button type="button" class="btn-primary btn-block">Wort QC Entry</button>
+            <a href="/ebs/inprocess/detail/{{ batch.id }}/wortqc/">
+            <button type="button" class="btn btn-primary btn-block">Wort QC Entry</button>
+            </a>
         </div>
         <div class="col-12 pt-2">
-            <button type="button" class="btn-primary btn-block">Yeast Pitch Entry</button>
+            {% if yeast is None %}
+                <a href="/ebs/inprocess/detail/{{ batch.id }}/yeast/">
+                    <button type="button" class="btn btn-primary btn-block">Yeast Pitch Entry</button>
+                </a>
+            {% else %}
+                <a href="/ebs/inprocess/detail/{{ batch.id }}/yeast/{{ yeast.id }}">
+                    <button type="button" class="btn btn-primary btn-block">Yeast Pitch Entry</button>
+                </a>
+            {% endif %}
         </div>
         <div class="col-12 pt-2">
-            <button type="button" class="btn-primary btn-block">Actual Dates</button>
+            <a href="/ebs/inprocess/detail/{{ batch.id }}/dates/{{ act_dates.id }}">
+                <button type="button" class="btn btn-primary btn-block">Actual Dates</button>
+            </a>
         </div>
         <div class="col-12 pt-2">
-            <button type="button" class="btn-primary btn-block">Fermentation QC Entry</button>
+            <a href="/ebs/inprocess/detail/{{ batch.id }}/fermqc/">
+            <button type="button" class="btn btn-primary btn-block">Fermentation QC Entry</button>
+            </a>
         </div>
         <div class="col-12 pt-2">
-            <button type="button" class="btn-primary btn-block">Cellar D.O. Entry</button>
+            <button type="button" class="btn btn-primary btn-block">Cellar D.O. Entry</button>
         </div>
         <div class="col-12 pt-2">
-            <button type="button" class="btn-primary btn-block">Transfer QC Entry</button>
+            <button type="button" class="btn btn-primary btn-block">Transfer QC Entry</button>
         </div>
         <div class="col-12 pt-2">
-            <button type="button" class="btn-primary btn-block">Carbonation QC Entry</button>
+            <button type="button" class="btn btn-primary btn-block">Carbonation QC Entry</button>
         </div>
         <div class="col-12 pt-2">
-            <button type="button" class="btn-primary btn-block">Can Run QC Entry</button>
+            <button type="button" class="btn btn-primary btn-block">Can Run QC Entry</button>
         </div>
         <div class="col-12 pt-2">
-            <button type="button" class="btn-primary btn-block">Final Pack-Off</button>
+            <button type="button" class="btn btn-primary btn-block">Final Pack-Off</button>
         </div>
         <div class="col-12 pt-2">
-            <button type="button" class="btn-danger btn-block">Close This Batch</button>
+            <button type="button" class="btn btn-danger btn-block">Close This Batch</button>
         </div>
     </div>
 </div>

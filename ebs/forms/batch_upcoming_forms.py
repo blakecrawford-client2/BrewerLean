@@ -11,8 +11,7 @@ class MakeUpcomingBatchForm(forms.ModelForm):
             "format":"DD MMM YYYY",
             "showClose":True,
             "showClear":True,
-            "showTodayButton":True,})
-    )
+            "showTodayButton":True,}))
     class Meta:
         model = Batch
         fields = ['batch_product', 'schedule_pattern', 'plan_start_day']

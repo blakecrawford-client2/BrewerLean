@@ -9,6 +9,15 @@
    <div class="container-fluid float-left">
         <br/>
         <div class="row no-gutters">
+            <div class="col-12 pb-1">
+                <span class="float-right">
+                    <a href="{{ request.META.HTTP_REFERER }}">
+                        <button type="button" class="btn btn-warning"><- Back</button>
+                    </a>
+                </span>
+            </div>
+        </div>
+        <div class="row no-gutters">
             <div class="col">
                 <form method="POST">
                     {% csrf_token %}

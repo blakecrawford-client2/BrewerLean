@@ -13,6 +13,16 @@ from ebs.views.batch_inprocess_views import InprocessBatchList, \
     InprocessBatchDetailView
 from ebs.views.batch_inprocess_detail_views import AddObeerDataView
 from ebs.views.batch_inprocess_detail_views import RawMaterialsLogView
+from ebs.views.batch_inprocess_detail_views import AddRawMaterialsLogView
+from ebs.views.batch_inprocess_detail_views import WortQCEntriesView
+from ebs.views.batch_inprocess_detail_views import AddWortQCEntryView
+from ebs.views.batch_inprocess_detail_views import UpdateWortQCEntryView
+from ebs.views.batch_inprocess_detail_views import CreateYeastPitchView
+from ebs.views.batch_inprocess_detail_views import UpdateYeastPitchView
+from ebs.views.batch_inprocess_detail_views import UpdateActualDatesView
+from ebs.views.batch_inprocess_detail_views import FermQCEntriesView
+from ebs.views.batch_inprocess_detail_views import AddFermQCEntryView
+from ebs.views.batch_inprocess_detail_views import UpdateFermQCEntryView
 
 urlpatterns = [
     #path('', PartnerTypesList.as_view()),
@@ -25,7 +35,16 @@ urlpatterns = [
     path('inprocess/', InprocessBatchList.as_view()),
     path('inprocess/create/', InprocessBatchCreateView.as_view()),
     path('inprocess/detail/<int:pk>', InprocessBatchDetailView.as_view(), name='maintenance'),
-    path('inprocess/detail/obeer/<int:pk>', AddObeerDataView.as_view()),
-    path('inprocess/detail/rawmaterials/<int:pk>', RawMaterialsLogView.as_view()),
-
+    path('inprocess/detail/<int:pk>/obeer/', AddObeerDataView.as_view()),
+    path('inprocess/detail/<int:pk>/rawmaterials/', RawMaterialsLogView.as_view(), name='rawmaterials'),
+    path('inprocess/detail/<int:pk>/rawmaterials/add/', AddRawMaterialsLogView.as_view()),
+    path('inprocess/detail/<int:pk>/wortqc/', WortQCEntriesView.as_view(), name='wortqcentries'),
+    path('inprocess/detail/<int:bpk>/wortqc/add/', AddWortQCEntryView.as_view()),
+    path('inprocess/detail/<int:bpk>/wortqc/update/<int:pk>', UpdateWortQCEntryView.as_view()),
+    path('inprocess/detail/<int:bpk>/yeast/', CreateYeastPitchView.as_view()),
+    path('inprocess/detail/<int:bpk>/yeast/<int:pk>', UpdateYeastPitchView.as_view()),
+    path('inprocess/detail/<int:bpk>/dates/<int:pk>', UpdateActualDatesView.as_view()),
+    path('inprocess/detail/<int:pk>/fermqc/', FermQCEntriesView.as_view(), name='fermqcentries'),
+    path('inprocess/detail/<int:bpk>/fermqc/add/', AddFermQCEntryView.as_view()),
+    path('inprocess/detail/<int:bpk>/fermqc/update/<int:pk>', UpdateFermQCEntryView.as_view()),
 ]

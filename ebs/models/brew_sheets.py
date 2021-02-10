@@ -279,6 +279,11 @@ class BatchWortQC(models.Model):
                                         null=True,
                                         blank=True,
                                         verbose_name='Sparge Water Volume')
+    volume_preboil = models.DecimalField(max_digits=3,
+                                          decimal_places=0,
+                                          null=True,
+                                          blank=True,
+                                          verbose_name='Pre-boil Volume')
     volume_postboil = models.DecimalField(max_digits=3,
                                           decimal_places=0,
                                           null=True,
@@ -289,6 +294,11 @@ class BatchWortQC(models.Model):
                                                  null=True,
                                                  blank=True,
                                                  verbose_name='First Runnings P')
+    extract_last_runnings = models.DecimalField(max_digits=3,
+                                                decimal_places=1,
+                                                null=True,
+                                                blank=True,
+                                                verbose_name='Last runnings P')
     extract_preboil = models.DecimalField(max_digits=3,
                                           decimal_places=1,
                                           null=True,
