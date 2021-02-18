@@ -6,13 +6,14 @@
 {% endblock %}
 {% block title %}Add Subitem{% endblock %}
 {% block content %}
-   <div class="container-fluid float-left">
-        <br/>
-        <div class="row no-gutters">
+   <div class="container-fluid px-2">
+        <div class="row no-gutters pt-3">
             <div class="col-12 pb-1">
                 <span class="float-right">
                     <a href="{{ request.META.HTTP_REFERER }}">
-                        <button type="button" class="btn btn-warning"><- Back</button>
+                        <button type="button" class="btn btn-warning">
+                            <span class="material-icons">arrow_back_ios_new</span>
+                        </button>
                     </a>
                 </span>
             </div>

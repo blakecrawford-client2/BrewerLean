@@ -6,13 +6,14 @@
 {% endblock %}
 {% block title %}Batch Raw Materials Log{% endblock %}
 {% block content %}
-    <br/>
-    <div class="container-fluid float-left">
-        <div class="row no-gutters">
+    <div class="container-fluid float-left px-2">
+        <div class="row no-gutters pt-3">
             <div class="col-12 pb-2">
                 <span class="float-right">
                     <a href="/ebs/inprocess/detail/{{ batch.id }}">
-                        <button type="button" class="btn btn-warning"><- Back to Batch</button>
+                        <button type="button" class="btn btn-warning">
+                            <span class="material-icons">arrow_back_ios_new</span>
+                        </button>
                     </a>
                 </span>
             </div>
@@ -54,20 +55,30 @@
         <div class="row no-gutters">
             <div class="col border bg-light pl-1">Material</div>
             <div class="col border bg-light pl-1">Lot</div>
-            <div class="col-3 border bg-light pl-1">Qty</div>
+            <div class="col border bg-light pl-1">Qty</div>
+            <div class="col-2 border bg-light pl-1"></div>
         </div>
         {% for m in materials %}
         <div class="row no-gutters">
             <div class="col border pl-1">{{ m.material.material_name }}</div>
             <div class="col border pl-1">{{ m.material_lot }}</div>
-            <div class="col-3 border pl-1">{{ m.material_qty }}</div>
+            <div class="col border pl-1">{{ m.material_qty }}</div>
+            <div class="col-2 border">
+                <a href="/ebs/inprocess/detail/{{ current_batch.pk }}/rawmaterials/update/{{ m.id }}">
+                    <button type="button" class="btn btn-primary btn-block">
+                        <span class="material-icons md-18">mode_edit</span>
+                    </button>
+                </a>
+            </div>
         </div>
         {% endfor %}
         <div class="row no-gutters">
             <div class="col-12 pt-2 pb-1">
                 <span class="float-right">
                     <a href="/ebs/inprocess/detail/{{ current_batch.pk }}/rawmaterials/add/">
-                        <button type="button" class="btn btn-primary">Add</button>
+                        <button type="button" class="btn btn-primary">
+                            <i class="material-icons">add_circle_outline</i>
+                        </button>
                     </a>
                 </span>
             </div>

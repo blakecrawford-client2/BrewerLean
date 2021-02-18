@@ -6,13 +6,14 @@
 {% endblock %}
 {% block title %}Batch Wort QC Entries{% endblock %}
 {% block content %}
-    <br/>
-    <div class="container-fluid float-left">
-        <div class="row no-gutters">
-            <div class="col-12 pb-1">
+    <div class="container-fluid px-2">
+        <div class="row no-gutters pt-3">
+            <div class="col-12 pb-2">
                 <span class="float-right">
                     <a href="/ebs/inprocess/detail/{{ batch.id }}">
-                        <button type="button" class="btn btn-warning"><- Back to Batch</button>
+                        <button type="button" class="btn btn-warning">
+                            <span class="material-icons">arrow_back_ios_new</span>
+                        </button>
                     </a>
                 </span>
             </div>
@@ -48,35 +49,35 @@
 
         <div class="row no-gutters">
             <br/>
-            <div class="col-12 border pt-2 pl-1"><h4>Wort QC Entrties</h4></div>
+            <div class="col-12 border pt-2 pl-1"><h4>Wort QC Entries</h4></div>
         </div>
 
         <div class="row no-gutters">
             <div class="col border bg-light pl-1">Turn</div>
             <div class="col border bg-light pl-1">Brewer</div>
-            <div class="col-3 border bg-light pl-1">Edit</div>
+            <div class="col-2 border bg-light pl-1"></div>
         </div>
         {% for wqc in wortqcentries %}
         <div class="row no-gutters">
             <div class="col border pl-1">{{ wqc.turn }}</div>
             <div class="col border pl-1">{{ wqc.brewer.name }}</div>
-            <div class="col-3 border pl-1">
+            <div class="col-2 border">
                 <a href="/ebs/inprocess/detail/{{ batch.pk }}/wortqc/update/{{ wqc.id }}">
-                <button type="button" class="btn btn-primary btn-sm">Edit</button>
+                    <button type="button" class="btn btn-primary btn-block">
+                        <span class="material-icons md-18">mode_edit</span>
+                    </button>
                 </a>
             </div>
         </div>
         {% endfor %}
         <div class="row no-gutters">
-            <div class="col border">
+            <div class="col-12 pt-2">
                 <span class="float-right">
                     <a href="/ebs/inprocess/detail/{{ batch.pk }}/wortqc/add/">
-                        <button type="button" class="btn btn-primary btn-sm">Add</button>
+                        <button type="button" class="btn btn-primary">Add</button>
                     </a>
                 </span>
             </div>
-            <div class="col border">&nbsp;</div>
-            <div class="col-3 border">&nbsp;</div>
         </div>
 
     </div>

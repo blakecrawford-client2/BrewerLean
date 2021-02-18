@@ -1,24 +1,43 @@
 {% extends "ebs/base.html" %}
 {% block title %}Upcoming Batches{% endblock %}
 {% block content %}
-
-<table class="table table-striped">
-    <tr>
-        <th width="30%"><h3>Upcoming Batches</h3></th>
-        <th width="10%"></th>
-        <th width="40%"></th>
-        <th width="10%"></th>
-        <th width="10%"><a href="/ebs/upcoming/create/" class="btn btn-primary" role="buton">+</a></th>
-    </tr>
-{% for x in upcoming_batch_list %}
-<tr>
-    <td>{{ x.plan_start_day|date:"d M Y" }}</td>
-    <td>{{x.batch_product.ownership.partner_short_code}}</td>
-    <td>{{ x.batch_product.product_name }}</td>
-    <td><a href="/ebs/upcoming/update/{{ x.id }}"><button type="button" class="btn btn-warning btn-sm">Edit</button></a></td>
-    <td><a href="/ebs/upcoming/start/{{ x.id }}"><button type="button" class="btn btn-success btn-sm">Go!</button></a></td>
-</tr>
-{% endfor %}
-</table>
-
+    <div class="container-fluid px-2">
+        <div class="row no-gutters pt-3">
+            <div class="col-10 bg-light"><h3>Upcoming Batches</h3></div>
+            <div class="col-2 bg-light">
+                <span class="float-right">
+                <a href="/ebs/upcoming/create/">
+                    <button class="btn btn-primary">
+                        <span class="material-icons">add</span>
+                    </button>
+                </a>
+                </span>
+            </div>
+        </div>
+        {% for x in upcoming_batch_list %}
+            <div class="row no-gutters pt-2">
+                <div class="col-3">{{ x.plan_start_day|date:"d M Y" }}</div>
+                <div class="col-1">{{x.batch_product.ownership.partner_short_code}}</div>
+                <div class="col-5">{{ x.batch_product.product_name }}</div>
+                <div class="col-1">
+                    <span class="float-right">
+                        <a href="/ebs/upcoming/update/{{ x.id }}">
+                            <button type="button" class="btn btn-warning">
+                                <span class="material-icons">mode_edit</span>
+                            </button>
+                        </a>
+                    </span>
+                </div>
+                <div class="col-2">
+                    <span class="float-right">
+                        <a href="/ebs/upcoming/start/{{ x.id }}">
+                            <button type="button" class="btn btn-success">
+                                <span class="material-icons">play_arrow</span>
+                            </button>
+                        </a>
+                    </span>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

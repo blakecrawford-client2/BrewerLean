@@ -6,10 +6,25 @@
 {% endblock %}
 {% block title %}Upcoming Batch{% endblock %}
 {% block content %}
-    <div class="container-fluid">
+    <div class="container-fluid px-2">
+        <div class="row no-gutters pt-3">
+            <div class="col bg-light">
+                <h3>Upcoming Batch</h3>
+            </div>
+            <div class="col-2 bg-light">
+                <span class="float-right">
+                <a href="/ebs/upcoming/">
+                    <button class="btn btn-warning">
+                        <span class="material-icons">
+                            arrow_back_ios_new
+                        </span>
+                    </button>
+                </a>
+                </span>
+            </div>
+        </div>
         <div class="row no-gutters">
             <div class="col">
-                <h3>Upcoming Batch</h3>
                 <form method="POST">
                     {% csrf_token %}
                     {%  if form.non_field_errors %}
@@ -38,7 +53,9 @@
                             {% endif %}
                         </div>
                     {% endfor %}
+                    <span class="float-right">
                     <button type="submit" class="btn btn-primary">Submit</button>
+                    </span>
                 </form>
             </div>
         </div>

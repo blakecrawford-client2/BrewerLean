@@ -6,13 +6,14 @@
 {% endblock %}
 {% block title %}Batch D.O. QC Entries{% endblock %}
 {% block content %}
-    <br/>
-    <div class="container-fluid float-left">
-        <div class="row no-gutters">
-            <div class="col-12 pb-1">
+    <div class="container-fluid px-2">
+        <div class="row no-gutters pt-3">
+            <div class="col-12 pb-2">
                 <span class="float-right">
                     <a href="/ebs/inprocess/detail/{{ batch.id }}">
-                        <button type="button" class="btn btn-warning"><- Back to Batch</button>
+                        <button type="button" class="btn btn-warning">
+                            <span class="material-icons">arrow_back_ios_new</span>
+                        </button>
                     </a>
                 </span>
             </div>
@@ -55,25 +56,29 @@
             <div class="col border bg-light pl-1">Date</div>
             <div class="col border bg-light pl-1">Type</div>
             <div class="col border bg-light pl-1">Value</div>
-            <div class="col border bg-light pl-1"> </div>
+            <div class="col-2 border bg-light pl-1"> </div>
         </div>
         {% for doh in doentries %}
         <div class="row no-gutters">
             <div class="col border pl-1">{{ doh.date }}</div>
             <div class="col border pl-1">{{ doh.do_type }}</div>
             <div class="col border pl-1">{{ doh.do_measurement }}</div>
-            <div class="col border pl-1">
+            <div class="col-2 border">
                 <a href="/ebs/inprocess/detail/{{ batch.pk }}/do/update/{{ doh.id }}">
-                <button type="button" class="btn btn-primary btn-sm">Edit</button>
+                    <button type="button" class="btn btn-primary btn-block">
+                        <span class="material-icons md-18">mode_edit</span>
+                    </button>
                 </a>
             </div>
         </div>
         {% endfor %}
         <div class="row no-gutters">
-            <div class="col-12 border pt-1 pb-1">
+            <div class="col-12 pt-2 pb-1">
                 <span class="float-right">
                     <a href="/ebs/inprocess/detail/{{ batch.pk }}/do/add/">
-                        <button type="button" class="btn btn-primary">Add</button>
+                        <button type="button" class="btn btn-primary">
+                            <span class="material-icons">add</span>
+                        </button>
                     </a>
                 </span>
             </div>

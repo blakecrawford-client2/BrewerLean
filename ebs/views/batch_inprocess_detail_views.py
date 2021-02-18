@@ -58,17 +58,32 @@ class AddRawMaterialsLogView(BLCreateView):
     context_object_name = 'current_material'
 
     def get_context_data(self, **kwargs):
-        batch = Batch.objects.get(pk=self.kwargs.get('pk'))
+        batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
         context = super(AddRawMaterialsLogView, self).get_context_data(**kwargs)
         context['batch'] = batch
         return context
 
     def get_success_url(self):
-        return reverse_lazy('rawmaterials', kwargs={'pk': self.kwargs.get('pk')})
+        return reverse_lazy('rawmaterials', kwargs={'pk': self.kwargs.get('bpk')})
 
     def form_valid(self, form):
-        form.instance.batch = Batch.objects.get(pk=self.kwargs.get('pk'))
+        form.instance.batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
         return super(AddRawMaterialsLogView, self).form_valid(form)
+
+class UpdateRawMaterialsLogView(BLUpdateView):
+    model = BatchRawMaterialsLog
+    template_name = 'ebs/batch/inprocess/detail/inprocess-add-subitem.html'
+    form_class = AddRawMaterialsForm
+    context_object_name = 'current_material'
+
+    def get_success_url(self):
+        return reverse_lazy('rawmaterials', kwargs={'pk': self.kwargs.get('bpk')})
+
+    def get_context_data(self, **kwargs):
+        batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
+        context = super(UpdateRawMaterialsLogView, self).get_context_data(**kwargs)
+        context['batch'] = batch
+        return context
 
 class WortQCEntriesView(BLUpdateView):
     model = Batch

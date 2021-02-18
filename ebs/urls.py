@@ -14,6 +14,7 @@ from ebs.views.batch_inprocess_views import InprocessBatchList, \
 from ebs.views.batch_inprocess_detail_views import AddObeerDataView
 from ebs.views.batch_inprocess_detail_views import RawMaterialsLogView
 from ebs.views.batch_inprocess_detail_views import AddRawMaterialsLogView
+from ebs.views.batch_inprocess_detail_views import UpdateRawMaterialsLogView
 from ebs.views.batch_inprocess_detail_views import WortQCEntriesView
 from ebs.views.batch_inprocess_detail_views import AddWortQCEntryView
 from ebs.views.batch_inprocess_detail_views import UpdateWortQCEntryView
@@ -49,7 +50,8 @@ urlpatterns = [
     path('inprocess/detail/<int:pk>', InprocessBatchDetailView.as_view(), name='maintenance'),
     path('inprocess/detail/<int:pk>/obeer/', AddObeerDataView.as_view()),
     path('inprocess/detail/<int:pk>/rawmaterials/', RawMaterialsLogView.as_view(), name='rawmaterials'),
-    path('inprocess/detail/<int:pk>/rawmaterials/add/', AddRawMaterialsLogView.as_view()),
+    path('inprocess/detail/<int:bpk>/rawmaterials/add/', AddRawMaterialsLogView.as_view()),
+    path('inprocess/detail/<int:bpk>/rawmaterials/update/<int:pk>', UpdateRawMaterialsLogView.as_view()),
     path('inprocess/detail/<int:pk>/wortqc/', WortQCEntriesView.as_view(), name='wortqcentries'),
     path('inprocess/detail/<int:bpk>/wortqc/add/', AddWortQCEntryView.as_view()),
     path('inprocess/detail/<int:bpk>/wortqc/update/<int:pk>', UpdateWortQCEntryView.as_view()),
