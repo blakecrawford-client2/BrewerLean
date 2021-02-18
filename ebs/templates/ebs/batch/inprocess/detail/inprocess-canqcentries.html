@@ -4,12 +4,12 @@
 {% block extrahead %}
     {{ form.media }}
 {% endblock %}
-{% block title %}Batch Raw Materials Log{% endblock %}
+{% block title %}Canning QC Entries{% endblock %}
 {% block content %}
     <br/>
     <div class="container-fluid float-left">
         <div class="row no-gutters">
-            <div class="col-12 pb-2">
+            <div class="col-12 pb-1">
                 <span class="float-right">
                     <a href="/ebs/inprocess/detail/{{ batch.id }}">
                         <button type="button" class="btn btn-warning"><- Back to Batch</button>
@@ -19,54 +19,60 @@
         </div>
         <div class="row no-gutters">
             <div class="col-2 text-right float-left border bg-light pr-1">Beer:</div>
-            <div class="col-10 border pl-1">{{ current_batch.batch_product.product_name }}</div>
+            <div class="col-10 border pl-1">{{ batch.batch_product.product_name }}</div>
         </div>
         <div class="row no-gutters">
             <div class="col-2 text-right float-left border bg-light pr-1">Partner:</div>
-            <div class="col-10 border pl-1">{{ current_batch.batch_product.ownership.partner_short_code }}</div>
+            <div class="col-10 border pl-1">{{ batch.batch_product.ownership.partner_short_code }}</div>
         </div>
         {% if '/obeer' not in request.path %}
         <div class="row no-gutters">
             <div class="col-2 text-right float-left border bg-light pr-1">Number:</div>
-            {% if current_batch.obeer_batch is None %}
+            {% if batch.obeer_batch is None %}
                 <div class="col-4 border pl-1">
                     <button type="button" class="btn btn-primary btn-sm">Add</button>
                 </div>
             {% else %}
-                <div class="col-4 border pl-1">{{ current_batch.obeer_batch }}</div>
+                <div class="col-4 border pl-1">{{ batch.obeer_batch }}</div>
             {% endif %}
             <div class="col-2 text-right border bg-light pr-1">MPN:</div>
-            {% if current_batch.obeer_batch is None %}
+            {% if batch.obeer_batch is None %}
                 <div class="col-4 border pl-1">
                     <button type="button" class="btn btn-primary btn-sm">Add</button>
                 </div>
             {% else %}
-                <div class="col-4 border pl-1">{{ current_batch.obeer_mpn }}</div>
+                <div class="col-4 border pl-1">{{ batch.obeer_mpn }}</div>
             {% endif %}
         </div>
         {% endif %}
 
         <div class="row no-gutters">
             <br/>
-            <div class="col-12 border pt-2 pl-1"><h4>Raw Materials</h4></div>
+            <div class="col-12 border pt-2 pl-1"><h4>Canning QC Entrties</h4></div>
         </div>
 
         <div class="row no-gutters">
-            <div class="col border bg-light pl-1">Material</div>
-            <div class="col border bg-light pl-1">Lot</div>
-            <div class="col-3 border bg-light pl-1">Qty</div>
+            <div class="col border bg-light pl-1">Date</div>
+            <div class="col border bg-light pl-1">Type</div>
+            <div class="col border bg-light pl-1">Value</div>
+            <div class="col border bg-light pl-1"> </div>
         </div>
-        {% for m in materials %}
+        {% for can in canqcentries %}
         <div class="row no-gutters">
-            <div class="col border pl-1">{{ m.material.material_name }}</div>
-            <div class="col border pl-1">{{ m.material_lot }}</div>
-            <div class="col-3 border pl-1">{{ m.material_qty }}</div>
+            <div class="col border pl-1">{{ can.date }}</div>
+            <div class="col border pl-1">{{ can.type}}</div>
+            <div class="col border pl-1">{{ can.measurement }}</div>
+            <div class="col border pl-1">
+                <a href="/ebs/inprocess/detail/{{ batch.pk }}/canqc/update/{{ can.id }}">
+                <button type="button" class="btn btn-primary btn-sm">Edit</button>
+                </a>
+            </div>
         </div>
         {% endfor %}
         <div class="row no-gutters">
-            <div class="col-12 pt-2 pb-1">
+            <div class="col-12 border pt-1 pb-1">
                 <span class="float-right">
-                    <a href="/ebs/inprocess/detail/{{ current_batch.pk }}/rawmaterials/add/">
+                    <a href="/ebs/inprocess/detail/{{ batch.pk }}/canqc/add/">
                         <button type="button" class="btn btn-primary">Add</button>
                     </a>
                 </span>

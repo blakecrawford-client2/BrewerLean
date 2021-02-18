@@ -23,6 +23,18 @@ from ebs.views.batch_inprocess_detail_views import UpdateActualDatesView
 from ebs.views.batch_inprocess_detail_views import FermQCEntriesView
 from ebs.views.batch_inprocess_detail_views import AddFermQCEntryView
 from ebs.views.batch_inprocess_detail_views import UpdateFermQCEntryView
+from ebs.views.batch_inprocess_detail_views import BatchDOEntriesView
+from ebs.views.batch_inprocess_detail_views import AddBatchDOEntryView
+from ebs.views.batch_inprocess_detail_views import UpdateBatchDOEntryView
+from ebs.views.batch_inprocess_detail_views import CreateTransferView
+from ebs.views.batch_inprocess_detail_views import UpdateTransferView
+from ebs.views.batch_inprocess_detail_views import CreateCarbonationQCView
+from ebs.views.batch_inprocess_detail_views import UpdateCarbonationQCView
+from ebs.views.batch_inprocess_detail_views import CanningQCView
+from ebs.views.batch_inprocess_detail_views import AddCanningQCView
+from ebs.views.batch_inprocess_detail_views import UpdateCanningQCView
+from ebs.views.batch_inprocess_detail_views import CreatePackagingRunView
+from ebs.views.batch_inprocess_detail_views import UpdatePackagingRunView
 
 urlpatterns = [
     #path('', PartnerTypesList.as_view()),
@@ -47,4 +59,17 @@ urlpatterns = [
     path('inprocess/detail/<int:pk>/fermqc/', FermQCEntriesView.as_view(), name='fermqcentries'),
     path('inprocess/detail/<int:bpk>/fermqc/add/', AddFermQCEntryView.as_view()),
     path('inprocess/detail/<int:bpk>/fermqc/update/<int:pk>', UpdateFermQCEntryView.as_view()),
+    path('inprocess/detail/<int:pk>/do/', BatchDOEntriesView.as_view(), name='doentries'),
+    path('inprocess/detail/<int:bpk>/do/add/', AddBatchDOEntryView.as_view()),
+    path('inprocess/detail/<int:bpk>/do/update/<int:pk>', UpdateBatchDOEntryView.as_view()),
+    path('inprocess/detail/<int:bpk>/xfer/', CreateTransferView.as_view(), name='transfer'),
+    path('inprocess/detail/<int:bpk>/xfer/<int:pk>', UpdateTransferView.as_view()),
+    path('inprocess/detail/<int:bpk>/carb/', CreateCarbonationQCView.as_view()),
+    path('inprocess/detail/<int:bpk>/carb/update/<int:pk>', UpdateCarbonationQCView.as_view()),
+    path('inprocess/detail/<int:pk>/canqc/', CanningQCView.as_view(), name='canqcentries'),
+    path('inprocess/detail/<int:bpk>/canqc/add/', AddCanningQCView.as_view()),
+    path('inprocess/detail/<int:bpk>/canqc/update/<int:pk>', UpdateCanningQCView.as_view()),
+    path('inprocess/detail/<int:bpk>/package/', CreatePackagingRunView.as_view()),
+    path('inprocess/detail/<int:bpk>/package/update/<int:pk>', UpdatePackagingRunView.as_view()),
+
 ]

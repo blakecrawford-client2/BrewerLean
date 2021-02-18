@@ -1,11 +1,17 @@
 from django import forms
 from bootstrap_datepicker_plus import DatePickerInput
+from ebs.models.master_data_facilities import Tank
 from ebs.models.brew_sheets import Batch
 from ebs.models.brew_sheets import BatchRawMaterialsLog
 from ebs.models.brew_sheets import BatchWortQC
 from ebs.models.brew_sheets import BatchYeastPitch
 from ebs.models.brew_sheets import BatchActualDates
 from ebs.models.brew_sheets import BatchFermentationQC
+from ebs.models.brew_sheets import BatchDOEntry
+from ebs.models.brew_sheets import BatchTransfer
+from ebs.models.brew_sheets import CarbonationQCEntry
+from ebs.models.brew_sheets import PackagingRun
+from ebs.models.brew_sheets import CanningQC
 
 class AddObeerDataForm(forms.ModelForm):
     class Meta:
@@ -147,3 +153,110 @@ class BatchFermentationQCForm(forms.ModelForm):
             'temp_sv',
             'temp_pv'
         ]
+
+class BatchDOEntryForm(forms.ModelForm):
+    date = forms.DateField(
+        required=False,
+        input_formats=['%d %b %Y'],
+        widget=DatePickerInput(
+            options={
+                "format":"DD MMM YYYY",
+                "showClose":True,
+                "showClear":True,
+                "showTodayButton":True,
+            }
+        )
+    )
+
+    class Meta:
+        model=BatchDOEntry
+        fields = ['staff',
+                  'date',
+                  'do_type',
+                  'do_measurement']
+
+class BatchTransferForm(forms.ModelForm):
+    date = forms.DateField(
+        required=False,
+        input_formats=['%d %b %Y'],
+        widget=DatePickerInput(
+            options={
+                "format":"DD MMM YYYY",
+                "showClose":True,
+                "showClear":True,
+                "showTodayButton":True,
+            }
+        )
+    )
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['to_tank'].queryset = Tank.objects.filter(tank_type='BT').order_by('tank_name')
+
+    class Meta:
+        model = BatchTransfer
+        fields = ['staff',
+                  'date',
+                  'volume_transfer_approx',
+                  'to_tank']
+
+class CarbonationQCEntryForm(forms.ModelForm):
+    date = forms.DateField(
+        required=False,
+        input_formats=['%d %b %Y'],
+        widget=DatePickerInput(
+            options={
+                "format":"DD MMM YYYY",
+                "showClose":True,
+                "showClear":True,
+                "showTodayButton":True,
+            }
+        )
+    )
+    class Meta:
+        model = CarbonationQCEntry
+        fields = ['staff',
+                  'date',
+                  'carb_vols_brite']
+
+class PackagingRunForm(forms.ModelForm):
+    date = forms.DateField(
+        required=False,
+        input_formats=['%d %b %Y'],
+        widget=DatePickerInput(
+            options={
+                "format":"DD MMM YYYY",
+                "showClose":True,
+                "showClear":True,
+                "showTodayButton":True,
+            }
+        )
+    )
+    class Meta:
+        model = PackagingRun
+        fields = ['staff',
+                  'date',
+                  'filled_halfs',
+                  'filled_sixtels',
+                  'skids_kegs',
+                  'filled_cases',
+                  'skids_cases']
+
+class CanningQCForm(forms.ModelForm):
+    date = forms.DateField(
+        required=False,
+        input_formats=['%d %b %Y'],
+        widget=DatePickerInput(
+            options={
+                "format":"DD MMM YYYY",
+                "showClose":True,
+                "showClear":True,
+                "showTodayButton":True,
+            }
+        )
+    )
+    class Meta:
+        model = CanningQC
+        fields = ['staff',
+                  'date',
+                  'type',
+                  'measurement']

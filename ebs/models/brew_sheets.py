@@ -490,9 +490,15 @@ class BatchTransfer(models.Model):
                               null=True,
                               on_delete=models.SET_NULL,
                               verbose_name='Who')
+    date = models.DateField(null=True,
+                            verbose_name='Date')
     volume_transfer_approx = models.DecimalField(max_digits=4,
                                                  decimal_places=1,
                                                  verbose_name='Approximate Transfer Volume')
+    to_tank = models.ForeignKey(Tank,
+                                null=True,
+                                on_delete=models.SET_NULL,
+                                verbose_name='To Tank')
     last_modified_on = models.DateField(auto_now=True)
     last_modified_by = models.ForeignKey(User,
                                          null=True,
@@ -510,6 +516,38 @@ class BatchTransfer(models.Model):
                           + '::NO BATCH'
         return return_name
 
+class CarbonationQCEntry(models.Model):
+    class Meta:
+        verbose_name_plural = 'Carbonation QC Entries'
+
+    batch = models.ForeignKey(Batch, null=True, on_delete=models.SET_NULL)
+    staff = models.ForeignKey(Staff,
+                              null=True,
+                              on_delete=models.SET_NULL,
+                              verbose_name='Who')
+    date = models.DateField(null=True,
+                            verbose_name='Date')
+    carb_vols_brite = models.DecimalField(max_digits=3,
+                                          decimal_places=2,
+                                          null=True,
+                                          blank=True,
+                                          verbose_name='Brite Tank Carb Vols')
+    last_modified_on = models.DateField(auto_now=True, blank=True)
+    last_modified_by = models.ForeignKey(User,
+                                         null=True,
+                                         on_delete=models.SET_NULL,
+                                         default=1)
+
+    def __str__(self):
+        if self.batch.obeer_batch is not None:
+            return_name = self.batch.batch_product.ownership.partner_name \
+                          + '::' + self.batch.batch_product.product_name \
+                          + '::' + self.batch.obeer_batch.__str__()
+        else:
+            return_name = self.batch.batch_product.ownership.partner_name \
+                          + '::' + self.batch.batch_product.product_name \
+                          + '::NO BATCH'
+        return return_name
 
 class PackagingRun(models.Model):
     class Meta:
@@ -520,11 +558,8 @@ class PackagingRun(models.Model):
                               null=True,
                               on_delete=models.SET_NULL,
                               verbose_name='Who')
-    carb_vols = models.DecimalField(max_digits=3,
-                                    decimal_places=2,
-                                    null=True,
-                                    blank=True,
-                                    verbose_name='Carb Volumes')
+    date = models.DateField(null=True,
+                            verbose_name='Date')
     filled_halfs = models.IntegerField(null=True,
                                        blank=True,
                                        verbose_name='No. Halfs')
@@ -561,39 +596,32 @@ class CanningQC(models.Model):
     class Meta:
         verbose_name_plural = 'Canning QC Data'
 
+    class canQCType(models.TextChoices):
+        WEIGHT = 'WT', 'Weight'
+        SEAM_HEIGHT = 'SH', 'Seam Height'
+        SEAM_WIDTH = 'SW', 'Seam Width'
+        BODY_HOOK = 'BH', 'Body Hook'
+        COVER_HOOK = 'CH', 'Cover Hook'
+        CAN_DO = 'DO', 'D.O.'
+
     batch = models.ForeignKey(Batch, null=True, on_delete=models.SET_NULL)
     staff = models.ForeignKey(Staff,
                               null=True,
                               on_delete=models.SET_NULL,
                               verbose_name='Who')
-    weight_can = models.IntegerField(null=True,
-                                     blank=True,
-                                     verbose_name='Can Weight')
-    measure_seam_height = models.DecimalField(max_digits=5,
-                                              decimal_places=4,
-                                              null=True,
-                                              blank=True,
-                                              verbose_name='Seam Height')
-    measure_seam_width = models.DecimalField(max_digits=5,
-                                             decimal_places=4,
-                                             null=True,
-                                             blank=True,
-                                             verbose_name='Seam Width')
-    measure_body_hook = models.DecimalField(max_digits=5,
-                                            decimal_places=4,
-                                            null=True,
-                                            blank=True,
-                                            verbose_name='Body Hook')
-    measure_cover_hook = models.DecimalField(max_digits=5,
-                                             decimal_places=4,
-                                             null=True,
-                                             blank=True,
-                                             verbose_name='Cover Hook')
-    do_can = models.DecimalField(max_digits=4,
-                                 decimal_places=3,
-                                 null=True,
-                                 blank=True,
-                                 verbose_name='Can D.O.')
+    date = models.DateField(null=True,
+                            verbose_name='Date')
+    type=models.CharField(null=True,
+                          max_length=2,
+                          verbose_name='Type',
+                          blank=True,
+                          choices=canQCType.choices,
+                          default=canQCType.WEIGHT)
+    measurement = models.DecimalField(max_digits=7,
+                                      decimal_places=4,
+                                      null=True,
+                                      blank=True,
+                                      verbose_name='Measurement')
     last_modified_on = models.DateField(auto_now=True)
     last_modified_by = models.ForeignKey(User,
                                          null=True,
