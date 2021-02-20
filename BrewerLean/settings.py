@@ -25,7 +25,10 @@ SECRET_KEY = 'o6!exa^9fhz=9b45d4j22lo4tjn+5=$n5r2_munpj03p7dj1af'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+if DEBUG is True:
+    ALLOWED_HOSTS = []
+else:
+    ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -83,17 +86,29 @@ WSGI_APPLICATION = 'BrewerLean.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'EBS',
-        'USER': 'brewerlean',
-        'PASSWORD': 'brewerlean',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+if DEBUG is True:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'EBS',
+            'USER': 'brewerlean',
+            'PASSWORD': 'brewerlean',
+            'HOST': '127.0.0.1',
+            'PORT': '5432',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'ebs',
+            'USER': 'ebs',
+            'PASSWORD': '',
+            'HOST': '',
+            'PORT': '5432',
+        }
+    }
+
 
 
 # Password validation
@@ -120,7 +135,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'EST'
 
 USE_I18N = True
 
@@ -132,10 +147,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
+if DEBUG is True:
+    STATICFILES_DIRS = [
+        BASE_DIR / 'static',
+    ]
+else:
+    STATIC_ROOT = '/home/ebs/ebs'
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-]
+
 
 
 AUTHENTICATION_BACKENDS = (
