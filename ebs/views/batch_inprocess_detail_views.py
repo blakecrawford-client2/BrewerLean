@@ -1,4 +1,5 @@
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
+from django.contrib.auth.mixins import LoginRequiredMixin
 from common.views.BLViews import BLCreateView, BLUpdateView
 from ebs.models.brew_sheets import Batch
 from ebs.models.brew_sheets import BatchRawMaterialsLog
@@ -12,6 +13,7 @@ from ebs.models.brew_sheets import BatchTransfer
 from ebs.models.brew_sheets import CarbonationQCEntry
 from ebs.models.brew_sheets import CanningQC
 from ebs.models.brew_sheets import PackagingRun
+from ebs.models.brew_sheets import BatchNote
 from ebs.forms.batch_maintenance_detail_forms import AddObeerDataForm
 from ebs.forms.batch_maintenance_detail_forms import AddRawMaterialsForm
 from ebs.forms.batch_maintenance_detail_forms import AddWortQCEntryForm
@@ -23,15 +25,18 @@ from ebs.forms.batch_maintenance_detail_forms import BatchTransferForm
 from ebs.forms.batch_maintenance_detail_forms import CarbonationQCEntryForm
 from ebs.forms.batch_maintenance_detail_forms import CanningQCForm
 from ebs.forms.batch_maintenance_detail_forms import PackagingRunForm
+from ebs.forms.batch_maintenance_detail_forms import BatchNoteForm
+
 
 class AddObeerDataView(BLUpdateView):
     model = Batch
-    template_name = 'ebs/batch/inprocess/maintenance_create_or_update.html'
+    template_name = 'ebs/batch/inprocess/detail/inprocess-add-subitem.html'
     form_class = AddObeerDataForm
     context_object_name = 'current_batch'
 
     def get_success_url(self):
-        return reverse_lazy('maintenance', kwargs={'pk': self.object.pk})
+        return reverse('maintenance', kwargs={'pk': self.kwargs['pk']})
+
 
 class RawMaterialsLogView(BLUpdateView):
     model = Batch
@@ -70,6 +75,7 @@ class AddRawMaterialsLogView(BLCreateView):
         form.instance.batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
         return super(AddRawMaterialsLogView, self).form_valid(form)
 
+
 class UpdateRawMaterialsLogView(BLUpdateView):
     model = BatchRawMaterialsLog
     template_name = 'ebs/batch/inprocess/detail/inprocess-add-subitem.html'
@@ -85,6 +91,7 @@ class UpdateRawMaterialsLogView(BLUpdateView):
         context['batch'] = batch
         return context
 
+
 class WortQCEntriesView(BLUpdateView):
     model = Batch
     template_name = 'ebs/batch/inprocess/detail/inprocess-wortqcentry.html'
@@ -97,11 +104,12 @@ class WortQCEntriesView(BLUpdateView):
     def get_context_data(self, **kwargs):
         batch_id = self.kwargs.get('pk')
         batch = Batch.objects.get(pk=batch_id)
-        wortQCEntries = BatchWortQC.objects.filter(batch=batch.id)
+        wort_qc_entries = BatchWortQC.objects.filter(batch=batch.id)
         context = super(WortQCEntriesView, self).get_context_data(**kwargs)
         context['batch'] = batch
-        context['wortqcentries'] = wortQCEntries
+        context['wortqcentries'] = wort_qc_entries
         return context
+
 
 class AddWortQCEntryView(BLCreateView):
     model = BatchWortQC
@@ -122,6 +130,7 @@ class AddWortQCEntryView(BLCreateView):
         form.instance.batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
         return super(AddWortQCEntryView, self).form_valid(form)
 
+
 class UpdateWortQCEntryView(BLUpdateView):
     model = BatchWortQC
     template_name = 'ebs/batch/inprocess/detail/inprocess-add-subitem.html'
@@ -136,6 +145,7 @@ class UpdateWortQCEntryView(BLUpdateView):
         context = super(UpdateWortQCEntryView, self).get_context_data(**kwargs)
         context['batch'] = batch
         return context
+
 
 class CreateYeastPitchView(BLCreateView):
     model = BatchYeastPitch
@@ -156,6 +166,7 @@ class CreateYeastPitchView(BLCreateView):
         form.instance.batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
         return super(CreateYeastPitchView, self).form_valid(form)
 
+
 class UpdateYeastPitchView(BLUpdateView):
     model = BatchYeastPitch
     template_name = 'ebs/batch/inprocess/detail/inprocess-add-subitem.html'
@@ -175,7 +186,8 @@ class UpdateYeastPitchView(BLUpdateView):
         form.instance.batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
         return super(UpdateYeastPitchView, self).form_valid(form)
 
-class UpdateActualDatesView(BLUpdateView):
+
+class UpdateActualDatesView(LoginRequiredMixin, BLUpdateView):
     model = BatchActualDates
     template_name = 'ebs/batch/inprocess/detail/inprocess-update-actdates.html'
     form_class = UpdateActualDatesForm
@@ -196,6 +208,7 @@ class UpdateActualDatesView(BLUpdateView):
         form.instance.batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
         return super(UpdateActualDatesView, self).form_valid(form)
 
+
 class FermQCEntriesView(BLUpdateView):
     model = Batch
     template_name = 'ebs/batch/inprocess/detail/inprocess-fermqcentry.html'
@@ -209,13 +222,14 @@ class FermQCEntriesView(BLUpdateView):
         batch_id = self.kwargs.get('pk')
         batch = Batch.objects.get(pk=batch_id)
         try:
-            fermQCEntries = BatchFermentationQC.objects.filter(batch=batch.id)
+            ferm_qc_entries = BatchFermentationQC.objects.filter(batch=batch.id)
         except BatchFermentationQC.DoesNotExist:
-            fermQCEntries = None
+            ferm_qc_entries = None
         context = super(FermQCEntriesView, self).get_context_data(**kwargs)
         context['batch'] = batch
-        context['fermqcentries'] = fermQCEntries
+        context['fermqcentries'] = ferm_qc_entries
         return context
+
 
 class AddFermQCEntryView(BLCreateView):
     model = BatchFermentationQC
@@ -236,6 +250,7 @@ class AddFermQCEntryView(BLCreateView):
         form.instance.batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
         return super(AddFermQCEntryView, self).form_valid(form)
 
+
 class UpdateFermQCEntryView(BLUpdateView):
     model = BatchFermentationQC
     template_name = 'ebs/batch/inprocess/detail/inprocess-add-subitem.html'
@@ -251,6 +266,7 @@ class UpdateFermQCEntryView(BLUpdateView):
         context['batch'] = batch
         return context
 
+
 class BatchDOEntriesView(BLUpdateView):
     model = Batch
     template_name = 'ebs/batch/inprocess/detail/inprocess-doentries.html'
@@ -264,13 +280,14 @@ class BatchDOEntriesView(BLUpdateView):
         batch_id = self.kwargs.get('pk')
         batch = Batch.objects.get(pk=batch_id)
         try:
-            doEntries = BatchDOEntry.objects.filter(batch=batch.id)
+            do_entries = BatchDOEntry.objects.filter(batch=batch.id)
         except BatchDOEntry.DoesNotExist:
-            doEntries = None
+            do_entries = None
         context = super(BatchDOEntriesView, self).get_context_data(**kwargs)
         context['batch'] = batch
-        context['doentries'] = doEntries
+        context['doentries'] = do_entries
         return context
+
 
 class AddBatchDOEntryView(BLCreateView):
     model = BatchDOEntry
@@ -291,6 +308,7 @@ class AddBatchDOEntryView(BLCreateView):
         form.instance.batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
         return super(AddBatchDOEntryView, self).form_valid(form)
 
+
 class UpdateBatchDOEntryView(BLUpdateView):
     model = BatchDOEntry
     template_name = 'ebs/batch/inprocess/detail/inprocess-add-subitem.html'
@@ -305,6 +323,7 @@ class UpdateBatchDOEntryView(BLUpdateView):
         context = super(UpdateBatchDOEntryView, self).get_context_data(**kwargs)
         context['batch'] = batch
         return context
+
 
 class CreateTransferView(BLCreateView):
     model = BatchTransfer
@@ -325,6 +344,7 @@ class CreateTransferView(BLCreateView):
         form.instance.batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
         return super(CreateTransferView, self).form_valid(form)
 
+
 class UpdateTransferView(BLUpdateView):
     model = BatchTransfer
     template_name = 'ebs/batch/inprocess/detail/inprocess-add-subitem.html'
@@ -344,6 +364,7 @@ class UpdateTransferView(BLUpdateView):
         form.instance.batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
         return super(UpdateTransferView, self).form_valid(form)
 
+
 class CreateCarbonationQCView(BLCreateView):
     model = CarbonationQCEntry
     template_name = 'ebs/batch/inprocess/detail/inprocess-add-subitem.html'
@@ -362,6 +383,7 @@ class CreateCarbonationQCView(BLCreateView):
     def form_valid(self, form):
         form.instance.batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
         return super(CreateCarbonationQCView, self).form_valid(form)
+
 
 class UpdateCarbonationQCView(BLUpdateView):
     model = CarbonationQCEntry
@@ -396,13 +418,14 @@ class CanningQCView(BLUpdateView):
         batch_id = self.kwargs.get('pk')
         batch = Batch.objects.get(pk=batch_id)
         try:
-            canQCEntries = CanningQC.objects.filter(batch=batch.id)
+            can_qc_entries = CanningQC.objects.filter(batch=batch.id)
         except BatchDOEntry.DoesNotExist:
-            canQCEntries = None
+            can_qc_entries = None
         context = super(CanningQCView, self).get_context_data(**kwargs)
         context['batch'] = batch
-        context['canqcentries'] = canQCEntries
+        context['canqcentries'] = can_qc_entries
         return context
+
 
 class AddCanningQCView(BLCreateView):
     model = CanningQC
@@ -422,6 +445,7 @@ class AddCanningQCView(BLCreateView):
     def form_valid(self, form):
         form.instance.batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
         return super(AddCanningQCView, self).form_valid(form)
+
 
 class UpdateCanningQCView(BLUpdateView):
     model = CanningQC
@@ -458,6 +482,7 @@ class CreatePackagingRunView(BLCreateView):
         form.instance.batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
         return super(CreatePackagingRunView, self).form_valid(form)
 
+
 class UpdatePackagingRunView(BLUpdateView):
     model = PackagingRun
     template_name = 'ebs/batch/inprocess/detail/inprocess-add-subitem.html'
@@ -476,3 +501,61 @@ class UpdatePackagingRunView(BLUpdateView):
     def form_valid(self, form):
         form.instance.batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
         return super(UpdatePackagingRunView, self).form_valid(form)
+
+
+class BatchNoteView(BLUpdateView):
+    model = Batch
+    template_name = 'ebs/batch/inprocess/detail/inprocess-batchnotes.html'
+    form_class = BatchNoteForm
+    context_object_name = 'batch'
+
+    def get_success_url(self):
+        return reverse_lazy('maintenance', kwargs={'pk': self.kwargs.get('pk')})
+
+    def get_context_data(self, **kwargs):
+        batch_id = self.kwargs.get('pk')
+        batch = Batch.objects.get(pk=batch_id)
+        try:
+            batch_notes = BatchNote.objects.filter(batch=batch.id)
+        except BatchNote.DoesNotExist:
+            batch_notes = None
+        context = super(BatchNoteView, self).get_context_data(**kwargs)
+        context['batch'] = batch
+        context['batchnotes'] = batch_notes
+        return context
+
+
+class AddBatchNoteView(BLCreateView):
+    model = BatchNote
+    template_name = 'ebs/batch/inprocess/detail/inprocess-add-subitem.html'
+    form_class = BatchNoteForm
+    context_object_name = 'current_batchnote'
+
+    def get_context_data(self, **kwargs):
+        batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
+        context = super(AddBatchNoteView, self).get_context_data(**kwargs)
+        context['batch'] = batch
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy('batchnotes', kwargs={'pk': self.kwargs.get('bpk')})
+
+    def form_valid(self, form):
+        form.instance.batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
+        return super(AddBatchNoteView, self).form_valid(form)
+
+
+class UpdateBatchNoteView(BLUpdateView):
+    model = BatchNote
+    template_name = 'ebs/batch/inprocess/detail/inprocess-add-subitem.html'
+    form_class = BatchNoteForm
+    context_object_name = 'current_batchnote'
+
+    def get_success_url(self):
+        return reverse_lazy('batchnotes', kwargs={'pk': self.kwargs.get('bpk')})
+
+    def get_context_data(self, **kwargs):
+        batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
+        context = super(UpdateBatchNoteView, self).get_context_data(**kwargs)
+        context['batch'] = batch
+        return context

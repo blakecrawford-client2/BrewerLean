@@ -21,7 +21,7 @@ from ebs.views.master_data_partners_views import PartnerTypesList
 from ebs.views.master_data_partners_views import PartnerTypeUpdateView,PartnerTypeCreateView
 
 urlpatterns = [
-    path('',TemplateView.as_view(template_name="ebs/index.html")),
+    path('',TemplateView.as_view(template_name="index.html")),
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     # path('partner-type/create', partner_type_create, name='partner_type_create'),

@@ -4,7 +4,6 @@ from django.views.generic import ListView
 from common.views.BLViews import BLCreateView, BLUpdateView
 from ebs.models.brew_sheets import Batch
 from ebs.models.brew_sheets import BatchPlanDates, BatchActualDates
-from ebs.models.brew_sheets import SchedulePattern
 from ebs.forms.batch_upcoming_forms import MakeUpcomingBatchForm
 from ebs.forms.batch_upcoming_forms import StartUpcomingBatchForm
 
@@ -17,6 +16,7 @@ class UpcomingBatchList(ListView):
     def get_queryset(self):
         return Batch.objects.filter(status='PL').order_by('plan_start_day')
 
+
 class UpcomingBatchCreateView(BLCreateView):
     model = Batch
     template_name = 'ebs/batch/upcoming-batch-create-or-update.html'
@@ -27,6 +27,7 @@ class UpcomingBatchCreateView(BLCreateView):
         form.fields['last_modified_by'] = self.request.user.id
         m = form.save(self)
         return HttpResponseRedirect(self.success_url)
+
 
 class UpcomingBatchUpdateView(BLUpdateView):
     model = Batch
@@ -39,6 +40,7 @@ class UpcomingBatchUpdateView(BLUpdateView):
         form.fields['last_modified_by'] = self.request.user.id
         m = form.save(self)
         return HttpResponseRedirect(self.success_url)
+
 
 class UpcomingBatchStartView(BLUpdateView):
     model = Batch
@@ -53,12 +55,12 @@ class UpcomingBatchStartView(BLUpdateView):
             instance.last_modified_by = self.request.user.id
             instance.save()
         spattern = form.cleaned_data['schedule_pattern']
-        self.calculatePlanDays(instance, spattern)
-        self.setActualStartDay(instance, spattern)
+        self.calculate_plan_days(instance, spattern)
+        self.set_actual_start_day(instance, spattern)
 
         return HttpResponseRedirect(self.success_url)
 
-    def calculatePlanDays(self, instance, spattern):
+    def calculate_plan_days(self, instance, spattern):
         start_date = datetime.today()
         plan_dates = BatchPlanDates.create(instance)
         plan_dates.brew_date = start_date
@@ -71,7 +73,7 @@ class UpcomingBatchStartView(BLUpdateView):
         plan_dates.save()
         return
 
-    def setActualStartDay(self, instance, spattern):
+    def set_actual_start_day(self, instance, spattern):
         act_dates = BatchActualDates.create(instance)
         act_dates.brew_date = datetime.today()
         act_dates.save()

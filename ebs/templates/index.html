@@ -1,17 +1,67 @@
 {% load socialaccount %}
+{% load static %}
+{% load bootstrap4 %}
+{% load widget_tweaks %}
 <html>
   <head>
-    <title>Google Registration</title>
+    <title>The Alementary Operations Platform!</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
+    <meta name=viewport content="width=device-width, initial-scale=1">
   </head>
   <body>
-  <h1>My Google Login Project</h1>
-  {% if user.is_authenticated %}
-  <p>Welcome, {{ user.username }} !</p>
-
-  {% else %}
-  <h1>My Google Login Project</h1>
-  <a href="{% provider_login_url 'google' %}">Login with Google</a>
-  {% endif %}
-
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+          <a class="navbar-brand" href="#">
+              <img src="/static/50x50-Atom.jpg" width="50" height="50">
+              BOP
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+              <ul class="navbar-nav">
+                  <li class="nav-item">
+                      <a class="nav-link active" aria-current="page" href="/">Home</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="/ebs/upcoming/">Upcoming</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="/ebs/inprocess/">In Process</a>
+                  </li>
+                  <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                         Ref. Data
+                      </a>
+                      <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                          <li><a class="dropdown-item" href="#">Partner Types</a></li>
+                          <li><a class="dropdown-item" href="#">Partners</a></li>
+                          <li><a class="dropdown-item" href="#">Tanks</a></li>
+                          <li><a class="dropdown-item" href="#">Products</a></li>
+                      </ul>
+                  </li>
+              </ul>
+          </div>
+      </nav>
+      <div class="container-fluid">
+          <div class="row no-gutters">
+              <div class="col-12 bg-light pl-2 pt-2">
+                  <h1>Welcome to the Alementary Brewery Operations Platform</h1>
+                  <h3>This is the place where you will do the things.</h3>
+              </div>
+              {% if user.is_authenticated %}
+              <div class="col">
+                  You are authenticated, please proceed with the things.
+              </div>
+              {% else %}
+              <div class="col">
+                  You are not authenticated, please  <a href="{% provider_login_url 'google' %}">login with your Alementary e-mail credentials.</a>
+              </div>
+              {% endif %}
+          </div>
+      </div>
   </body>
 </html>

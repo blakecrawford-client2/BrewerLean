@@ -1,0 +1,86 @@
+{% extends "ebs/base.html" %}
+{% load bootstrap4 %}
+{% load widget_tweaks %}
+{% block extrahead %}
+    {{ form.media }}
+{% endblock %}
+{% block title %}Batch Notes{% endblock %}
+{% block content %}
+    <div class="container-fluid px-2">
+        <div class="row no-gutters pt-3">
+            <div class="col-12 pb-2">
+                <span class="float-right">
+                    <a href="/ebs/inprocess/detail/{{ batch.id }}">
+                        <button type="button" class="btn btn-warning">
+                            <span class="material-icons">arrow_back_ios_new</span>
+                        </button>
+                    </a>
+                </span>
+            </div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col-2 text-right float-left border bg-light pr-1">Beer:</div>
+            <div class="col-10 border pl-1">{{ batch.batch_product.product_name }}</div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col-2 text-right float-left border bg-light pr-1">Partner:</div>
+            <div class="col-10 border pl-1">{{ batch.batch_product.ownership.partner_short_code }}</div>
+        </div>
+        {% if '/obeer' not in request.path %}
+        <div class="row no-gutters">
+            <div class="col-2 text-right float-left border bg-light pr-1">Number:</div>
+            {% if batch.obeer_batch is None %}
+                <div class="col-4 border pl-1">
+                    <button type="button" class="btn btn-primary btn-sm">Add</button>
+                </div>
+            {% else %}
+                <div class="col-4 border pl-1">{{ batch.obeer_batch }}</div>
+            {% endif %}
+            <div class="col-2 text-right border bg-light pr-1">MPN:</div>
+            {% if batch.obeer_batch is None %}
+                <div class="col-4 border pl-1">
+                    <button type="button" class="btn btn-primary btn-sm">Add</button>
+                </div>
+            {% else %}
+                <div class="col-4 border pl-1">{{ batch.obeer_mpn }}</div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <div class="row no-gutters">
+            <br/>
+            <div class="col-12 border pt-2 pl-1"><h4>Batch Notes</h4></div>
+        </div>
+
+        <div class="row no-gutters">
+            <div class="col-2 border bg-light pl-1">Date</div>
+            <div class="col-1 border bg-light pl-1">Type</div>
+            <div class="col-9 border bg-light pl-1">Note</div>
+        </div>
+        {% for note in batchnotes %}
+        <div class="row no-gutters">
+            <div class="col border pl-1">{{ note.last_modified_on }}</div>
+            <div class="col border pl-1">{{ note.note_type}}</div>
+            <div class="col border pl-1">{{ note.note }}</div>
+            <div class="col-2 border">
+                <a href="/ebs/inprocess/detail/{{ batch.pk }}/batchnote/update/{{ note.id }}">
+                    <button type="button" class="btn btn-primary btn-block">
+                        <span class="material-icons md-18">mode_edit</span>
+                    </button>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+        <div class="row no-gutters">
+            <div class="col-12 pt-2 pb-1">
+                <span class="float-right">
+                    <a href="/ebs/inprocess/detail/{{ batch.pk }}/batchnote/add/">
+                        <button type="button" class="btn btn-primary">
+                            <span class="material-icons">add</span>
+                        </button>
+                    </a>
+                </span>
+            </div>
+        </div>
+    </div>
+{% endblock %}

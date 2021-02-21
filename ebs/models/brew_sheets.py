@@ -1,10 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
-from datetime import datetime, timedelta
-
+from datetime import datetime
 from ebs.models.master_data_products import Product
 from ebs.models.master_data_facilities import Tank, Staff
 from ebs.models.master_data_rawmaterials import Material
+
 
 class SchedulePattern(models.Model):
     class Meta:
@@ -36,6 +36,7 @@ class SchedulePattern(models.Model):
     def __str__(self):
         return self.pattern_name
 
+
 class BatchSize(models.Model):
     class Meta:
         verbose_name_plural = 'Batch Sizes'
@@ -45,13 +46,16 @@ class BatchSize(models.Model):
     def __str__(self):
         return self.batch_size_name
 
+
 class Batch(models.Model):
-    TURN_CHOICES = ((1,1), (2,2), (3,3), (4,4))
-    DAY_CHOICES = ((1,1), (2,2), (3,3), (4,4))
+    TURN_CHOICES = ((1, 1), (2, 2), (3, 3), (4, 4))
+    DAY_CHOICES = ((1, 1), (2, 2), (3, 3), (4, 4))
+
     class BatchStatus(models.TextChoices):
         PLANNING = 'PL', 'Planning'
         INPROCESS = 'IP', 'In Process'
         ARCHIVE = 'AR', 'Archive'
+
     class Meta:
         verbose_name_plural = 'Batches'
 
@@ -129,6 +133,7 @@ class Batch(models.Model):
                           + '::NO BATCH'
         return return_name
 
+
 class BatchPlanDates(models.Model):
     class Meta:
         verbose_name_plural = 'Batch Plan Dates'
@@ -159,6 +164,7 @@ class BatchPlanDates(models.Model):
 
     def __str__(self):
         return self.brew_date.__str__()
+
 
 class BatchActualDates(models.Model):
     class Meta:
@@ -210,6 +216,7 @@ class BatchActualDates(models.Model):
                           + '::NO BATCH'
         return return_name
 
+
 class BatchRawMaterialsLog(models.Model):
     class Meta:
         verbose_name_plural = 'Batch Raw Materials Logs'
@@ -247,6 +254,7 @@ class BatchRawMaterialsLog(models.Model):
                           + '::' + self.material.material_name
         return return_name
 
+
 class BatchWortQC(models.Model):
     class Meta:
         verbose_name_plural = 'Batch Wort QC Data'
@@ -280,10 +288,10 @@ class BatchWortQC(models.Model):
                                         blank=True,
                                         verbose_name='Sparge Water Volume')
     volume_preboil = models.DecimalField(max_digits=3,
-                                          decimal_places=0,
-                                          null=True,
-                                          blank=True,
-                                          verbose_name='Pre-boil Volume')
+                                         decimal_places=0,
+                                         null=True,
+                                         blank=True,
+                                         verbose_name='Pre-boil Volume')
     volume_postboil = models.DecimalField(max_digits=3,
                                           decimal_places=0,
                                           null=True,
@@ -327,6 +335,7 @@ class BatchWortQC(models.Model):
                           + '::NO BATCH' \
                           + '::' + self.turn.__str__()
         return return_name
+
 
 class BatchYeastPitch(models.Model):
     class Meta:
@@ -377,6 +386,7 @@ class BatchYeastPitch(models.Model):
                           + '::NO BATCH' \
                           + '::' + self.yeast.material_name
         return return_name
+
 
 class BatchFermentationQC(models.Model):
     class Meta:
@@ -436,6 +446,7 @@ class BatchFermentationQC(models.Model):
                           + '::' + self.date.__str__()
         return return_name
 
+
 class BatchDOEntry(models.Model):
     class Meta:
         verbose_name_plural = 'Batch DO Entries'
@@ -481,6 +492,7 @@ class BatchDOEntry(models.Model):
                           + '::' + self.do_type
         return return_name
 
+
 class BatchTransfer(models.Model):
     class Meta:
         verbose_name_plural = 'Batch Transfers'
@@ -516,6 +528,7 @@ class BatchTransfer(models.Model):
                           + '::NO BATCH'
         return return_name
 
+
 class CarbonationQCEntry(models.Model):
     class Meta:
         verbose_name_plural = 'Carbonation QC Entries'
@@ -548,6 +561,7 @@ class CarbonationQCEntry(models.Model):
                           + '::' + self.batch.batch_product.product_name \
                           + '::NO BATCH'
         return return_name
+
 
 class PackagingRun(models.Model):
     class Meta:
@@ -592,11 +606,12 @@ class PackagingRun(models.Model):
                           + '::NO BATCH'
         return return_name
 
+
 class CanningQC(models.Model):
     class Meta:
         verbose_name_plural = 'Canning QC Data'
 
-    class canQCType(models.TextChoices):
+    class CanQCType(models.TextChoices):
         WEIGHT = 'WT', 'Weight'
         SEAM_HEIGHT = 'SH', 'Seam Height'
         SEAM_WIDTH = 'SW', 'Seam Width'
@@ -611,17 +626,55 @@ class CanningQC(models.Model):
                               verbose_name='Who')
     date = models.DateField(null=True,
                             verbose_name='Date')
-    type=models.CharField(null=True,
-                          max_length=2,
-                          verbose_name='Type',
-                          blank=True,
-                          choices=canQCType.choices,
-                          default=canQCType.WEIGHT)
+    type = models.CharField(null=True,
+                            max_length=2,
+                            verbose_name='Type',
+                            blank=True,
+                            choices=CanQCType.choices,
+                            default=CanQCType.WEIGHT)
     measurement = models.DecimalField(max_digits=7,
                                       decimal_places=4,
                                       null=True,
                                       blank=True,
                                       verbose_name='Measurement')
+    last_modified_on = models.DateField(auto_now=True)
+    last_modified_by = models.ForeignKey(User,
+                                         null=True,
+                                         on_delete=models.SET_NULL,
+                                         default=1)
+
+    def __str__(self):
+        if self.batch.obeer_batch is not None:
+            return_name = self.batch.batch_product.ownership.partner_name \
+                          + '::' + self.batch.batch_product.product_name \
+                          + '::' + self.batch.obeer_batch.__str__()
+        else:
+            return_name = self.batch.batch_product.ownership.partner_name \
+                          + '::' + self.batch.batch_product.product_name \
+                          + '::NO BATCH'
+        return return_name
+
+
+class BatchNote(models.Model):
+
+    class NoteType(models.TextChoices):
+        PRIVATE = 'PV', 'Private'
+        PUBLIC = 'PB', 'Public'
+        SEAM_WIDTH = 'SW', 'Seam Width'
+
+    class Meta:
+        verbose_name_plural = 'Batch Notes'
+
+    batch = models.ForeignKey(Batch, null=True, on_delete=models.SET_NULL)
+    note_type = models.CharField(null=True,
+                                 max_length=2,
+                                 verbose_name='Type',
+                                 blank=True,
+                                 choices=NoteType.choices,
+                                 default=NoteType.PRIVATE)
+    note = models.TextField(null=True,
+                            blank=True,
+                            max_length=500)
     last_modified_on = models.DateField(auto_now=True)
     last_modified_by = models.ForeignKey(User,
                                          null=True,

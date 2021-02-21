@@ -12,12 +12,15 @@ from ebs.models.brew_sheets import BatchTransfer
 from ebs.models.brew_sheets import CarbonationQCEntry
 from ebs.models.brew_sheets import PackagingRun
 from ebs.models.brew_sheets import CanningQC
+from ebs.models.brew_sheets import BatchNote
+
 
 class AddObeerDataForm(forms.ModelForm):
     class Meta:
         model = Batch
         fields = ['obeer_batch',
-                  'obeer_mpn',]
+                  'obeer_mpn', ]
+
 
 class AddRawMaterialsForm(forms.ModelForm):
     class Meta:
@@ -25,6 +28,7 @@ class AddRawMaterialsForm(forms.ModelForm):
         fields = ['material',
                   'material_lot',
                   'material_qty']
+
 
 class AddWortQCEntryForm(forms.ModelForm):
     class Meta:
@@ -44,6 +48,7 @@ class AddWortQCEntryForm(forms.ModelForm):
             'extract_postboil',
         ]
 
+
 class AddYeastPitchEntryForm(forms.ModelForm):
     class Meta:
         model = BatchYeastPitch
@@ -56,69 +61,92 @@ class AddYeastPitchEntryForm(forms.ModelForm):
             'yeast_pitch_turn'
         ]
 
+
 class UpdateActualDatesForm(forms.ModelForm):
     brew_date = forms.DateField(
         input_formats=['%d %b %Y'],
         widget=DatePickerInput(
             options={
-            "format":"DD MMM YYYY",
-            "showClose":True,
-            "showClear":True,
-            "showTodayButton":True,}))
+                "format": "DD MMM YYYY",
+                "showClose": True,
+                "showClear": True,
+                "showTodayButton": True,
+            }
+        )
+    )
     yeast_crash_date = forms.DateField(
         required=False,
         input_formats=['%d %b %Y'],
         widget=DatePickerInput(
             options={
-            "format":"DD MMM YYYY",
-            "showClose":True,
-            "showClear":True,
-            "showTodayButton":True,}))
+                "format": "DD MMM YYYY",
+                "showClose": True,
+                "showClear": True,
+                "showTodayButton": True,
+            }
+        )
+    )
     yeast_harvest_date = forms.DateField(
         required=False,
         input_formats=['%d %b %Y'],
         widget=DatePickerInput(
             options={
-            "format":"DD MMM YYYY",
-            "showClose":True,
-            "showClear":True,
-            "showTodayButton":True,}))
+                "format": "DD MMM YYYY",
+                "showClose": True,
+                "showClear": True,
+                "showTodayButton": True,
+            }
+        )
+    )
     dryhop_date = forms.DateField(
         required=False,
         input_formats=['%d %b %Y'],
         widget=DatePickerInput(
             options={
-            "format":"DD MMM YYYY",
-            "showClose":True,
-            "showClear":True,
-            "showTodayButton":True,}))
+                "format": "DD MMM YYYY",
+                "showClose": True,
+                "showClear": True,
+                "showTodayButton": True,
+            }
+        )
+    )
     final_crash_date = forms.DateField(
         required=False,
         input_formats=['%d %b %Y'],
         widget=DatePickerInput(
             options={
-            "format":"DD MMM YYYY",
-            "showClose":True,
-            "showClear":True,
-            "showTodayButton":True,}))
+                "format": "DD MMM YYYY",
+                "showClose": True,
+                "showClear": True,
+                "showTodayButton": True,
+            }
+        )
+    )
     transfer_date = forms.DateField(
         required=False,
         input_formats=['%d %b %Y'],
         widget=DatePickerInput(
             options={
-            "format":"DD MMM YYYY",
-            "showClose":True,
-            "showClear":True,
-            "showTodayButton":True,}))
+                "format": "DD MMM YYYY",
+                "showClose": True,
+                "showClear": True,
+                "showTodayButton": True,
+            }
+        )
+    )
     package_date = forms.DateField(
         required=False,
         input_formats=['%d %b %Y'],
         widget=DatePickerInput(
             options={
-            "format":"DD MMM YYYY",
-            "showClose":True,
-            "showClear":True,
-            "showTodayButton":True,}))
+                "format": "DD MMM YYYY",
+                "showClose": True,
+                "showClear": True,
+                "showTodayButton": True,
+            }
+        )
+    )
+
     class Meta:
         model = BatchActualDates
         fields = [
@@ -138,10 +166,14 @@ class BatchFermentationQCForm(forms.ModelForm):
         input_formats=['%d %b %Y'],
         widget=DatePickerInput(
             options={
-            "format":"DD MMM YYYY",
-            "showClose":True,
-            "showClear":True,
-            "showTodayButton":True,}))
+                "format": "DD MMM YYYY",
+                "showClose": True,
+                "showClear": True,
+                "showTodayButton": True,
+            }
+        )
+    )
+
     class Meta:
         model = BatchFermentationQC
         fields = [
@@ -154,26 +186,28 @@ class BatchFermentationQCForm(forms.ModelForm):
             'temp_pv'
         ]
 
+
 class BatchDOEntryForm(forms.ModelForm):
     date = forms.DateField(
         required=False,
         input_formats=['%d %b %Y'],
         widget=DatePickerInput(
             options={
-                "format":"DD MMM YYYY",
-                "showClose":True,
-                "showClear":True,
-                "showTodayButton":True,
+                "format": "DD MMM YYYY",
+                "showClose": True,
+                "showClear": True,
+                "showTodayButton": True,
             }
         )
     )
 
     class Meta:
-        model=BatchDOEntry
+        model = BatchDOEntry
         fields = ['staff',
                   'date',
                   'do_type',
                   'do_measurement']
+
 
 class BatchTransferForm(forms.ModelForm):
     date = forms.DateField(
@@ -181,13 +215,14 @@ class BatchTransferForm(forms.ModelForm):
         input_formats=['%d %b %Y'],
         widget=DatePickerInput(
             options={
-                "format":"DD MMM YYYY",
-                "showClose":True,
-                "showClear":True,
-                "showTodayButton":True,
+                "format": "DD MMM YYYY",
+                "showClose": True,
+                "showClear": True,
+                "showTodayButton": True,
             }
         )
     )
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['to_tank'].queryset = Tank.objects.filter(tank_type='BT').order_by('tank_name')
@@ -199,24 +234,27 @@ class BatchTransferForm(forms.ModelForm):
                   'volume_transfer_approx',
                   'to_tank']
 
+
 class CarbonationQCEntryForm(forms.ModelForm):
     date = forms.DateField(
         required=False,
         input_formats=['%d %b %Y'],
         widget=DatePickerInput(
             options={
-                "format":"DD MMM YYYY",
-                "showClose":True,
-                "showClear":True,
-                "showTodayButton":True,
+                "format": "DD MMM YYYY",
+                "showClose": True,
+                "showClear": True,
+                "showTodayButton": True,
             }
         )
     )
+
     class Meta:
         model = CarbonationQCEntry
         fields = ['staff',
                   'date',
                   'carb_vols_brite']
+
 
 class PackagingRunForm(forms.ModelForm):
     date = forms.DateField(
@@ -224,13 +262,14 @@ class PackagingRunForm(forms.ModelForm):
         input_formats=['%d %b %Y'],
         widget=DatePickerInput(
             options={
-                "format":"DD MMM YYYY",
-                "showClose":True,
-                "showClear":True,
-                "showTodayButton":True,
+                "format": "DD MMM YYYY",
+                "showClose": True,
+                "showClear": True,
+                "showTodayButton": True,
             }
         )
     )
+
     class Meta:
         model = PackagingRun
         fields = ['staff',
@@ -241,22 +280,32 @@ class PackagingRunForm(forms.ModelForm):
                   'filled_cases',
                   'skids_cases']
 
+
 class CanningQCForm(forms.ModelForm):
     date = forms.DateField(
         required=False,
         input_formats=['%d %b %Y'],
         widget=DatePickerInput(
             options={
-                "format":"DD MMM YYYY",
-                "showClose":True,
-                "showClear":True,
-                "showTodayButton":True,
+                "format": "DD MMM YYYY",
+                "showClose": True,
+                "showClear": True,
+                "showTodayButton": True,
             }
         )
     )
+
     class Meta:
         model = CanningQC
         fields = ['staff',
                   'date',
                   'type',
                   'measurement']
+
+
+class BatchNoteForm(forms.ModelForm):
+
+    class Meta:
+        model = BatchNote
+        fields = ['note_type',
+                  'note']

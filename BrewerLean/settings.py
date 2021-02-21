@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    #'ebs.apps.EbsConfig',
     'ebs',
     'allauth',
     'allauth.account',
@@ -67,8 +66,7 @@ ROOT_URLCONF = 'BrewerLean.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -104,12 +102,10 @@ else:
             'NAME': 'ebs',
             'USER': 'ebs',
             'PASSWORD': '',
-            'HOST': '',
+            'HOST': '127.0.0.1',
             'PORT': '5432',
         }
     }
-
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -155,8 +151,6 @@ else:
     STATIC_ROOT = '/home/ebs/ebs'
 STATIC_URL = '/static/'
 
-
-
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
@@ -177,7 +171,5 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 BOOTSTRAP4 = {
-    'include_jquery':True,
+    'include_jquery': True,
 }
-
-#DATE_INPUT_FORMATS = ('%b %d %Y',)

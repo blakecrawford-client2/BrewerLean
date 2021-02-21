@@ -1,9 +1,4 @@
-from django.contrib import admin
-from django.urls import path,include
-from django.views.generic import TemplateView
-from ebs.views import *
-from ebs.views.master_data_partners_views import PartnerTypesList
-from ebs.views.master_data_partners_views import PartnerTypeUpdateView,PartnerTypeCreateView
+from django.urls import path
 from ebs.views.batch_upcoming_views import UpcomingBatchList, \
     UpcomingBatchCreateView, \
     UpcomingBatchUpdateView, \
@@ -36,11 +31,11 @@ from ebs.views.batch_inprocess_detail_views import AddCanningQCView
 from ebs.views.batch_inprocess_detail_views import UpdateCanningQCView
 from ebs.views.batch_inprocess_detail_views import CreatePackagingRunView
 from ebs.views.batch_inprocess_detail_views import UpdatePackagingRunView
+from ebs.views.batch_inprocess_detail_views import BatchNoteView
+from ebs.views.batch_inprocess_detail_views import AddBatchNoteView
+from ebs.views.batch_inprocess_detail_views import UpdateBatchNoteView
 
 urlpatterns = [
-    #path('', PartnerTypesList.as_view()),
-    #path('create', PartnerTypeCreateView.as_view()),
-    #path('update/<int:pk>', PartnerTypeUpdateView.as_view()),
     path('upcoming/', UpcomingBatchList.as_view()),
     path('upcoming/create/', UpcomingBatchCreateView.as_view()),
     path('upcoming/update/<int:pk>', UpcomingBatchUpdateView.as_view()),
@@ -73,5 +68,7 @@ urlpatterns = [
     path('inprocess/detail/<int:bpk>/canqc/update/<int:pk>', UpdateCanningQCView.as_view()),
     path('inprocess/detail/<int:bpk>/package/', CreatePackagingRunView.as_view()),
     path('inprocess/detail/<int:bpk>/package/update/<int:pk>', UpdatePackagingRunView.as_view()),
-
+    path('inprocess/detail/<int:pk>/batchnote/', BatchNoteView.as_view()),
+    path('inprocess/detail/<int:bpk>/batchnote/add/', AddBatchNoteView.as_view()),
+    path('inprocess/detail/<int:bpk>/batchnote/update/<int:pk>', UpdateBatchNoteView.as_view()),
 ]

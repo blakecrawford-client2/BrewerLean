@@ -7,11 +7,16 @@ class MakeUpcomingBatchForm(forms.ModelForm):
     plan_start_day = forms.DateField(
         input_formats=['%d %b %Y'],
         widget=DatePickerInput(
+            attrs={'readonly':'readonly'},
             options={
-            "format":"DD MMM YYYY",
-            "showClose":True,
-            "showClear":True,
-            "showTodayButton":True,}))
+                "ignoreReadonly": True,
+                "format":"DD MMM YYYY",
+                "showClose":True,
+                "showClear":True,
+                "showTodayButton":True,
+            }
+        )
+    )
     class Meta:
         model = Batch
         fields = ['batch_product', 'schedule_pattern', 'plan_start_day']
