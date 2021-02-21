@@ -55,14 +55,15 @@
         <div class="row no-gutters">
             <div class="col-2 border bg-light pl-1">Date</div>
             <div class="col-1 border bg-light pl-1">Type</div>
-            <div class="col-9 border bg-light pl-1">Note</div>
+            <div class="col-8 border bg-light pl-1">Note</div>
+            <div class="col-1 border bg-light pl-1"></div>
         </div>
         {% for note in batchnotes %}
         <div class="row no-gutters">
-            <div class="col border pl-1">{{ note.last_modified_on }}</div>
-            <div class="col border pl-1">{{ note.note_type}}</div>
-            <div class="col border pl-1">{{ note.note }}</div>
-            <div class="col-2 border">
+            <div class="col-2 border pl-1 pr-1">{{ note.last_modified_on }}</div>
+            <div class="col-1 border pl-1 pr-1">{{ note.note_type}}</div>
+            <div class="col-8 border pl-1 pr-1">{{ note.note }}</div>
+            <div class="col-1 border">
                 <a href="/ebs/inprocess/detail/{{ batch.pk }}/batchnote/update/{{ note.id }}">
                     <button type="button" class="btn btn-primary btn-block">
                         <span class="material-icons md-18">mode_edit</span>

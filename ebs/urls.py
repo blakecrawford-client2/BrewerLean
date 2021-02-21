@@ -68,7 +68,7 @@ urlpatterns = [
     path('inprocess/detail/<int:bpk>/canqc/update/<int:pk>', UpdateCanningQCView.as_view()),
     path('inprocess/detail/<int:bpk>/package/', CreatePackagingRunView.as_view()),
     path('inprocess/detail/<int:bpk>/package/update/<int:pk>', UpdatePackagingRunView.as_view()),
-    path('inprocess/detail/<int:pk>/batchnote/', BatchNoteView.as_view()),
+    path('inprocess/detail/<int:pk>/batchnote/', BatchNoteView.as_view(), name='batchnotes'),
     path('inprocess/detail/<int:bpk>/batchnote/add/', AddBatchNoteView.as_view()),
     path('inprocess/detail/<int:bpk>/batchnote/update/<int:pk>', UpdateBatchNoteView.as_view()),
 ]
