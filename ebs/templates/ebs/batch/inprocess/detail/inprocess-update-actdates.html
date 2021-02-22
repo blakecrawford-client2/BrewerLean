@@ -6,18 +6,51 @@
 {% endblock %}
 {% block title %}Add Subitem{% endblock %}
 {% block content %}
-<div class="container-fluid px-2">
-    <div class="row no-gutters pt-3">
-        <div class="col-12 pb-2">
-            <span class="float-right">
-                <a href="{{ request.META.HTTP_REFERER }}">
-                    <button type="button" class="btn btn-warning">
-                        <span class="material-icons">arrow_back_ios_new</span>
-                    </button>
-                </a>
-            </span>
+    <div class="container-fluid float-left px-2">
+        <div class="row no-gutters pt-3">
+            <div class="col-12 pb-2">
+                <span class="float-right">
+                    <a href="/ebs/inprocess/detail/{{ batch.id }}">
+                        <button type="button" class="btn btn-warning">
+                            <span class="material-icons">arrow_back_ios_new</span>
+                        </button>
+                    </a>
+                </span>
+            </div>
         </div>
-    </div>
+        <div class="row no-gutters">
+            <div class="col-2 text-right float-left border bg-light pr-1">Beer:</div>
+            <div class="col-10 border pl-1">{{ batch.batch_product.product_name }}</div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col-2 text-right float-left border bg-light pr-1">Partner:</div>
+            <div class="col-10 border pl-1">{{ batch.batch_product.ownership.partner_short_code }}</div>
+        </div>
+        {% if '/obeer' not in request.path %}
+        <div class="row no-gutters">
+            <div class="col-2 text-right float-left border bg-light pr-1">Number:</div>
+            {% if batch.obeer_batch is None %}
+                <div class="col-4 border pl-1">
+                    <button type="button" class="btn btn-primary btn-sm">Add</button>
+                </div>
+            {% else %}
+                <div class="col-4 border pl-1">{{ batch.obeer_batch }}</div>
+            {% endif %}
+            <div class="col-2 text-right border bg-light pr-1">MPN:</div>
+            {% if batch.obeer_batch is None %}
+                <div class="col-4 border pl-1">
+                    <button type="button" class="btn btn-primary btn-sm">Add</button>
+                </div>
+            {% else %}
+                <div class="col-4 border pl-1">{{ batch.obeer_mpn }}</div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <div class="row no-gutters">
+            <br/>
+            <div class="col-12 border pt-2 pl-1"><h4>Batch Dates</h4></div>
+        </div>
     <form method="POST">
         {% csrf_token %}
         {%  if form.non_field_errors %}
@@ -115,7 +148,7 @@
                 {{ form.package_date }}
             </div>
         </div>
-        <div class="row no-gutters float-right pt-2">
+        <div class="row no-gutters float-right pt-2 pb-5">
             <div class="col-12">
             <button type="submit" class="btn btn-primary">Submit</button>
             </div>

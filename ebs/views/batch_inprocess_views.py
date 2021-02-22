@@ -1,6 +1,6 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, TemplateView
 from common.views.BLViews import BLCreateView, BLUpdateView
-from ebs.models.master_data_products import Product
 from ebs.models.brew_sheets import Batch
 from ebs.models.brew_sheets import BatchPlanDates
 from ebs.models.brew_sheets import BatchActualDates
@@ -11,7 +11,7 @@ from ebs.models.brew_sheets import CarbonationQCEntry
 from ebs.models.brew_sheets import PackagingRun
 from ebs.forms.batch_upcoming_forms import MakeUpcomingBatchForm
 
-class InprocessBatchList(ListView):
+class InprocessBatchList(LoginRequiredMixin, ListView):
     model = Batch
     template_name = 'ebs/batch/inprocess-batch-list.html'
     context_object_name = 'inprocess_batch_list'
@@ -19,21 +19,21 @@ class InprocessBatchList(ListView):
     def get_queryset(self):
         return Batch.objects.filter(status='IP')
 
-class InprocessBatchCreateView(BLCreateView):
+class InprocessBatchCreateView(LoginRequiredMixin, BLCreateView):
     model = Batch
     template_name = 'ebs/batch/inprocess-batch-create-or-update.html'
     form_class = MakeUpcomingBatchForm
     success_url = '/inprocess-batch-list/'
     context_object_name = 'inprocess_batch_list'
 
-class InprocessBatchUpdateView(BLUpdateView):
+class InprocessBatchUpdateView(LoginRequiredMixin, BLUpdateView):
     model = Batch
     template_name = "ebs/inprocess-batch-create-or-update.html"
     form_class = MakeUpcomingBatchForm
     success_url = '/inprocess-batch-list/'
     context_object_name = 'inprocess_batch_list'
 
-class InprocessBatchDetailView(TemplateView):
+class InprocessBatchDetailView(LoginRequiredMixin, TemplateView):
     template_name = "ebs/batch/inprocess/inprocess-beer-main.html"
 
     def get_context_data(self, **kwargs):

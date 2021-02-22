@@ -14,7 +14,11 @@ admin.site.register(Partner)
 admin.site.register(Facility)
 admin.site.register(Tank)
 admin.site.register(Originator)
-admin.site.register(Material)
+#admin.site.register(Material)
+@admin.register(Material)
+class MaterialAdmin(admin.ModelAdmin):
+    list_display = ('material_name', 'material_type', 'material_origin')
+
 admin.site.register(SchedulePattern)
 admin.site.register(BatchSize)
 admin.site.register(Batch)

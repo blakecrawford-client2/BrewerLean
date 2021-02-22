@@ -1,4 +1,5 @@
 from django.http import HttpResponseRedirect
+from django.contrib.auth.mixins import LoginRequiredMixin
 from datetime import datetime, timedelta
 from django.views.generic import ListView
 from common.views.BLViews import BLCreateView, BLUpdateView
@@ -8,7 +9,7 @@ from ebs.forms.batch_upcoming_forms import MakeUpcomingBatchForm
 from ebs.forms.batch_upcoming_forms import StartUpcomingBatchForm
 
 
-class UpcomingBatchList(ListView):
+class UpcomingBatchList(LoginRequiredMixin, ListView):
     model = Batch
     template_name = 'ebs/batch/upcoming-batch-list.html'
     context_object_name = 'upcoming_batch_list'
@@ -17,7 +18,7 @@ class UpcomingBatchList(ListView):
         return Batch.objects.filter(status='PL').order_by('plan_start_day')
 
 
-class UpcomingBatchCreateView(BLCreateView):
+class UpcomingBatchCreateView(LoginRequiredMixin, BLCreateView):
     model = Batch
     template_name = 'ebs/batch/upcoming-batch-create-or-update.html'
     form_class = MakeUpcomingBatchForm
@@ -29,7 +30,7 @@ class UpcomingBatchCreateView(BLCreateView):
         return HttpResponseRedirect(self.success_url)
 
 
-class UpcomingBatchUpdateView(BLUpdateView):
+class UpcomingBatchUpdateView(LoginRequiredMixin, BLUpdateView):
     model = Batch
     template_name = "ebs/batch/upcoming-batch-create-or-update.html"
     form_class = MakeUpcomingBatchForm
@@ -42,7 +43,7 @@ class UpcomingBatchUpdateView(BLUpdateView):
         return HttpResponseRedirect(self.success_url)
 
 
-class UpcomingBatchStartView(BLUpdateView):
+class UpcomingBatchStartView(LoginRequiredMixin, BLUpdateView):
     model = Batch
     template_name = "ebs/batch/upcoming-batch-start.html"
     form_class = StartUpcomingBatchForm
