@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'bootstrap4',
     'widget_tweaks',
     'bootstrap_datepicker_plus',
+    'reset_migrations',
 ]
 
 MIDDLEWARE = [
