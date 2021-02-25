@@ -28,6 +28,17 @@ class BatchWortProductionRecord(DetailView):
         return context
 
 
+class BatchRawMaterialsRecord(DetailView):
+    model = Batch
+    context_object_name = 'batch'
+    template_name = 'ebs/batch/reports/batch-raw-materials-record.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        batch_id = self.kwargs.get('pk')
+        context['materials'] = BatchRawMaterialsLog.objects.filter(batch=batch_id)
+        return context
+
 class OldSchoolBrewSheet(DetailView):
     model = Batch
     context_object_name = 'batch'

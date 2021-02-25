@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+from os import environ
+import environ
+
+env=environ.Env();
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'o6!exa^9fhz=9b45d4j22lo4tjn+5=$n5r2_munpj03p7dj1af'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool('EBS_DEBUG', default=True)
 
 if DEBUG is True:
     ALLOWED_HOSTS = []
@@ -32,7 +36,6 @@ else:
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -100,9 +103,9 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'ebs',
-            'USER': 'ebs',
-            'PASSWORD': '',
+            'NAME': env.str('EBS_DB', default='EBS'),
+            'USER': env.str('EBS_USER', default='ebs'),
+            'PASSWORD': env.str('EBS_PW', default='brewerlean'),
             'HOST': '127.0.0.1',
             'PORT': '5432',
         }
@@ -157,7 +160,10 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-SITE_ID = 2
+if DEBUG is True:
+    SITE_ID = 2
+else:
+    SITE_ID = 3
 LOGIN_REDIRECT_URL = "/"
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
