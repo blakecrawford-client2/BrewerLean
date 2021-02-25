@@ -11,10 +11,10 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
-from os import environ
 import environ
 
-env=environ.Env();
+env=environ.Env(DJANGO_DEBUG=(bool, True));
+environ.Env.read_env();
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'o6!exa^9fhz=9b45d4j22lo4tjn+5=$n5r2_munpj03p7dj1af'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env.bool('EBS_DEBUG', default=True)
+DEBUG = env('DJANGO_DEBUG')
 
 if DEBUG is True:
     ALLOWED_HOSTS = []
