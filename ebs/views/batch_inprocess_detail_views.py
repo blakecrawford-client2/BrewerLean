@@ -32,7 +32,7 @@ class AddObeerDataView(LoginRequiredMixin, BLUpdateView):
     model = Batch
     template_name = 'ebs/batch/inprocess/detail/inprocess-add-subitem.html'
     form_class = AddObeerDataForm
-    context_object_name = 'current_batch'
+    context_object_name = 'batch'
 
     def get_success_url(self):
         return reverse('maintenance', kwargs={'pk': self.kwargs['pk']})
