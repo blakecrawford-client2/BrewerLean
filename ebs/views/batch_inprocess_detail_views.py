@@ -28,7 +28,7 @@ from ebs.forms.batch_maintenance_detail_forms import PackagingRunForm
 from ebs.forms.batch_maintenance_detail_forms import BatchNoteForm
 
 
-class AddObeerDataView(LoginRequiredMixin, BLUpdateView):
+class AddObeerDataView(LoginRequiredMixin, BLCreateView):
     model = Batch
     template_name = 'ebs/batch/inprocess/detail/inprocess-add-subitem.html'
     form_class = AddObeerDataForm
