@@ -50,10 +50,10 @@ class UpcomingBatchStartView(LoginRequiredMixin, BLUpdateView):
     success_url = '/ebs/inprocess/'
 
     def form_valid(self, form):
+        form.fields['last_modified_by'] = self.request.user.id
         if form.is_valid():
             instance = form.save(commit=False)
             instance.status = 'IP'
-            instance.last_modified_by = self.request.user.id
             instance.save()
         spattern = form.cleaned_data['schedule_pattern']
         self.calculate_plan_days(instance, spattern)

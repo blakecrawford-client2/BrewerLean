@@ -16,7 +16,7 @@
         </div>
         {% for x in upcoming_batch_list %}
             <div class="row no-gutters pt-2">
-                <div class="col-3">{{ x.plan_start_day|date:"d M Y" }}</div>
+                <div class="col-3">{{ x.plan_start_day|date:"d M" }}</div>
                 <div class="col-1">{{x.batch_product.ownership.partner_short_code}}</div>
                 <div class="col-5">{{ x.batch_product.product_name }}</div>
                 <div class="col-1">
