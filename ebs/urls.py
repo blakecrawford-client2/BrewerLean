@@ -47,7 +47,7 @@ urlpatterns = [
     path('inprocess/', InprocessBatchList.as_view()),
     path('inprocess/create/', InprocessBatchCreateView.as_view()),
     path('inprocess/detail/<int:pk>', InprocessBatchDetailView.as_view(), name='maintenance'),
-    path('inprocess/detail/<int:pk>/obeer/', AddObeerDataView.as_view()),
+    path('inprocess/detail/<int:bpk>/obeer/', AddObeerDataView.as_view()),
     path('inprocess/detail/<int:pk>/rawmaterials/', RawMaterialsLogView.as_view(), name='rawmaterials'),
     path('inprocess/detail/<int:bpk>/rawmaterials/add/', AddRawMaterialsLogView.as_view()),
     path('inprocess/detail/<int:bpk>/rawmaterials/update/<int:pk>', UpdateRawMaterialsLogView.as_view()),
