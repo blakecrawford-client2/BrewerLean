@@ -35,7 +35,7 @@ class AddObeerDataView(LoginRequiredMixin, BLUpdateView):
     context_object_name = 'batch'
 
     def get_success_url(self):
-        return reverse('maintenance', kwargs={'pk': self.kwargs['pk']})
+        return reverse('maintenance', kwargs={'pk': self.kwargs['bpk']})
 
     def get_context_data(self, **kwargs):
         batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
