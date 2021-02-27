@@ -1,6 +1,7 @@
 from django import forms
 from bootstrap_datepicker_plus import DatePickerInput
 from ebs.models.master_data_facilities import Tank
+from ebs.models.master_data_rawmaterials import Material
 from ebs.models.brew_sheets import Batch
 from ebs.models.brew_sheets import BatchRawMaterialsLog
 from ebs.models.brew_sheets import BatchWortQC
@@ -15,6 +16,7 @@ from ebs.models.brew_sheets import CanningQC
 from ebs.models.brew_sheets import BatchNote
 
 
+
 class AddObeerDataForm(forms.ModelForm):
     class Meta:
         model = Batch
@@ -23,6 +25,7 @@ class AddObeerDataForm(forms.ModelForm):
 
 
 class AddRawMaterialsForm(forms.ModelForm):
+    material = forms.ModelChoiceField(queryset=Material.objects.order_by('material_type', 'material_name'))
     class Meta:
         model = BatchRawMaterialsLog
         fields = ['material',
@@ -179,9 +182,8 @@ class BatchFermentationQCForm(forms.ModelForm):
         fields = [
             'staff',
             'date',
-            'extract_apparent',
             'extract_real',
-            'sg_real_calculated',
+            'ph',
             'temp_sv',
             'temp_pv'
         ]

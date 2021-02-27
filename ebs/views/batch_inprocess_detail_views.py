@@ -28,17 +28,17 @@ from ebs.forms.batch_maintenance_detail_forms import PackagingRunForm
 from ebs.forms.batch_maintenance_detail_forms import BatchNoteForm
 
 
-class AddObeerDataView(LoginRequiredMixin, BLCreateView):
+class AddObeerDataView(LoginRequiredMixin, BLUpdateView):
     model = Batch
     template_name = 'ebs/batch/inprocess/detail/inprocess-add-subitem.html'
     form_class = AddObeerDataForm
     context_object_name = 'batch'
 
     def get_success_url(self):
-        return reverse('maintenance', kwargs={'pk': self.kwargs['bpk']})
+        return reverse('maintenance', kwargs={'pk': self.kwargs['pk']})
 
     def get_context_data(self, **kwargs):
-        batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
+        batch = Batch.objects.get(pk=self.kwargs.get('pk'))
         context = super(AddObeerDataView, self).get_context_data(**kwargs)
         context['batch'] = batch
         context['name'] = 'OBeer Data'

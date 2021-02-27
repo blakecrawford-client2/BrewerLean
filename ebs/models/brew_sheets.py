@@ -272,8 +272,8 @@ class BatchWortQC(models.Model):
                                     null=True,
                                     blank=True,
                                     verbose_name='Mash Temp')
-    ph_mash = models.DecimalField(max_digits=2,
-                                  decimal_places=1,
+    ph_mash = models.DecimalField(max_digits=3,
+                                  decimal_places=2,
                                   null=True,
                                   blank=True,
                                   verbose_name='Mash pH')
