@@ -163,7 +163,7 @@ AUTHENTICATION_BACKENDS = (
 if DEBUG is True:
     SITE_ID = 2
 else:
-    SITE_ID = env.int('EBS_SITE_ID', default='3')
+    SITE_ID = env.int('EBS_SITE_ID', default='4')
 
 LOGIN_REDIRECT_URL = "/"
 SOCIALACCOUNT_PROVIDERS = {
