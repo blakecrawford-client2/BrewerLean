@@ -281,7 +281,7 @@ class BatchWortQC(models.Model):
                                         decimal_places=0,
                                         null=True,
                                         blank=True,
-                                        verbose_name='Stike Water Volume')
+                                        verbose_name='Strike Water Volume')
     volume_sparge = models.DecimalField(max_digits=3,
                                         decimal_places=0,
                                         null=True,
