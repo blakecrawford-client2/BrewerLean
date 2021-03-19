@@ -65,14 +65,14 @@
             <div class="col border bg-light pl-1">Grain</div>
             <div class="col border bg-light pl-1">Lot</div>
             <div class="col border bg-light pl-1">Qty</div>
-            <div class="col-1 border bg-light pl-1"></div>
+            <div class="col-2 border bg-light pl-1"></div>
         </div>
         {% for g in grain %}
         <div class="row no-gutters">
             <div class="col border pl-1">{{ g.material.material_name }}</div>
             <div class="col border pl-1">{{ g.material_lot }}</div>
             <div class="col border pl-1">{{ g.material_qty }}</div>
-            <div class="col-1 border">
+            <div class="col-2 border">
                 <a href="/ebs/inprocess/detail/{{ current_batch.pk }}/rawmaterials/update/{{ g.id }}">
                     <button type="button" class="btn btn-primary btn-block btn-sm">
                         <span class="material-icons md-18">mode_edit</span>
@@ -86,14 +86,14 @@
             <div class="col border bg-light pl-1">Hops</div>
             <div class="col border bg-light pl-1">Lot</div>
             <div class="col border bg-light pl-1">Qty</div>
-            <div class="col-1 border bg-light pl-1"></div>
+            <div class="col-2 border bg-light pl-1"></div>
         </div>
         {% for h in hops %}
         <div class="row no-gutters">
             <div class="col border pl-1">{{ h.material.material_name }}</div>
             <div class="col border pl-1">{{ h.material_lot }}</div>
             <div class="col border pl-1">{{ h.material_qty }}</div>
-            <div class="col-1 border">
+            <div class="col-2 border">
                 <a href="/ebs/inprocess/detail/{{ current_batch.pk }}/rawmaterials/update/{{ h.id }}">
                     <button type="button" class="btn btn-primary btn-block btn-sm">
                         <span class="material-icons md-18">mode_edit</span>
@@ -107,14 +107,14 @@
             <div class="col border bg-light pl-1">Other Stuff</div>
             <div class="col border bg-light pl-1">Lot</div>
             <div class="col border bg-light pl-1">Qty</div>
-            <div class="col-1 border bg-light pl-1"></div>
+            <div class="col-2 border bg-light pl-1"></div>
         </div>
         {% for o in other %}
         <div class="row no-gutters">
             <div class="col border pl-1">{{ o.material.material_name }}</div>
             <div class="col border pl-1">{{ o.material_lot }}</div>
             <div class="col border pl-1">{{ o.material_qty }}</div>
-            <div class="col-1 border">
+            <div class="col-2 border">
                 <a href="/ebs/inprocess/detail/{{ current_batch.pk }}/rawmaterials/update/{{ o.id }}">
                     <button type="button" class="btn btn-primary btn-block btn-sm">
                         <span class="material-icons md-18">mode_edit</span>

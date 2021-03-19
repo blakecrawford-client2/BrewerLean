@@ -54,7 +54,7 @@
 
         <div class="row no-gutters">
             <div class="col border bg-light pl-1">Turn</div>
-            <div class="col border bg-light pl-1">Brewer</div>
+            <div class="col-4 border bg-light pl-1">Brewer</div>
             <div class="col-2 border bg-light pl-1"></div>
         </div>
         {% for wqc in wortqcentries %}
@@ -90,7 +90,7 @@
                     {% endif %}
                 </ul>
             </div>
-            <div class="col border pl-1">{{ wqc.brewer.name }}</div>
+            <div class="col-4 border pl-1">{{ wqc.brewer.name }}</div>
             <div class="col-2 border">
                 <a href="/ebs/inprocess/detail/{{ batch.pk }}/wortqc/update/{{ wqc.id }}">
                     <button type="button" class="btn btn-primary btn-block">
