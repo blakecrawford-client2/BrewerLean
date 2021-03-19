@@ -16,6 +16,12 @@ from ebs.models.brew_sheets import CanningQC
 from ebs.models.brew_sheets import BatchNote
 
 
+class ChangeFVForm(forms.ModelForm):
+    target_fv = forms.ModelChoiceField(queryset=Tank.objects.filter(tank_type='FV').order_by('tank_name'))
+    class Meta:
+        model = Batch
+        fields = ['target_fv']
+
 
 class AddObeerDataForm(forms.ModelForm):
     class Meta:
@@ -53,6 +59,7 @@ class AddWortQCEntryForm(forms.ModelForm):
 
 
 class AddYeastPitchEntryForm(forms.ModelForm):
+    yeast = forms.ModelChoiceField(queryset=Material.objects.filter(material_type='YT'))
     class Meta:
         model = BatchYeastPitch
         fields = [

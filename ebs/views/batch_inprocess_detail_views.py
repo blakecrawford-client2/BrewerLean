@@ -1,6 +1,6 @@
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
-from common.views.BLViews import BLCreateView, BLUpdateView
+from common.views.BLViews import BLCreateView, BLUpdateView, BLDeleteWithoutConfirmationView
 from ebs.models.brew_sheets import Batch
 from ebs.models.brew_sheets import BatchRawMaterialsLog
 from ebs.models.brew_sheets import BatchWortQC
@@ -26,7 +26,24 @@ from ebs.forms.batch_maintenance_detail_forms import CarbonationQCEntryForm
 from ebs.forms.batch_maintenance_detail_forms import CanningQCForm
 from ebs.forms.batch_maintenance_detail_forms import PackagingRunForm
 from ebs.forms.batch_maintenance_detail_forms import BatchNoteForm
+from ebs.forms.batch_maintenance_detail_forms import ChangeFVForm
 
+
+class ChangeFVView(LoginRequiredMixin, BLUpdateView):
+    model = Batch
+    template_name = 'ebs/batch/inprocess/detail/inprocess-add-subitem.html'
+    form_class = ChangeFVForm
+    context_object_name = 'batch'
+
+    def get_success_url(self):
+        return reverse('maintenance', kwargs={'pk': self.kwargs['pk']})
+
+    def get_context_data(self, **kwargs):
+        batch = Batch.objects.get(pk=self.kwargs.get('pk'))
+        context = super(ChangeFVView, self).get_context_data(**kwargs)
+        context['batch'] = batch
+        context['name'] = 'Change FV'
+        return context
 
 class AddObeerDataView(LoginRequiredMixin, BLUpdateView):
     model = Batch
@@ -56,10 +73,18 @@ class RawMaterialsLogView(LoginRequiredMixin, BLUpdateView):
 
     def get_context_data(self, **kwargs):
         batch = Batch.objects.get(pk=self.kwargs.get('pk'))
-        materials = BatchRawMaterialsLog.objects.filter(batch=batch.id).order_by('material__material_type')
+        materials = BatchRawMaterialsLog.objects.filter(batch=batch.id).order_by('material__material_name')
+        grain = BatchRawMaterialsLog.objects.filter(batch=batch.id, material__material_type='GR').order_by('material__material_name')
+        hops = BatchRawMaterialsLog.objects.filter(batch=batch.id, material__material_type='HP').order_by('material__material_name')
+        other = BatchRawMaterialsLog.objects.filter(batch=batch.id, material__material_type='OT').order_by('material__material_name')
+        not_listed = BatchNote.objects.filter(batch=batch.id, note_type='UM')
         context = super(RawMaterialsLogView, self).get_context_data(**kwargs)
         context['batch'] = batch
+        context['grain'] = grain
+        context['hops'] = hops
+        context['other'] = other
         context['materials'] = materials
+        context['not_listed'] = not_listed
         return context
 
 
@@ -99,6 +124,14 @@ class UpdateRawMaterialsLogView(LoginRequiredMixin, BLUpdateView):
         context['batch'] = batch
         context['name'] = 'Edit Material'
         return context
+
+
+class DeleteRawMaterialsLogView(LoginRequiredMixin, BLDeleteWithoutConfirmationView):
+    model = BatchRawMaterialsLog
+    context_object_name = 'current_material'
+
+    def get_success_url(self):
+        return reverse_lazy('rawmaterials', kwargs={'pk': self.kwargs.get('bpk')})
 
 
 class WortQCEntriesView(LoginRequiredMixin, BLUpdateView):

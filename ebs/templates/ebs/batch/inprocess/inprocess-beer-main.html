@@ -45,7 +45,16 @@
     </div>
     <div class="row no-gutters">
         <div class="col-2 text-right float-left border bg-light pr-1">Brew:</div>
-        <div class="col-10 border pl-1">{{ act_dates.brew_date }}</div>
+        <div class="col-4 border pl-1">{{ act_dates.brew_date }}</div>
+        <div class="col-2 text-right border bg-light pr-1">FV:</div>
+        <div class="col-4 border pl-1">
+            {{ batch.target_fv }}
+            <a href="/ebs/inprocess/detail/{{ batch.pk }}/changefv/">
+                <button type="button" class="btn btn-primary btn-sm float-right">
+                    <span class="material-icons m18">change_circle</span>
+                </button>
+            </a>
+        </div>
     </div>
     <div class="row no-gutters">
         <div class="col-12">

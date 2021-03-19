@@ -59,7 +59,37 @@
         </div>
         {% for wqc in wortqcentries %}
         <div class="row no-gutters">
-            <div class="col border pl-1">{{ wqc.turn }}</div>
+            <div class="col border pl-1">{{ wqc.turn }}
+                <ul class="list-unstyled">
+                    {% if wqc.temp_mash is None %}
+                    <li><span class="material-icons" style="color:red">close</span>No Mash Temp</li>
+                    {% endif %}
+                    {% if wqc.ph_mash is None %}
+                    <li><span class="material-icons" style="color:red">close</span>No Mash pH</li>
+                    {% endif %}
+                    {% if wqc.volume_strike is None %}
+                    <li><span class="material-icons" style="color:red">close</span>No Strike Volume</li>
+                    {% endif %}
+                    {% if wqc.volume_sparge is None %}
+                    <li><span class="material-icons" style="color:red">close</span>No Sparge Volume</li>
+                    {% endif %}
+                    {% if wqc.volume_preboil is None %}
+                    <li><span class="material-icons" style="color:red">close</span>No Preboil Volume</li>
+                    {% endif %}
+                    {% if wqc.volume_postboil is None %}
+                    <li><span class="material-icons" style="color:red">close</span>No Postboil Volume</li>
+                    {% endif %}
+                    {% if wqc.extract_first_runnings is None %}
+                    <li><span class="material-icons" style="color:red">close</span>No First Runnings</li>
+                    {% endif %}
+                    {% if wqc.extract_preboil is None %}
+                    <li> <span class="material-icons" style="color:red">close</span>No Preboil Extract</li>
+                    {% endif %}
+                    {% if wqc.extract_postboil is None %}
+                    <li><span class="material-icons" style="color:red">close</span>No Postboil Extract</li>
+                    {% endif %}
+                </ul>
+            </div>
             <div class="col border pl-1">{{ wqc.brewer.name }}</div>
             <div class="col-2 border">
                 <a href="/ebs/inprocess/detail/{{ batch.pk }}/wortqc/update/{{ wqc.id }}">
@@ -74,7 +104,9 @@
             <div class="col-12 pt-2">
                 <span class="float-right">
                     <a href="/ebs/inprocess/detail/{{ batch.pk }}/wortqc/add/">
-                        <button type="button" class="btn btn-primary">Add</button>
+                        <button type="button" class="btn btn-primary">
+                            <span class="material-icons md-18">add</span>
+                        </button>
                     </a>
                 </span>
             </div>

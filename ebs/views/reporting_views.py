@@ -37,6 +37,9 @@ class BatchRawMaterialsRecord(DetailView):
         context = super().get_context_data(**kwargs)
         batch_id = self.kwargs.get('pk')
         context['materials'] = BatchRawMaterialsLog.objects.filter(batch=batch_id)
+        context['grain'] = BatchRawMaterialsLog.objects.filter(batch=batch_id, material__material_type='GR')
+        context['hops'] = BatchRawMaterialsLog.objects.filter(batch=batch_id, material__material_type='HP')
+        context['other'] = BatchRawMaterialsLog.objects.filter(batch=batch_id, material__material_type='OT')
         return context
 
 

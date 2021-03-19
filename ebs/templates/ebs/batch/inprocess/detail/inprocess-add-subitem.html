@@ -79,6 +79,15 @@
                             {% endif %}
                         </div>
                     {% endfor %}
+                    {% if 'rawmaterials' in request.path %}
+                        <span class="float-left">
+                        <a href="/ebs/inprocess/detail/{{ batch.id }}/rawmaterials/delete/{{ current_material.id }}">
+                            <button type="button" class="btn btn-danger btn-block btn-sm">
+                                <span class="material-icons md-18">delete</span>
+                            </button>
+                        </a>
+                        </span>
+                    {% endif %}
                     <span class="float-right">
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </span>

@@ -660,7 +660,7 @@ class BatchNote(models.Model):
     class NoteType(models.TextChoices):
         PRIVATE = 'PV', 'Private'
         PUBLIC = 'PB', 'Public'
-        SEAM_WIDTH = 'SW', 'Seam Width'
+        UNLISTED_MATERIAL = 'UM', 'Unlisted Material'
 
     class Meta:
         verbose_name_plural = 'Batch Notes'

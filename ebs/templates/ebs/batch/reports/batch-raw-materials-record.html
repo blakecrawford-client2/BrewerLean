@@ -29,7 +29,7 @@
             <div class="col border">{{ batch.obeer_batch }}</div>
         </div>
         <div class="row border">
-            <div class="col-12">&nbsp;</div>
+            <div class="col-12 pt-2"><h3>GRAIN</h3></div>
         </div>
         <div class="row">
             <div class="col border bg-secondary text-white">TYPE</div>
@@ -39,28 +39,96 @@
             <div class="col border bg-secondary text-white">Lot Code</div>
             <div class="col border bg-secondary text-white">Quantity</div>
         </div>
-        {% for material in materials %}
+        {% for g in grain %}
             <div class="row">
                     <div class="col border">
-                        {{ material.material.material_type }}
+                        {{ g.material.material_type }}
                     </div>
                     <div class="col border">
-                        {{ material.material.material_obeer_code }}
+                        {{ g.material.material_obeer_code }}
                     </div>
                     <div class="col border">
-                        {{ material.material.material_origin.originator_name }}
+                        {{ g.material.material_origin.originator_name }}
                     </div>
                     <div class="col border">
-                        {{ material.material.material_name }}
+                        {{ g.material.material_name }}
                     </div>
                     <div class="col border">
-                        {{ material.material_lot }}
+                        {{ g.material_lot }}
                     </div>
                     <div class="col border">
-                        {{ material.material_qty }}
+                        {{ g.material_qty }}
                     </div>
             </div>
         {% endfor %}
+
+        <div class="row border">
+            <div class="col-12 pt-2"><h3>HOPS</h3></div>
+        </div>
+        <div class="row">
+            <div class="col border bg-secondary text-white">TYPE</div>
+            <div class="col border bg-secondary text-white">OBeer Code</div>
+            <div class="col border bg-secondary text-white">Supplier</div>
+            <div class="col border bg-secondary text-white">Material</div>
+            <div class="col border bg-secondary text-white">Lot Code</div>
+            <div class="col border bg-secondary text-white">Quantity</div>
+        </div>
+        {% for h in hops %}
+            <div class="row">
+                    <div class="col border">
+                        {{ h.material.material_type }}
+                    </div>
+                    <div class="col border">
+                        {{ h.material.material_obeer_code }}
+                    </div>
+                    <div class="col border">
+                        {{ h.material.material_origin.originator_name }}
+                    </div>
+                    <div class="col border">
+                        {{ h.material.material_name }}
+                    </div>
+                    <div class="col border">
+                        {{ h.material_lot }}
+                    </div>
+                    <div class="col border">
+                        {{ h.material_qty }}
+                    </div>
+            </div>
+        {% endfor %}
+        <div class="row border">
+            <div class="col-12 pt-2"><h3>OTHER STUFF</h3></div>
+        </div>
+        <div class="row">
+            <div class="col border bg-secondary text-white">TYPE</div>
+            <div class="col border bg-secondary text-white">OBeer Code</div>
+            <div class="col border bg-secondary text-white">Supplier</div>
+            <div class="col border bg-secondary text-white">Material</div>
+            <div class="col border bg-secondary text-white">Lot Code</div>
+            <div class="col border bg-secondary text-white">Quantity</div>
+        </div>
+        {% for o in other %}
+            <div class="row">
+                    <div class="col border">
+                        {{ o.material.material_type }}
+                    </div>
+                    <div class="col border">
+                        {{ o.material.material_obeer_code }}
+                    </div>
+                    <div class="col border">
+                        {{ o.material.material_origin.originator_name }}
+                    </div>
+                    <div class="col border">
+                        {{ o.material.material_name }}
+                    </div>
+                    <div class="col border">
+                        {{ o.material_lot }}
+                    </div>
+                    <div class="col border">
+                        {{ o.material_qty }}
+                    </div>
+            </div>
+        {% endfor %}
+
         <div class="row">
             <div class="col-12">&nbsp;</div>
         </div>

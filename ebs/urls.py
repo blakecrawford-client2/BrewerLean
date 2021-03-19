@@ -10,6 +10,7 @@ from ebs.views.batch_inprocess_detail_views import AddObeerDataView
 from ebs.views.batch_inprocess_detail_views import RawMaterialsLogView
 from ebs.views.batch_inprocess_detail_views import AddRawMaterialsLogView
 from ebs.views.batch_inprocess_detail_views import UpdateRawMaterialsLogView
+from ebs.views.batch_inprocess_detail_views import DeleteRawMaterialsLogView
 from ebs.views.batch_inprocess_detail_views import WortQCEntriesView
 from ebs.views.batch_inprocess_detail_views import AddWortQCEntryView
 from ebs.views.batch_inprocess_detail_views import UpdateWortQCEntryView
@@ -34,6 +35,7 @@ from ebs.views.batch_inprocess_detail_views import UpdatePackagingRunView
 from ebs.views.batch_inprocess_detail_views import BatchNoteView
 from ebs.views.batch_inprocess_detail_views import AddBatchNoteView
 from ebs.views.batch_inprocess_detail_views import UpdateBatchNoteView
+from ebs.views.batch_inprocess_detail_views import ChangeFVView
 from ebs.views.reporting_views import OldSchoolBrewSheet
 from ebs.views.reporting_views import BatchWortProductionRecord
 from ebs.views.reporting_views import BatchRawMaterialsRecord
@@ -47,10 +49,12 @@ urlpatterns = [
     path('inprocess/', InprocessBatchList.as_view()),
     path('inprocess/create/', InprocessBatchCreateView.as_view()),
     path('inprocess/detail/<int:pk>', InprocessBatchDetailView.as_view(), name='maintenance'),
+    path('inprocess/detail/<int:pk>/changefv/', ChangeFVView.as_view()),
     path('inprocess/detail/<int:pk>/obeer/', AddObeerDataView.as_view()),
     path('inprocess/detail/<int:pk>/rawmaterials/', RawMaterialsLogView.as_view(), name='rawmaterials'),
     path('inprocess/detail/<int:bpk>/rawmaterials/add/', AddRawMaterialsLogView.as_view()),
     path('inprocess/detail/<int:bpk>/rawmaterials/update/<int:pk>', UpdateRawMaterialsLogView.as_view()),
+    path('inprocess/detail/<int:bpk>/rawmaterials/delete/<int:pk>', DeleteRawMaterialsLogView.as_view()),
     path('inprocess/detail/<int:pk>/wortqc/', WortQCEntriesView.as_view(), name='wortqcentries'),
     path('inprocess/detail/<int:bpk>/wortqc/add/', AddWortQCEntryView.as_view()),
     path('inprocess/detail/<int:bpk>/wortqc/update/<int:pk>', UpdateWortQCEntryView.as_view()),

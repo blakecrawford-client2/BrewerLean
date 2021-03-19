@@ -161,7 +161,7 @@ AUTHENTICATION_BACKENDS = (
 )
 
 if DEBUG is True:
-    SITE_ID = 2
+    SITE_ID = 3
 else:
     SITE_ID = env.int('EBS_SITE_ID', default='4')
 
