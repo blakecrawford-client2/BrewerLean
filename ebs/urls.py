@@ -36,6 +36,8 @@ from ebs.views.batch_inprocess_detail_views import BatchNoteView
 from ebs.views.batch_inprocess_detail_views import AddBatchNoteView
 from ebs.views.batch_inprocess_detail_views import UpdateBatchNoteView
 from ebs.views.batch_inprocess_detail_views import ChangeFVView
+from ebs.views.batch_close_views import ArchiveBatchListView
+from ebs.views.batch_close_views import ArchiveBatchView
 from ebs.views.reporting_views import OldSchoolBrewSheet
 from ebs.views.reporting_views import BatchWortProductionRecord
 from ebs.views.reporting_views import BatchRawMaterialsRecord
@@ -48,6 +50,7 @@ urlpatterns = [
     path('upcoming/start/<int:pk>', UpcomingBatchStartView.as_view()),
     path('inprocess/', InprocessBatchList.as_view()),
     path('inprocess/create/', InprocessBatchCreateView.as_view()),
+    path('archive/', ArchiveBatchListView.as_view()),
     path('inprocess/detail/<int:pk>', InprocessBatchDetailView.as_view(), name='maintenance'),
     path('inprocess/detail/<int:pk>/changefv/', ChangeFVView.as_view()),
     path('inprocess/detail/<int:pk>/obeer/', AddObeerDataView.as_view()),
@@ -79,6 +82,7 @@ urlpatterns = [
     path('inprocess/detail/<int:pk>/batchnote/', BatchNoteView.as_view(), name='batchnotes'),
     path('inprocess/detail/<int:bpk>/batchnote/add/', AddBatchNoteView.as_view()),
     path('inprocess/detail/<int:bpk>/batchnote/update/<int:pk>', UpdateBatchNoteView.as_view()),
+    path('inprocess/detail/<int:pk>/archive/', ArchiveBatchView.as_view()),
     path('reports/<int:pk>/oldschool/', OldSchoolBrewSheet.as_view()),
     path('reports/<int:pk>/wortproduction/', BatchWortProductionRecord.as_view()),
     path('reports/<int:pk>/rawmaterials/', BatchRawMaterialsRecord.as_view()),

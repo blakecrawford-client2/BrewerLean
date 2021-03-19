@@ -1,0 +1,26 @@
+{% extends "ebs/base.html" %}
+{% block title %}Archived Batches{% endblock %}
+{% block content %}
+<div class="container-fluid px-2">
+        <div class="row no-gutters pt-3">
+            <div class="col-12 bg-light"><h3>Archived Batches</h3></div>
+        </div>
+        {% for x in archive_batch_list %}
+            <div class="row no-gutters pt-2 pb-2 border-bottom">
+                <div class="col-2">{{ x.plan_start_day|date:"d M" }}</div>
+                <div class="col-1">{{x.batch_product.ownership.partner_short_code}}</div>
+                <div class="col-4">{{ x.batch_product.product_name}}</div>
+                <div class="col-4">{{ x.target_fv }}</div>
+                <div class="col-1">
+                    <span class="float-right">
+                        <a href="/ebs/inprocess/detail/{{ x.id }}">
+                            <button type="button" class="btn btn-warning btn-sm">
+                                <span class="material-icons">mode_edit</span>
+                            </button>
+                        </a>
+                    </span>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
