@@ -42,6 +42,7 @@ from ebs.views.reporting_views import OldSchoolBrewSheet
 from ebs.views.reporting_views import BatchWortProductionRecord
 from ebs.views.reporting_views import BatchRawMaterialsRecord
 from ebs.views.reporting_views import BatchFermentationQCRecord
+from ebs.views.reporting_views import BigTVStatusReport
 
 urlpatterns = [
     path('upcoming/', UpcomingBatchList.as_view()),
@@ -87,5 +88,6 @@ urlpatterns = [
     path('reports/<int:pk>/wortproduction/', BatchWortProductionRecord.as_view()),
     path('reports/<int:pk>/rawmaterials/', BatchRawMaterialsRecord.as_view()),
     path('reports/<int:pk>/fermentationqc/', BatchFermentationQCRecord.as_view()),
+    path('reports/bigtvstatus/', BigTVStatusReport.as_view()),
 
 ]

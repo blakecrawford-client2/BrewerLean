@@ -151,12 +151,12 @@
         <div class="row">
             <div class="col-3 border bg-light">Transfer Volume</div>
             {% for wqc in wort_qc %}
-                <div class="col border">{{ wqc.volume_transfer }}</div>
+                <div class="col border">{{ wqc.volume_postboil }}</div>
             {% endfor %}
         </div>
         <div class="row">
             <div class="col-3 border bg-light">Yeast</div>
-            <div class="col border">{{ yeast.yeast.material_name }}</div>
+            <div class="col-9 border">{{ yeast.yeast.material_name }}</div>
         </div>
         <div class="row">
             <div class="col-3 border bg-light">Source</div>
