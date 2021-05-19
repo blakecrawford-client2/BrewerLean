@@ -1,0 +1,191 @@
+{% extends "crm/base.html" %}
+{% block title %}{{ page_name }}{% endblock %}
+{% block content %}
+    <div class="container-fluid px-2">
+        <div class="row no-gutters pt-3">
+            <div class="col-12 pl-2 pb-1 pt-2 bg-secondary text-light">
+                <h4>MY CALLS</h4>
+            </div>
+        </div>
+        <div class="row no-gutters pt-3">
+            <div class="col-12">
+                <span class="float-right">
+                    <a href="/crm/calls/account/">
+                        <button type="button" class="btn btn-success btn-sm">
+                            <span class="material-icons">add</span>
+                        </button>
+                    </a>
+                </span>
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="open-tab" data-toggle="tab" href="#nav-open" role="tab" aria-controls="nav-open" aria-selected="true">
+                            <span class="material-icons">open_in_new</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="followup-tab" data-toggle="tab" href="#nav-followup" role="tab" aria-controls="nav-followup" aria-selected="false">
+                            <span class="material-icons">update</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="nextwk-tab" data-toggle="tab" href="#nav-nextwk" role="tab" aria-controls="nav-nextwk" aria-selected="false">
+                            <span class="material-icons">date_range</span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="row no-gutters pt-3"></div>
+                    <div class="tab-pane fade show active" id="nav-open" role="tabpanel" aria-labelledby="nav-open-tab">
+                        {% if original_calls %}
+                            <div class="row no-gutters pl-2 bg-light">
+                                <div class="col-7">Name</div>
+                                <div class="col-1 text-center">Type</div>
+                                <div class="col-1 text-center">How</div>
+                                <div class="col-3"></div>
+                            </div>
+                            {% for open_call in original_calls %}
+                                <div class="row no-gutters pl-2 pt-1">
+                                    <div class="col-7">
+                                        {{ open_call.account.account_name }}
+                                    </div>
+                                    <div class="col-1 text-center">
+                                        {{ open_call.type }}
+                                    </div>
+                                    <div class="col-1 text-center">
+                                        {{ open_call.method }}
+                                    </div>
+                                    <div class="col-3">
+                                        <span class="float-right">
+                                            {% if open_call.type is not None %}
+                                                <a href="/crm/calls/wizard/{{ open_call.account.id }}/{{ open_call.id }}/type/{{ open_call.type }}/method/{{ open_call.method }}/outcome/RST/followup/">
+                                                    <button type="button" class="btn btn-warning btn-sm">
+                                                        <span class="material-icons">volume_off</span>
+                                                    </button>
+                                                </a>
+                                                <a href="/crm/calls/wizard/{{ open_call.account.id }}/{{ open_call.id }}/type/{{ open_call.type }}/method/{{ open_call.method }}/outcome/">
+                                                    <button type="button" class="btn btn-warning btn-sm">
+                                                        <span class="material-icons">arrow_forward_ios</span>
+                                                    </button>
+                                                </a>
+                                            {% else %}
+                                                <a href="/crm/calls/wizard/{{ open_call.account.id }}/{{ open_call.id }}/type/">
+                                                    <button type="button" class="btn btn-warning btn-sm">
+                                                        <span class="material-icons">arrow_forward_ios</span>
+                                                    </button>
+                                                </a>
+                                            {% endif %}
+                                        </span>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="row no-gutters">
+                                <div class="col-12 pl-3">
+                                    <h5>No Open Calls</h5>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="tab-pane fade" id="nav-followup" role="tabpanel" aria-labelledby="nav-followup-tab">
+                        <div class="row no-gutters pt-1"></div>
+                        {% if fup_this_week %}
+                            <div class="row no-gutters pl-2 bg-light">
+                                <div class="col-7">Name</div>
+                                <div class="col-1 text-center">Type</div>
+                                <div class="col-1 text-center">How</div>
+                                <div class="col-3"></div>
+                            </div>
+                            {% for open_call in fup_this_week %}
+                                <div class="row no-gutters pl-2">
+                                    <div class="col-7">
+                                        {{ open_call.account.account_name }}
+                                    </div>
+                                    <div class="col-1 text-center">
+                                        {{ open_call.type }}
+                                    </div>
+                                    <div class="col-1 text-center">
+                                        {{ open_call.method }}
+                                    </div>
+                                    <div class="col-3">
+                                        {% if open_call.type is not None %}
+                                            {% if open_call.method is not None %}
+                                                <span class="float-right">
+                                                    <a href="/crm/calls/wizard/{{ open_call.account.id }}/{{ open_call.id }}/type/{{ open_call.type }}/method/{{ open_call.method }}/outcome/">
+                                                        <button type="button" class="btn btn-warning btn-sm">
+                                                            <span class="material-icons">arrow_forward_ios</span>
+                                                        </button>
+                                                    </a>
+                                                </span>
+                                            {% else %}
+                                                <span class="float-right">
+                                                    <a href="/crm/calls/wizard/{{ open_call.account.id }}/{{ open_call.id }}/type/{{ open_call.type }}/method/">
+                                                        <button type="button" class="btn btn-warning btn-sm">
+                                                            <span class="material-icons">arrow_forward_ios</span>
+                                                        </button>
+                                                    </a>
+                                                </span>
+                                            {% endif %}
+                                        {% else %}
+                                            <span class="float-right">
+                                                <a href="/crm/calls/wizard/{{ open_call.account.id }}/{{ open_call.id }}/type/">
+                                                    <button type="button" class="btn btn-warning btn-sm">
+                                                        <span class="material-icons">arrow_forward_ios</span>
+                                                    </button>
+                                                </a>
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="row no-gutters">
+                                <div class="col-12 pl-3">
+                                    <h5>No Follow-Up Calls</h5>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="tab-pane fade" id="nav-nextwk" role="tabpanel" aria-labelledby="nav-nextwk-tab">
+                        <div class="row no-gutters pt-1"></div>
+                        {% if fup_next_week %}
+                            <div class="row no-gutters pl-2 bg-light">
+                                <div class="col-7">Name</div>
+                                <div class="col-1 text-center">Type</div>
+                                <div class="col-1 text-center">How</div>
+                                <div class="col-3"></div>
+                            </div>
+                            {% for open_call in fup_next_week %}
+                                <div class="row no-gutters pl-2">
+                                    <div class="col-7">
+                                        {{ open_call.account.account_name }}
+                                    </div>
+                                    <div class="col-1 text-center">
+                                        {{ open_call.type }}
+                                    </div>
+                                    <div class="col-1 text-center">
+                                        {{ open_call.method }}
+                                    </div>
+                                    <div class="col-3">
+                                        <span class="float-right">
+                                            <a href="/crm/calls/wizard/{{ open_call.account.id }}/{{ open_call.id }}/type/">
+                                                <button type="button" class="btn btn-warning btn-sm">
+                                                    <span class="material-icons">arrow_forward_ios</span>
+                                                </button>
+                                            </a>
+                                        </span>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="row no-gutters">
+                                <div class="col-12 pl-3">
+                                    <h5>No Follow-Up Calls</h5>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

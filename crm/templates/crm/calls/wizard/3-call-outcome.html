@@ -1,0 +1,151 @@
+{% extends "crm/base.html" %}
+{% block title %}Wizard Step 1 - Select Call Type{% endblock %}
+{% block content %}
+    <div class="container-fluid px-2">
+        <div class="row no-gutters pt-3">
+            <div class="col-12 pl-2 pb-1 pt-2 bg-secondary text-light">
+                <h4>CALL OUTCOME</h4>
+            </div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col-12">
+                <br/>
+            </div>
+        </div>
+        <div class="row no-gutters">
+            {% if call is None %}
+                <div class="col-12">
+                    <a href="/crm/calls/wizard/{{ account }}/type/{{ type }}/method/{{ method }}/open/">
+                        <button type="button" class="btn btn-warning btn-block">Exit, Leave Open</button>
+                    </a>
+                </div>
+            {% else %}
+                <div class="col-12">
+                    <a href="/crm/calls/wizard/{{ account }}/{{ call }}/type/{{ type }}/method/{{ method }}/open/">
+                        <button type="button" class="btn btn-warning btn-block">Exit, Leave Open</button>
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+        <div class="row no-gutters">
+            <div class="col-12">
+                <br/>
+            </div>
+        </div>
+        <div class="row no-gutters">
+            {% if call is None %}
+                <div class="col-12">
+                    <a href="/crm/calls/wizard/{{ account }}/type/{{ type }}/method/{{ method }}/outcome/RST/followup/">
+                        <button type="button" class="btn btn-primary btn-block">Radio Silent</button>
+                    </a>
+                </div>
+            {% else %}
+                 <div class="col-12">
+                    <a href="/crm/calls/wizard/{{ account }}/{{ call }}/type/{{ type }}/method/{{ method }}/outcome/RST/followup/">
+                        <button type="button" class="btn btn-primary btn-block">Radio Silent</button>
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+        <div class="row no-gutters">
+            <div class="col-12">
+                <br/>
+            </div>
+        </div>
+        <div class="row no-gutters">
+            {% if call is None %}
+                <div class="col-12">
+                    <a href="/crm/calls/wizard/{{ account }}/type/{{ type }}/method/{{ method }}/outcome/ODR/followup/">
+                        <button type="button" class="btn btn-primary btn-block">Order</button>
+                    </a>
+                </div>
+            {% else %}
+                 <div class="col-12">
+                    <a href="/crm/calls/wizard/{{ account }}/{{ call }}/type/{{ type }}/method/{{ method }}/outcome/ODR/followup/">
+                        <button type="button" class="btn btn-primary btn-block">Order</button>
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+        <div class="row no-gutters">
+            <div class="col-12">
+                <br/>
+            </div>
+        </div>
+        <div class="row no-gutters">
+            {% if call is None %}
+                <div class="col-12">
+                    <a href="/crm/calls/wizard/{{ account }}/type/{{ type }}/method/{{ method }}/outcome/LWP/followup/">
+                        <button type="button" class="btn btn-primary btn-block">Later, Wrong Person</button>
+                    </a>
+                </div>
+            {% else %}
+                <div class="col-12">
+                    <a href="/crm/calls/wizard/{{ account }}/{{ call }}/type/{{ type }}/method/{{ method }}/outcome/LWP/followup/">
+                        <button type="button" class="btn btn-primary btn-block">Later, Wrong Person</button>
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+        <div class="row no-gutters">
+            <div class="col-12">
+                <br/>
+            </div>
+        </div>
+        <div class="row no-gutters">
+            {% if call is None %}
+                <div class="col-12">
+                    <a href="/crm/calls/wizard/{{ account }}/type/{{ type }}/method/{{ method }}/outcome/LNA/followup/">
+                        <button type="button" class="btn btn-primary btn-block">Later, Not Available</button>
+                    </a>
+                </div>
+            {% else %}
+                 <div class="col-12">
+                    <a href="/crm/calls/wizard/{{ account }}/{{ call }}/type/{{ type }}/method/{{ method }}/outcome/LNA/followup/">
+                        <button type="button" class="btn btn-primary btn-block">Later, Not Available</button>
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+        <div class="row no-gutters">
+            <div class="col-12">
+                <br/>
+            </div>
+        </div>
+        <div class="row no-gutters">
+            {% if call is None %}
+                <div class="col-12">
+                    <a href="/crm/calls/wizard/{{ account }}/type/{{ type }}/method/{{ method }}/outcome/LNS/followup/">
+                        <button type="button" class="btn btn-primary btn-block">Later, No Space</button>
+                    </a>
+                </div>
+            {% else %}
+                 <div class="col-12">
+                    <a href="/crm/calls/wizard/{{ account }}/{{ call }}/type/{{ type }}/method/{{ method }}/outcome/LNS/followup/">
+                        <button type="button" class="btn btn-primary btn-block">Later, No Space</button>
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+        <div class="row no-gutters">
+            <div class="col-12">
+                <br/>
+            </div>
+        </div>
+        <div class="row no-gutters">
+            {% if call is None %}
+                <div class="col-12">
+                    <a href="/crm/calls/wizard/{{ account }}/type/{{ type }}/method/{{ method }}/outcome/LDP/followup/">
+                        <button type="button" class="btn btn-primary btn-block">Later, No Diff Product</button>
+                    </a>
+                </div>
+            {% else %}
+                <div class="col-12">
+                    <a href="/crm/calls/wizard/{{ account }}/{{ call }}/type/{{ type }}/method/{{ method }}/outcome/LDP/followup/">
+                        <button type="button" class="btn btn-primary btn-block">Later, No Diff Product</button>
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

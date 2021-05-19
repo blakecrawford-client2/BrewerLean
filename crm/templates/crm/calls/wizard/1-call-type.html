@@ -1,0 +1,91 @@
+{% extends "crm/base.html" %}
+{% block title %}Wizard Step 1 - Select Call Type{% endblock %}
+{% block content %}
+    <div class="container-fluid px-2">
+        <div class="row no-gutters pt-3">
+            <div class="col-12 pl-2 pb-1 pt-2 bg-secondary text-light">
+                <h4>CALL TYPE</h4>
+            </div>
+        </div>
+        <div class="row no-gutters ">
+            <div class="col-12">
+                <br/>
+            </div>
+        </div>
+        <div class="row no-gutters">
+            {% if call is None %}
+                <div class="col-12">
+                    <a href="/crm/calls/wizard/{{ account }}/type/S/method/">
+                        <button type="button" class="btn btn-primary btn-block">Sales</button>
+                    </a>
+                </div>
+            {% else %}
+                 <div class="col-12">
+                    <a href="/crm/calls/wizard/{{ account }}/{{ call }}/type/S/method/">
+                        <button type="button" class="btn btn-primary btn-block">Sales</button>
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+        <div class="row no-gutters">
+            <div class="col-12">
+                <br/>
+            </div>
+        </div>
+        <div class="row no-gutters">
+            {% if call is None %}
+                <div class="col-12">
+                    <a href="/crm/calls/wizard/{{ account }}/type/C/method/">
+                        <button type="button" class="btn btn-primary btn-block">Courtesy</button>
+                    </a>
+                </div>
+            {% else %}
+                 <div class="col-12">
+                    <a href="/crm/calls/wizard/{{ account }}/{{ call }}/type/C/method/">
+                        <button type="button" class="btn btn-primary btn-block">Courtesy</button>
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+        <div class="row no-gutters">
+            <div class="col-12">
+                <br/>
+            </div>
+        </div>
+        <div class="row no-gutters">
+            {% if call is None %}
+                <div class="col-12">
+                    <a href="/crm/calls/wizard/{{ account }}/type/I/method/">
+                        <button type="button" class="btn btn-primary btn-block">Inventory</button>
+                    </a>
+                </div>
+            {% else %}
+                <div class="col-12">
+                    <a href="/crm/calls/wizard/{{ account }}/{{ call }}/type/I/method/">
+                        <button type="button" class="btn btn-primary btn-block">Inventory</button>
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+        <div class="row no-gutters">
+            <div class="col-12">
+                <br/>
+            </div>
+        </div>
+        <div class="row no-gutters">
+            {% if call is None %}
+                <div class="col-12">
+                    <a href="/crm/calls/wizard/{{ account }}/type/X/method/">
+                        <button type="button" class="btn btn-primary btn-block">Collection</button>
+                    </a>
+                </div>
+            {% else %}
+                 <div class="col-12">
+                    <a href="/crm/calls/wizard/{{ account }}/{{ call }}/type/X/method/">
+                        <button type="button" class="btn btn-primary btn-block">Collection</button>
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

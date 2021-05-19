@@ -1,0 +1,38 @@
+{% extends "crm/base.html" %}
+{% block title %}Alementary CRM{% endblock %}
+{% block content %}
+    <div class="container-fluid px-2">
+        <div class="row no-gutters pt-3">
+            <div class="col-12 pb-2 pl-2 pt-3 border bg-light">
+                <h3>Alementary CRM</h3>
+            </div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col pt-2 text-center">
+
+                <a href="/crm/calls/list/">
+                    <img src="/static/call.svg" height="90">
+                </a>
+            </div>
+            <div class="col pt-2 text-center">
+                <a href="/crm/account-lists/">
+                    <img src="/static/account.svg" height="90">
+                </a>
+            </div>
+            <div class="col pt-2 text-center">
+                <img src="/static/report.svg" height="90">
+            </div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col text-center">
+                <h5>CALLS</h5>
+            </div>
+            <div class="col text-center">
+                <h5>ACCOUNTS</h5>
+            </div>
+            <div class="col text-center">
+                <h5>REPORTS</h5>
+            </div>
+        </div>
+    </div>
+{% endblock %}

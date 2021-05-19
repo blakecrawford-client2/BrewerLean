@@ -1,0 +1,42 @@
+{% extends "crm/base.html" %}
+{% load i18n %}
+{% load widget_tweaks %}
+{% block extrahead %}
+    {{ form.media }}
+{% endblock %}
+{% block title %}{{ page_name }}{% endblock %}
+{% block content %}
+    <div class="container-fluid px-2">
+        <div class="row no-gutters pt-3">
+            <div class="col-12 pb-2">
+                <h3>{{ page_name }}</h3>
+            </div>
+        </div>
+        <div class="row no-gutters pt-3">
+            <p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
+            <form action="" method="post">
+                {% csrf_token %}
+                <table>
+                {{ wizard.management_form }}
+                {% if wizard.form.forms %}
+                    {{ wizard.form.management_form }}
+                    {% for form in wizard.form.forms %}
+                        {{ form }}
+                    {% endfor %}
+                {% else %}
+                    {{ wizard.form }}
+                {% endif %}
+                </table>
+            {% if wizard.steps.prev %}
+                <button name="wizard_goto_step" type="submit" value="{{ wizard.steps.first }}">
+                    {% trans "first step" %}
+                </button>
+                <button name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">
+                    {% trans "prev step" %}
+                </button>
+            {% endif %}
+                <input type="submit" value="{% trans "submit" %}"/>
+            </form>
+        </div>
+    </div>
+{% endblock %}

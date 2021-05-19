@@ -28,6 +28,7 @@
       <list>
         <option value="$MODULE_DIR$/templates" />
         <option value="$MODULE_DIR$/ebs/templates" />
+        <option value="$MODULE_DIR$/crm/templates" />
       </list>
     </option>
   </component>

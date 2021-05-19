@@ -1,0 +1,74 @@
+{% extends "crm/base.html" %}
+{% block title %}{{ page_name }}{% endblock %}
+{% block content %}
+    <div class="container-fluid px-2">
+        <div class="row no-gutters pt-3">
+            <div class="col-8 pl-2 pb-1 pt-2 bg-secondary text-light">
+                <h4>ACCOUNT DETAIL</h4>
+            </div>
+            <div class="col-4 pb-2 pt-2 pr-2 bg-secondary">
+                <span class="float-right">
+                    <a href="/crm/accounts/{{ account.id }}/update/">
+                        <button type="button" class="btn btn-warning btn-sm">
+                            <span class="material-icons">edit</span>
+                        </button>
+
+                    </a>
+                    <a href="/crm/calls/wizard/{{ account.id }}/type/">
+                        <button type="button" class="btn btn-warning btn-sm">
+                            <span class="material-icons">
+                                call
+                            </span>
+                        </button>
+                    </a>
+                </span>
+            </div>
+        </div>
+        <div class="row no-gutters border">
+            <div class="col-12">
+                {{ account.account_name }}
+            </div>
+        </div>
+        <div class="row no-gutters border">
+            <div class="col-12">
+                {{ account.account_group }}
+            </div>
+        </div>
+        <div class="row no-gutters border">
+            <div class="col-12">
+                {{ account.account_type }}
+            </div>
+        </div>
+        <div class="row no-gutters pt-3">
+            <div class="col-12 pl-2 pb-1 pt-2 bg-secondary text-light">
+                <h4>CALL HISTORY</h4>
+            </div>
+        </div>
+        <div class="row no-gutters border bg-light">
+            <div class="col-2">Sched.</div>
+            <div class="col-2">Entry</div>
+            <div class="col-6">Data</div>
+            <div class="col-1">ID</div>
+            <div class="col-1">PID</div>
+        </div>
+        {% for call in calls %}
+        <div class="row no-gutters border">
+            <div class="col-2">
+                {{ call.schedule_week_monday|date:"dMy" }}
+            </div>
+            <div class="col-2">
+                {{ call.last_modified_on|date:"dMy" }}
+            </div>
+            <div class="col-6">
+                {{ call.type }} // {{ call.method }} // {{ call.outcome }} // {{ call.follow_up_delay }}
+            </div>
+            <div class="col-1">
+                {{ call.id }}
+            </div>
+            <div class="col-1">
+                {{ call.parent_call.id }}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,99 @@
+{% extends "crm/base.html" %}
+{% block title %}Alementary CRM{% endblock %}
+{% block content %}
+    <div class="container-fluid px-2">
+        <div class="row no-gutters pt-3">
+            <div class="col-12 pl-2 pb-1 pt-2 bg-secondary text-light">
+                <h4>ALL ACCOUNTS</h4>
+            </div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col-12 pt-2">
+                <div class="form-group">
+                    <form name="search" id="search" onsubmit="return submitOnEnter();">
+                        {% csrf_token %}
+                        <input type="text" class="form-control" id="accounts" onfocus="this.value=''">
+                    </form>
+                    <script>
+                        function submitOnEnter(e) {
+                            detail_url = "/crm/accounts/" + $("#accounts").val() + "/detail/";
+                            location = detail_url;
+                            return false;
+                        }
+                    </script>
+                </div>
+                <script>
+                    $( function() {
+                        var availableAccounts = [
+                            {% for account in accounts %}
+                                { label: "{{ account.account_name }}",
+                                    value: "{{ account.id }}" },
+                            {% endfor %}
+                        ];
+                        $( "#accounts" ).autocomplete({
+                            source: availableAccounts,
+                            autoFocus: true,
+                            select: function (event, ui) {
+                                $(this).val(ui.item.value);
+                                $("#search").submit();
+                            },
+                        });
+                    });
+                </script>
+            </div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col-12">
+                <span class="float-right">
+                    <a href="/crm/accounts/create/">
+                        <button type="button" class="btn btn-warning">
+                            <span class="material-icons">add</span>
+                        </button>
+                    </a>
+                </span>
+            </div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col-12 pt-2">
+                <a href="/crm/accounts/on-prem/maintenance/">
+                    <button type="button" class="btn btn-primary btn-block">On-Prem Maintenance</button>
+                </a>
+            </div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col-12 pt-2">
+                <a href="/crm/accounts/on-prem/acquisition/">
+                    <button type="button" class="btn btn-primary btn-block">On-Prem Acquisitions</button>
+                </a>
+            </div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col-12 pt-2">
+                <a href="/crm/accounts/on-prem/prospect/">
+                    <button type="button" class="btn btn-primary btn-block">On-Prem Prospects</button>
+                </a>
+            </div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col-12 pt-2">
+                <a href="/crm/accounts/off-prem/maintenance/">
+                    <button type="button" class="btn btn-primary btn-block">Off-Prem Maintenance</button>
+                </a>
+            </div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col-12 pt-2">
+                <a href="/crm/accounts/off-prem/acquisition/">
+                    <button type="button" class="btn btn-primary btn-block">Off-Prem Acquisition</button>
+                </a>
+            </div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col-12 pt-2">
+                <a href="/crm/accounts/off-prem/prospect/">
+                    <button type="button" class="btn btn-primary btn-block">Off-Prem Prospects</button>
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "crm/base.html" %}
+{% block title %}Alementary CRM{% endblock %}
+{% block content %}
+    <div class="container-fluid px-2">
+        <div class="row no-gutters pt-3">
+            <div class="col-12 pl-2 pb-1 pt-2 bg-secondary text-light">
+                <h4>FIND ACCOUNT</h4>
+            </div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col-12 pt-2">
+                <div class="form-group">
+                    <form name="search" id="search" onsubmit="return submitOnEnter();">
+                        {% csrf_token %}
+                        <input type="text" class="form-control" id="accounts" onfocus="this.value=''">
+                    </form>
+                    <script>
+                        function submitOnEnter(e) {
+                            detail_url = "/crm/calls/wizard/" + $("#accounts").val() + "/type/";
+                            location = detail_url;
+                            return false;
+                        }
+                    </script>
+                </div>
+                <script>
+                    $( function() {
+                        var availableAccounts = [
+                            {% for account in accounts %}
+                                { label: "{{ account.account_name }}",
+                                    value: "{{ account.id }}" },
+                            {% endfor %}
+                        ];
+                        $( "#accounts" ).autocomplete({
+                            source: availableAccounts,
+                            autoFocus: true,
+                            select: function (event, ui) {
+                                $(this).val(ui.item.value);
+                                $("#search").submit();
+                            },
+                        });
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+{% endblock %}

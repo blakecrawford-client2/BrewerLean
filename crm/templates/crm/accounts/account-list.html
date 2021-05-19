@@ -1,0 +1,37 @@
+{% extends "crm/base.html" %}
+{% block title %}{{ page_name }}{% endblock %}
+{% block content %}
+    <div class="container-fluid px-2">
+        <div class="row no-gutters pt-3">
+            <div class="col-12 pl-2 pb-1 pt-2 bg-secondary text-light">
+                <h4>{{ page_name }}</h4>
+            </div>
+        </div>
+        {% for account in accounts %}
+            <div class="row no-gutters pt-2 pl-2 pr-2">
+                <div class="col-8">
+                    {{ account.account_name }}
+                </div>
+                <div class="col-4">
+                    <span class="float-right">
+                        <a href="/crm/accounts/{{ account.id }}/detail/">
+                            <button type="button" class="btn btn-warning btn-sm">
+                                <span class="material-icons">visibility</span>
+                            </button>
+                        </a>
+                        <a href="/crm/accounts/{{ account.id }}/update/">
+                            <button type="button" class="btn btn-warning btn-sm">
+                                <span class="material-icons">edit</span>
+                            </button>
+                        </a>
+                        <a href="/crm/calls/wizard/{{ account.id }}/type/">
+                            <button type="button" class="btn btn-warning btn-sm">
+                                <span class="material-icons">call</span>
+                            </button>
+                        </a>
+                    </span>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
