@@ -17,7 +17,7 @@ class InprocessBatchList(LoginRequiredMixin, ListView):
     context_object_name = 'inprocess_batch_list'
 
     def get_queryset(self):
-        return Batch.objects.filter(status='IP')
+        return Batch.objects.filter(status='IP').order_by('-plan_start_day')
 
 class InprocessBatchCreateView(LoginRequiredMixin, BLCreateView):
     model = Batch

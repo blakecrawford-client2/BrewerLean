@@ -11,7 +11,7 @@ class ArchiveBatchListView(LoginRequiredMixin, ListView):
     context_object_name = 'archive_batch_list'
 
     def get_queryset(self):
-        return Batch.objects.filter(status='AR').order_by('last_modified_on')
+        return Batch.objects.filter(status='AR').order_by('-plan_start_day')
 
 
 class ArchiveBatchView(LoginRequiredMixin, BLUpdateView):

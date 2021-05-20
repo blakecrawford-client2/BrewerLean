@@ -54,15 +54,17 @@
 
         <div class="row no-gutters">
             <div class="col border bg-light pl-1">Date</div>
-            <div class="col border bg-light pl-1">Person</div>
-            <div class="col border bg-light pl-1">RealP</div>
+            <div class="col border bg-light pl-1">rP</div>
+            <div class="col border bg-light pl-1">pH</div>
+            <div class="col border bg-light pl-1">Tpv</div>
             <div class="col-2 border bg-light pl-1">&nbsp;</div>
         </div>
         {% for fqc in fermqcentries %}
         <div class="row no-gutters">
-            <div class="col border pl-1">{{ fqc.date }}</div>
-            <div class="col border pl-1">{{ fqc.staff.name }}</div>
+            <div class="col border pl-1">{{ fqc.date|date:'dM' }}</div>
             <div class="col border pl-1">{{ fqc.extract_real }}</div>
+            <div class="col border pl-1">{{ fqc.ph }}</div>
+            <div class="col border pl-1">{{ fqc.temp_pv }}</div>
             <div class="col-2 border">
                 <a href="/ebs/inprocess/detail/{{ batch.pk }}/fermqc/update/{{ fqc.id }}">
                     <button type="button" class="btn btn-primary btn-block">
