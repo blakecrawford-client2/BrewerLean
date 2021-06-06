@@ -18,6 +18,11 @@
                 </span>
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item">
+                        <a class="nav-link" id="overdue-tab" data-toggle="tab" href="#nav-overdue" role="tab" aria-controls="nav-overdue" aria-selected="false">
+                            <span class="material-icons">report_problem</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link active" id="open-tab" data-toggle="tab" href="#nav-open" role="tab" aria-controls="nav-open" aria-selected="true">
                             <span class="material-icons">open_in_new</span>
                         </a>
@@ -35,6 +40,57 @@
                 </ul>
                 <div class="tab-content" id="nav-tabContent">
                     <div class="row no-gutters pt-3"></div>
+                    <div class="tab-pane fade" id="nav-overdue" role="tabpanel" aria-labelledby="nav-overdue-tab">
+                        {% if overdue_calls %}
+                            <div class="row no-gutters pl-2 bg-light">
+                                <div class="col-7">Name</div>
+                                <div class="col-1 text-center">Type</div>
+                                <div class="col-1 text-center">How</div>
+                                <div class="col-3"></div>
+                            </div>
+                            {% for overdue_call in overdue_calls %}
+                                <div class="row no-gutters pl-2 pt-1">
+                                    <div class="col-7">
+                                        {{ overdue_call.account.account_name }}
+                                    </div>
+                                    <div class="col-1 text-center">
+                                        {{ overdue_call.type }}
+                                    </div>
+                                    <div class="col-1 text-center">
+                                        {{ overdue_call.method }}
+                                    </div>
+                                    <div class="col-3">
+                                        <span class="float-right">
+                                            {% if overdue_call.type is not None %}
+                                                <a href="/crm/calls/wizard/{{ overdue_call.account.id }}/{{ overdue_call.id }}/type/{{ overdue_call.type }}/method/{{ overdue_call.method }}/outcome/RST/followup/">
+                                                    <button type="button" class="btn btn-warning btn-sm">
+                                                        <span class="material-icons">volume_off</span>
+                                                    </button>
+                                                </a>
+                                                <a href="/crm/calls/wizard/{{ overdue_call.account.id }}/{{ overdue_call.id }}/type/{{ overdue_call.type }}/method/{{ overdue_call.method }}/outcome/">
+                                                    <button type="button" class="btn btn-warning btn-sm">
+                                                        <span class="material-icons">arrow_forward_ios</span>
+                                                    </button>
+                                                </a>
+                                            {% else %}
+                                                <a href="/crm/calls/wizard/{{ overdue_call.account.id }}/{{ overdue_call.id }}/type/">
+                                                    <button type="button" class="btn btn-warning btn-sm">
+                                                        <span class="material-icons">arrow_forward_ios</span>
+                                                    </button>
+                                                </a>
+                                            {% endif %}
+                                        </span>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="row no-gutters">
+                                <div class="col-12 pl-3">
+                                    <h5>No Overdue Calls</h5>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
                     <div class="tab-pane fade show active" id="nav-open" role="tabpanel" aria-labelledby="nav-open-tab">
                         {% if original_calls %}
                             <div class="row no-gutters pl-2 bg-light">
@@ -140,7 +196,7 @@
                         {% else %}
                             <div class="row no-gutters">
                                 <div class="col-12 pl-3">
-                                    <h5>No Follow-Up Calls</h5>
+                                    <h5>No This Week Follow-Ups</h5>
                                 </div>
                             </div>
                         {% endif %}
@@ -179,7 +235,7 @@
                         {% else %}
                             <div class="row no-gutters">
                                 <div class="col-12 pl-3">
-                                    <h5>No Follow-Up Calls</h5>
+                                    <h5>No Next Week Follow-Ups</h5>
                                 </div>
                             </div>
                         {% endif %}

@@ -52,7 +52,7 @@ class AccountDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(AccountDetailView, self).get_context_data(**kwargs)
         try:
-            calls = Call.objects.filter(account=self.kwargs.get('pk')).order_by('-schedule_week_monday', '-last_modified_on')
+            calls = Call.objects.filter(account=self.kwargs.get('pk')).order_by('-schedule_week_monday')
         except:
             calls = None
         context['page_name'] = 'Account Detail'
@@ -63,9 +63,10 @@ class AccountUpdateView(LoginRequiredMixin, UpdateView):
     model = Account
     template_name = 'crm/accounts/account-create.html'
     form_class = AccountForm
-    success_url = '/'
+    success_url = '/crm/account-lists/'
 
-class AccountListOnPremView(AccountListView):
+
+class AccountListOnPremView(AccountListView, LoginRequiredMixin):
 
     def get_queryset(self):
         return Account.objects.filter(account_group='ON').order_by('account_name')
@@ -76,7 +77,7 @@ class AccountListOnPremView(AccountListView):
         return context
 
 
-class AccountListOnPremMaintenanceView(AccountListView):
+class AccountListOnPremMaintenanceView(AccountListView, LoginRequiredMixin):
 
     def get_queryset(self):
         return Account.objects.filter(account_group='ON', account_type='M').order_by('account_name')
@@ -87,7 +88,7 @@ class AccountListOnPremMaintenanceView(AccountListView):
         return context
 
 
-class AccountListOnPremAcquisitionView(AccountListView):
+class AccountListOnPremAcquisitionView(AccountListView, LoginRequiredMixin):
 
     def get_queryset(self):
         return Account.objects.filter(account_group='ON', account_type='A').order_by('account_name')
@@ -98,7 +99,7 @@ class AccountListOnPremAcquisitionView(AccountListView):
         return context
 
 
-class AccountListOnPremProspectView(AccountListView):
+class AccountListOnPremProspectView(AccountListView, LoginRequiredMixin):
 
     def get_queryset(self):
         return Account.objects.filter(account_group='ON', account_type='P').order_by('account_name')
@@ -109,7 +110,7 @@ class AccountListOnPremProspectView(AccountListView):
         return context
 
 
-class AccountListOnPremDeadView(AccountListView):
+class AccountListOnPremDeadView(AccountListView, LoginRequiredMixin):
 
     def get_queryset(self):
         return Account.objects.filter(account_group='ON', account_type='D').order_by('account_name')
@@ -120,7 +121,7 @@ class AccountListOnPremDeadView(AccountListView):
         return context
 
 
-class AccountListOffPremView(AccountListView):
+class AccountListOffPremView(AccountListView, LoginRequiredMixin):
 
     def get_queryset(self):
         return Account.objects.filter(account_group='OF').order_by('account_name')
@@ -131,7 +132,7 @@ class AccountListOffPremView(AccountListView):
         return context
 
 
-class AccountListOffPremMaintenanceView(AccountListView):
+class AccountListOffPremMaintenanceView(AccountListView, LoginRequiredMixin):
 
     def get_queryset(self):
         return Account.objects.filter(account_group='OF', account_type='M').order_by('account_name')
@@ -142,7 +143,7 @@ class AccountListOffPremMaintenanceView(AccountListView):
         return context
 
 
-class AccountListOffPremAcquisitionView(AccountListView):
+class AccountListOffPremAcquisitionView(AccountListView, LoginRequiredMixin):
 
     def get_queryset(self):
         return Account.objects.filter(account_group='OF', account_type='A').order_by('account_name')
@@ -153,7 +154,7 @@ class AccountListOffPremAcquisitionView(AccountListView):
         return context
 
 
-class AccountListOffPremProspectView(AccountListView):
+class AccountListOffPremProspectView(AccountListView, LoginRequiredMixin):
 
     def get_queryset(self):
         return Account.objects.filter(account_group='OF', account_type='P').order_by('account_name')
@@ -164,7 +165,7 @@ class AccountListOffPremProspectView(AccountListView):
         return context
 
 
-class AccountListOffPremDeadView(AccountListView):
+class AccountListOffPremDeadView(AccountListView, LoginRequiredMixin):
 
     def get_queryset(self):
         return Account.objects.filter(account_group='OF', account_type='D').order_by('account_name')
@@ -175,9 +176,9 @@ class AccountListOffPremDeadView(AccountListView):
         return context
 
 
-class CreateAccountView(CreateView):
+class CreateAccountView(CreateView, LoginRequiredMixin):
     model = Account
     template_name= 'crm/accounts/account-create.html'
     context_object_name = 'accounts'
     form_class = AccountForm
-    success_url ='/'
+    success_url = '/crm/account-lists/'
