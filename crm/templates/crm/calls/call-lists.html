@@ -43,14 +43,18 @@
                     <div class="tab-pane fade" id="nav-overdue" role="tabpanel" aria-labelledby="nav-overdue-tab">
                         {% if overdue_calls %}
                             <div class="row no-gutters pl-2 bg-light">
-                                <div class="col-7">Name</div>
+                                <div class="col-3">Sched.</div>
+                                <div class="col-5">Name</div>
                                 <div class="col-1 text-center">Type</div>
                                 <div class="col-1 text-center">How</div>
-                                <div class="col-3"></div>
+                                <div class="col-2"></div>
                             </div>
                             {% for overdue_call in overdue_calls %}
                                 <div class="row no-gutters pl-2 pt-1">
-                                    <div class="col-7">
+                                    <div class="col-3">
+                                        {{ overdue_call.schedule_week_monday|date:"dMy"  }}
+                                    </div>
+                                    <div class="col-5">
                                         {{ overdue_call.account.account_name }}
                                     </div>
                                     <div class="col-1 text-center">
@@ -59,7 +63,7 @@
                                     <div class="col-1 text-center">
                                         {{ overdue_call.method }}
                                     </div>
-                                    <div class="col-3">
+                                    <div class="col-2">
                                         <span class="float-right">
                                             {% if overdue_call.type is not None %}
                                                 <a href="/crm/calls/wizard/{{ overdue_call.account.id }}/{{ overdue_call.id }}/type/{{ overdue_call.type }}/method/{{ overdue_call.method }}/outcome/RST/followup/">
