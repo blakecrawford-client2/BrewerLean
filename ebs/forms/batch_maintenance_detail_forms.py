@@ -63,7 +63,6 @@ class AddYeastPitchEntryForm(forms.ModelForm):
     class Meta:
         model = BatchYeastPitch
         fields = [
-            'staff',
             'yeast',
             'yeast_qty',
             'yeast_source',
@@ -187,7 +186,6 @@ class BatchFermentationQCForm(forms.ModelForm):
     class Meta:
         model = BatchFermentationQC
         fields = [
-            'staff',
             'date',
             'extract_real',
             'ph',
@@ -212,7 +210,7 @@ class BatchDOEntryForm(forms.ModelForm):
 
     class Meta:
         model = BatchDOEntry
-        fields = ['staff',
+        fields = [
                   'date',
                   'do_type',
                   'do_measurement']
@@ -238,7 +236,7 @@ class BatchTransferForm(forms.ModelForm):
 
     class Meta:
         model = BatchTransfer
-        fields = ['staff',
+        fields = [
                   'date',
                   'volume_transfer_approx',
                   'to_tank']
@@ -260,7 +258,7 @@ class CarbonationQCEntryForm(forms.ModelForm):
 
     class Meta:
         model = CarbonationQCEntry
-        fields = ['staff',
+        fields = [
                   'date',
                   'carb_vols_brite']
 
@@ -281,7 +279,7 @@ class PackagingRunForm(forms.ModelForm):
 
     class Meta:
         model = PackagingRun
-        fields = ['staff',
+        fields = [
                   'date',
                   'filled_halfs',
                   'filled_sixtels',
@@ -306,7 +304,7 @@ class CanningQCForm(forms.ModelForm):
 
     class Meta:
         model = CanningQC
-        fields = ['staff',
+        fields = [
                   'date',
                   'type',
                   'measurement']

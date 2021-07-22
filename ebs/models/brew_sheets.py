@@ -397,6 +397,7 @@ class BatchFermentationQC(models.Model):
     staff = models.ForeignKey(Staff,
                               null=True,
                               on_delete=models.SET_NULL,
+                              blank=True,
                               verbose_name='Who')
     extract_apparent = models.DecimalField(max_digits=3,
                                            decimal_places=1,
@@ -469,6 +470,7 @@ class BatchDOEntry(models.Model):
                                       verbose_name='D.O. Value')
     staff = models.ForeignKey(Staff,
                               null=True,
+                              blank=True,
                               on_delete=models.SET_NULL,
                               verbose_name='Who')
     date = models.DateField(null=True,
@@ -500,6 +502,7 @@ class BatchTransfer(models.Model):
     batch = models.ForeignKey(Batch, null=True, on_delete=models.SET_NULL)
     staff = models.ForeignKey(Staff,
                               null=True,
+                              blank=True,
                               on_delete=models.SET_NULL,
                               verbose_name='Who')
     date = models.DateField(null=True,
@@ -536,6 +539,7 @@ class CarbonationQCEntry(models.Model):
     batch = models.ForeignKey(Batch, null=True, on_delete=models.SET_NULL)
     staff = models.ForeignKey(Staff,
                               null=True,
+                              blank=True,
                               on_delete=models.SET_NULL,
                               verbose_name='Who')
     date = models.DateField(null=True,
@@ -570,6 +574,7 @@ class PackagingRun(models.Model):
     batch = models.ForeignKey(Batch, null=True, on_delete=models.SET_NULL)
     staff = models.ForeignKey(Staff,
                               null=True,
+                              blank=True,
                               on_delete=models.SET_NULL,
                               verbose_name='Who')
     date = models.DateField(null=True,
@@ -622,6 +627,7 @@ class CanningQC(models.Model):
     batch = models.ForeignKey(Batch, null=True, on_delete=models.SET_NULL)
     staff = models.ForeignKey(Staff,
                               null=True,
+                              blank=True,
                               on_delete=models.SET_NULL,
                               verbose_name='Who')
     date = models.DateField(null=True,
