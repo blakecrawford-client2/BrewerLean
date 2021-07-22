@@ -36,5 +36,6 @@ urlpatterns = [
     path('calls/wizard/<int:pk>/type/<str:type>/method/<str:method>/outcome/<str:outcome>/followup/<int:fupweeks>/note/', CreateCallWizardStep5View.as_view()),
     path('calls/wizard/<int:pk>/<int:cpk>/type/<str:type>/method/<str:method>/outcome/<str:outcome>/followup/', CreateCallWizardStep4View.as_view()),
     path('calls/wizard/<int:pk>/<int:cpk>/type/<str:type>/method/<str:method>/outcome/<str:outcome>/followup/<int:fupweeks>/note/', CreateCallWizardStep5View.as_view()),
+    path('reports/', TemplateView.as_view(template_name='crm/reports/sales-weekly-status.html')),
 
 ]

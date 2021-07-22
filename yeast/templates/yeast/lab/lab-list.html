@@ -1,0 +1,33 @@
+{% extends "yeast/base.html" %}
+{% block title %}Yeast Lab List{% endblock %}
+{% block content %}
+<div class="container-fluid px-2">
+        <div class="row no-gutters pt-3">
+            <div class="col-10 bg-light"><h3>Yeast Labs</h3></div>
+            <div class="col-2 bg-light">
+                <span class="float-right">
+                <a href="/yeast/lab/create/">
+                    <button class="btn btn-primary">
+                        <span class="material-icons">add</span>
+                    </button>
+                </a>
+                </span>
+            </div>
+        </div>
+        {% for x in yeast_lab_list %}
+            <div class="row no-gutters pt-2 pb-2 border-bottom">
+                <div class="col-4">{{ x.yeast_lab_code }}</div>
+                <div class="col-7">{{x.yeast_lab_name }}</div>
+                <div class="col-1">
+                    <span class="float-right">
+                        <a href="/yeast/lab/{{ x.id }}/edit">
+                            <button type="button" class="btn btn-warning btn-sm">
+                                <span class="material-icons">mode_edit</span>
+                            </button>
+                        </a>
+                    </span>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

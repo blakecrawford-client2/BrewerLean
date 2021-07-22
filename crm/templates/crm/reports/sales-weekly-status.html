@@ -14,26 +14,6 @@
   </head>
 </head>
 <body>
-    <div class="container-fluid px-3">
-        <div class="row border bg-light">
-            <div class="col-12 text-center"><h4>SALES WEEKLY STATUS BOARD</h4></div>
-        </div>
-        <div class="row">
-            <div class="col-1 border bg-secondary text-white">STAFF</div>
-            <div class="col-1 border bg-secondary text-white">ACCOUNT TYPE</div>
-            <div class="col-2 border bg-secondary text-white">ACCOUNT GROUP</div>
-        </div>
-        <div class="row border">
-            <div class="col-12">&nbsp;</div>
-        </div>
-        {% for batch in batches %}
-            <div class="row">
-                <div class="col-1 border">{{ batch.target_fv.tank_name }}</div>
-                <div class="col-1 border">{{ batch.batch_product.ownership.partner_short_code }}</div>
-                <div class="col-2 border">{{ batch.batch_product.product_name}}</div>
-                <div class="col-1 border">{{ batch.obeer_batch }}</div>
-            </div>
-        {% endfor %}
-    </div>
+<iframe width="600" height="450" src="https://datastudio.google.com/embed/reporting/639e5360-1d75-49cb-b9e7-b521f5efc073/page/ExFWC" frameborder="0" style="border:0" allowfullscreen></iframe>
 </body>
 </html>

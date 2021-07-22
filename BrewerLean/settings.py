@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'ebs',
     'crm',
+    'yeast',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
