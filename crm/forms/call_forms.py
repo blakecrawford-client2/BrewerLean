@@ -4,6 +4,7 @@ from crm.models.crm_models import Account
 from crm.models.crm_models import Call
 
 
+
 class CallForm(forms.ModelForm):
     class Meta:
         model = Call

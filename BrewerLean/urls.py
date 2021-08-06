@@ -30,6 +30,7 @@ urlpatterns = [
     path('ebs/', include ('ebs.urls')),
     path('crm/', include ('crm.urls')),
     path('yeast/', include ('yeast.urls')),
+    path('delivery/', include ('delivery.urls'))
     #path('partner-types/', PartnerTypesList.as_view()),
     #path('partner-types/create', PartnerTypeCreateView.as_view()),
     #path('partner-types/update/<int:pk>', PartnerTypeUpdateView.as_view()),

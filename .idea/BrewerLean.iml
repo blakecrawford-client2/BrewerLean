@@ -30,6 +30,7 @@
         <option value="$MODULE_DIR$/ebs/templates" />
         <option value="$MODULE_DIR$/crm/templates" />
         <option value="$MODULE_DIR$/yeast/templates" />
+        <option value="$MODULE_DIR$/delivery/templates" />
       </list>
     </option>
   </component>

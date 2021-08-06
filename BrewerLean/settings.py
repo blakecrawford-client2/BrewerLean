@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'ebs',
     'crm',
     'yeast',
+    'delivery',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
