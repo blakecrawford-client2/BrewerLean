@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %} Alementary CRM {% endblock %}</title>
+    <title>{% block title %} Alementary DELIVERY {% endblock %}</title>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -16,9 +16,9 @@
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-      <a class="navbar-brand" href="/crm/">
+      <a class="navbar-brand" href="/delivery/">
           <img src="/static/50x50-Atom.jpg" width="50" height="50">
-          CRM
+          DELIVERY
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -28,28 +28,6 @@
               <li class="nav-item">
                   <a class="nav-link active" aria-current="page" href="/">Home</a>
               </li>
-              <li class="nav-item">
-                  <a class="nav-link" href="/crm/account-lists/">Accounts</a>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link" href="/crm/calls/list">Calls</a>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link" href="#">Reports</a>
-              </li>
-              {% comment %}
-              <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                     Ref. Data
-                  </a>
-                  <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                      <li><a class="dropdown-item" href="#">Partner Types</a></li>
-                      <li><a class="dropdown-item" href="#">Partners</a></li>
-                      <li><a class="dropdown-item" href="#">Tanks</a></li>
-                      <li><a class="dropdown-item" href="#">Products</a></li>
-                  </ul>
-              </li>
-              {% endcomment %}
           </ul>
       </div>
   </nav>
