@@ -7,7 +7,7 @@
                 <h3>Alementary Delivery</h3>
             </div>
         </div>
-        <div class="row no-gutters">
+        <div class="row no-gutters pt-2 pb-2">
             <div class="col-12">
                 <span class="float-right">
                     <a href="/delivery/create/">
@@ -18,5 +18,47 @@
                 </span>
             </div>
         </div>
+        <div class="row no-gutters">
+            <div class="col-5 border bg-light">Date</div>
+            <div class="col-5 border bg-light">Total Stops</div>
+            <div class="col-2 border bg-light"></div>
+        </div>
+        <div class="row no-gutters">
+                {% for delivery in page_obj %}
+                <div class="col-5 border">
+                    {{ delivery.delivery_date }}
+                </div>
+                <div class="col-5 border">
+                    {{ delivery.total_stops }}
+                </div>
+                <div class="col-2 border">
+                    <a href="/delivery/update/{{ delivery.pk }}">
+                        <button type="button" class="btn btn-primary btn-block">
+                            <span class="material-icons md-18">mode_edit</span>
+                        </button>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="row no-gutters">
+            <div class="col-12">
+                <div class="pagination">
+                    <span class="step-links">
+                        {% if page_obj.has_previous %}
+                            <a href="?page=1">&laquo; first</a>
+                            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                        {% endif %}
+                        <span class="current">
+                            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                        </span>
+                        {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}">next</a>
+                            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+
     </div>
 {% endblock %}

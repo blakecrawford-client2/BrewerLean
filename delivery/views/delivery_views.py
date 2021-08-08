@@ -25,8 +25,21 @@ class CreateDeliveryMetricsView(CreateView):
         return context
 
 
+class UpdateDeliveryMetricsView(UpdateView):
+    model = DeliveryMetrics
+    template_name = 'delivery/create-delivery-metrics.html'
+    form_class = DeliveryForm
+    success_url = '/delivery/'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_name'] = 'Update Delivery'
+        return context
+
+
 class DeliveryMetricsListView(ListView):
     model = DeliveryMetrics
+    paginate_by = 10
     template_name = 'delivery/home.html'
     context_object_name = 'metrics'
 
