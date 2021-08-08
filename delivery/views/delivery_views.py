@@ -13,7 +13,7 @@ from delivery.models.delivery_models import DeliveryMetrics
 from delivery.forms.delivery_forms import DeliveryForm
 
 
-class CreateDeliveryMetricsView(CreateView):
+class CreateDeliveryMetricsView(CreateView, LoginRequiredMixin):
     model = DeliveryMetrics
     template_name = 'delivery/create-delivery-metrics.html'
     form_class = DeliveryForm
@@ -25,7 +25,7 @@ class CreateDeliveryMetricsView(CreateView):
         return context
 
 
-class UpdateDeliveryMetricsView(UpdateView):
+class UpdateDeliveryMetricsView(UpdateView, LoginRequiredMixin):
     model = DeliveryMetrics
     template_name = 'delivery/create-delivery-metrics.html'
     form_class = DeliveryForm
@@ -37,11 +37,14 @@ class UpdateDeliveryMetricsView(UpdateView):
         return context
 
 
-class DeliveryMetricsListView(ListView):
+class DeliveryMetricsListView(ListView, LoginRequiredMixin):
     model = DeliveryMetrics
     paginate_by = 10
     template_name = 'delivery/home.html'
     context_object_name = 'metrics'
+
+    def get_queryset(self):
+        return DeliveryMetrics.objects.all().order_by('-delivery_date')
 
     def get_context_data(self, **kwargs):
         context = super(DeliveryMetricsListView, self).get_context_data(**kwargs)
