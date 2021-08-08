@@ -46,5 +46,5 @@ class DeliveryMetricsListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(DeliveryMetricsListView, self).get_context_data(**kwargs)
         context['page_name'] = 'Delivery Metrics'
-        deliveries = DeliveryMetrics.objects.all().order_by('delivery_date')
+        deliveries = DeliveryMetrics.objects.all().order_by('-delivery_date')
         return context
