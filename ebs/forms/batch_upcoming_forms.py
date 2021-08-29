@@ -19,7 +19,7 @@ class MakeUpcomingBatchForm(forms.ModelForm):
     )
     class Meta:
         model = Batch
-        fields = ['batch_product', 'schedule_pattern', 'plan_start_day']
+        fields = ['batch_product', 'schedule_pattern', 'plan_start_day', 'target_fv']
 
 class StartUpcomingBatchForm(forms.ModelForm):
     class Meta:

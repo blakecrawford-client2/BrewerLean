@@ -88,3 +88,19 @@ class OldSchoolBrewSheet(DetailView):
         context['ferm'] = BatchFermentationQC.objects.filter(batch=batch_id)
         context['notes'] = BatchNote.objects.filter(batch=batch_id)
         return context
+
+
+class TankStatusReport(ListView):
+    model = Batch
+    context_object_name = 'batches'
+    template_name = 'ebs/batch/reports/tank-status-report.html'
+
+    def get_queryset(self):
+        return Batch.objects.filter(status='IP').order_by('target_fv')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['upcoming_batches'] = Batch.objects.filter(status='PL')
+        context['batch_transfers'] = BatchTransfer.objects.filter(batch__status='IP')
+        return context
+
