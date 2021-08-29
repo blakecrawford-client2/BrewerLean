@@ -28,37 +28,38 @@
         <div class="row border">
             <div class="col-12">&nbsp;</div>
         </div>
-        {% for batch in batches %}
+        {% for tank in tanks %}
             <div class="row">
-                    <div class="col border">
-                        {{ batch.target_fv}}
-                    </div>
-                    <div class="col border">
-                        {% for transfer in batch_transfers %}
+                <div class="col border">
+                    {{ tank.tank_name }}
+                </div>
+                {% for batch in batches %}
+                    {%  if batch.target_fv.tank_name == tank.tank_name %}
+                        <div class="col border">
                             {% if transfer.batch.target_fv.tank_name == batch.target_fv.tank_name %}
                                 OPEN
                             {% else %}
                                 IN USE
                             {% endif %}
-                        {% endfor %}
-                    </div>
-                    <div class="col border">
-                        {{ batch.batch_product.product_name }}
-                    </div>
-                    <div class="col border">
-                        {% for upcoming in upcoming_batches %}
-                            {% if upcoming.target_fv == batch.target_fv %}
-                                {{ upcoming.batch_product.product_name }}
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                    <div class="col border">
-                        {% for upcoming in upcoming_batches %}
-                            {% if upcoming.target_fv == batch.target_fv %}
-                                {{ upcoming.plan_start_day }}
-                            {% endif %}
-                        {% endfor %}
-                    </div>
+                        <div class="col border">
+                            {{ batch.batch_product.product_name }}
+                        </div>
+                        <div class="col border">
+                            {% for upcoming in upcoming_batches %}
+                                {% if upcoming.target_fv == batch.target_fv %}
+                                    {{ upcoming.batch_product.product_name }}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="col border">
+                            {% for upcoming in upcoming_batches %}
+                                {% if upcoming.target_fv == batch.target_fv %}
+                                    {{ upcoming.plan_start_day }}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
             </div>
         {% endfor %}
         <div class="row">

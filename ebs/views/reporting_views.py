@@ -14,6 +14,7 @@ from ebs.models.brew_sheets import CarbonationQCEntry
 from ebs.models.brew_sheets import CanningQC
 from ebs.models.brew_sheets import PackagingRun
 from ebs.models.brew_sheets import BatchNote
+from ebs.models.master_data_facilities import Tank
 
 
 class BigTVStatusReport(ListView):
@@ -100,6 +101,7 @@ class TankStatusReport(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['tanks'] = Tank.objects.filter(tank_type='FV').order_by('tank_name')
         context['upcoming_batches'] = Batch.objects.filter(status='PL')
         context['batch_transfers'] = BatchTransfer.objects.filter(batch__status='IP')
         return context
