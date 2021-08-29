@@ -36,7 +36,7 @@
                     <div class="col border">
                         {% for transfer in batch_transfers %}
                             {% if transfer.batch.target_fv.tank_name == batch.target_fv.tank_name %}
-                                DIRTY
+                                OPEN
                             {% else %}
                                 IN USE
                             {% endif %}
