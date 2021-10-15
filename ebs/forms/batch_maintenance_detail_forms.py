@@ -36,7 +36,8 @@ class AddRawMaterialsForm(forms.ModelForm):
         model = BatchRawMaterialsLog
         fields = ['material',
                   'material_lot',
-                  'material_qty']
+                  'material_qty',
+                  'is_dh']
 
 
 class AddWortQCEntryForm(forms.ModelForm):

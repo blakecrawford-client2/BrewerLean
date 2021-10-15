@@ -18,7 +18,7 @@ class SchedulePattern(models.Model):
     offset_yeast_crash = models.IntegerField(null=True,
                                              verbose_name='Days Offset for Yeast Crash')
     offset_yeast_harvest = models.IntegerField(null=True,
-                                               verbose_name='Days Offset for Yeat Harvest')
+                                               verbose_name='Days Offset for Yeast Harvest')
     offset_dryhop = models.IntegerField(null=True,
                                         verbose_name='Days Offset for Dry Hop')
     offset_final_crash = models.IntegerField(null=True,
@@ -235,6 +235,10 @@ class BatchRawMaterialsLog(models.Model):
                                     null=True,
                                     blank=True,
                                     verbose_name='Lot Number')
+    is_dh = models.BooleanField(null=True,
+                                blank=True,
+                                default=False,
+                                verbose_name='Is Dry Hop?')
     last_modified_on = models.DateField(auto_now=True)
     last_modified_by = models.ForeignKey(User,
                                          null=True,
