@@ -113,6 +113,7 @@ class CreateCallWizardStep5View(LoginRequiredMixin, CreateView):
                 instance.outcome = self.kwargs.get('outcome')
                 instance.follow_up_delay = self.kwargs.get('fupweeks')
                 instance.note = form.cleaned_data['note']
+                instance.samples = form.cleaned_data['samples']
                 instance.save()
         else:
             instance = Call.objects.get(id=self.kwargs.get('cpk'))
@@ -123,6 +124,7 @@ class CreateCallWizardStep5View(LoginRequiredMixin, CreateView):
                 instance.outcome = self.kwargs.get('outcome')
                 instance.follow_up_delay = self.kwargs.get('fupweeks')
                 instance.note = form.cleaned_data['note']
+                instance.samples = form.cleaned_data['samples']
                 instance.save()
 
         if self.kwargs.get('fupweeks') is not None:

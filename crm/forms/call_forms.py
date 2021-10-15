@@ -28,7 +28,8 @@ class CallForm(forms.ModelForm):
 class CallWizardForm(forms.ModelForm):
     class Meta:
         model = Call
-        fields = ['note',]
+        fields = ['note',
+                  'samples']
 
 
 
