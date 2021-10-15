@@ -22,11 +22,11 @@
                         }
                     </script>
                 </div>
-                <script>
+                <script charset="utf-8">
                     $( function() {
                         var availableAccounts = [
                             {% for account in accounts %}
-                                { label: "{{ account.account_name }}",
+                                { label: "{{ account.account_name|safe }}",
                                     value: "{{ account.id }}" },
                             {% endfor %}
                         ];

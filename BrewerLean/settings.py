@@ -95,9 +95,9 @@ if DEBUG is True:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'EBS',
-            'USER': 'brewerlean',
-            'PASSWORD': 'brewerlean',
+            'NAME': 'prod_test',
+            'USER': 'ebs',
+            'PASSWORD': '',
             'HOST': '127.0.0.1',
             'PORT': '5432',
         }
@@ -164,7 +164,7 @@ AUTHENTICATION_BACKENDS = (
 )
 
 if DEBUG is True:
-    SITE_ID = 3
+    SITE_ID = 4
 else:
     SITE_ID = env.int('EBS_SITE_ID', default='4')
 

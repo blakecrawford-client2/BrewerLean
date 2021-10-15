@@ -26,7 +26,7 @@
                     $( function() {
                         var availableAccounts = [
                             {% for account in accounts %}
-                                { label: "{{ account.account_name }}",
+                                { label: "{{ account.account_name|safe }}",
                                     value: "{{ account.id }}" },
                             {% endfor %}
                         ];

@@ -164,10 +164,10 @@ class CallsListView(LoginRequiredMixin, ListView):
         context = super(CallsListView, self).get_context_data(**kwargs)
         context['page_name'] = 'Calls List'
         #open_calls = Call.objects.filter(account__ale_owner=current_user, type__isnull=False, outcome__isnull=True)
-        overdue_calls = Call.objects.filter(account__ale_owner=current_user, schedule_week_monday__lt=this_week_monday, outcome__isnull=True)
-        original_calls = Call.objects.filter(account__ale_owner=current_user, type__isnull=False, outcome__isnull=True)
-        follow_up_this_week_calls = Call.objects.filter(account__ale_owner=current_user, schedule_week_monday=this_week_monday, type__isnull=True,  outcome__isnull=True)
-        follow_up_next_week_calls = Call.objects.filter(account__ale_owner=current_user, schedule_week_monday=next_week_monday, type__isnull=True, outcome__isnull=True)
+        overdue_calls = Call.objects.filter(account__ale_owner=current_user, schedule_week_monday__lt=this_week_monday, outcome__isnull=True).order_by('account__account_name')
+        original_calls = Call.objects.filter(account__ale_owner=current_user, type__isnull=False, outcome__isnull=True).order_by('account__account_name')
+        follow_up_this_week_calls = Call.objects.filter(account__ale_owner=current_user, schedule_week_monday=this_week_monday, type__isnull=True,  outcome__isnull=True).order_by('account__account_name')
+        follow_up_next_week_calls = Call.objects.filter(account__ale_owner=current_user, schedule_week_monday=next_week_monday, type__isnull=True, outcome__isnull=True).order_by('account__account_name')
         #context['open_calls'] = open_calls
         context['overdue_calls'] = overdue_calls
         context['original_calls'] = original_calls
