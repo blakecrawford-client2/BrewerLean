@@ -9,13 +9,23 @@
     <div class="container-fluid float-left px-2">
         <div class="row no-gutters pt-3">
             <div class="col-12 pb-2">
-                <span class="float-right">
-                    <a href="/ebs/inprocess/detail/{{ batch.id }}">
-                        <button type="button" class="btn btn-warning">
-                            <span class="material-icons">arrow_back_ios_new</span>
-                        </button>
-                    </a>
-                </span>
+                {% if '/archive' in request.path %}
+                    <span class="float-right">
+                        <a href="/ebs/archive/detail/{{ batch.id }}">
+                            <button type="button" class="btn btn-warning">
+                                <span class="material-icons">arrow_back_ios_new</span>
+                            </button>
+                        </a>
+                    </span>
+                {% else %}
+                    <span class="float-right">
+                        <a href="/ebs/inprocess/detail/{{ batch.id }}">
+                            <button type="button" class="btn btn-warning">
+                                <span class="material-icons">arrow_back_ios_new</span>
+                            </button>
+                        </a>
+                    </span>
+                {% endif %}
             </div>
         </div>
         <div class="row no-gutters">
@@ -52,11 +62,19 @@
             <div class="col-10 border-left pt-2 pl-1"><h3>Raw Materials</h3></div>
             <div class="col-2 border-right pt-2 pr-1 pb-2">
                 <span class="float-right">
-                    <a href="/ebs/inprocess/detail/{{ current_batch.pk }}/rawmaterials/add/">
-                        <button type="button" class="btn btn-primary">
-                            <i class="material-icons">add</i>
-                        </button>
-                    </a>
+                    {% if '/archive' in request.path %}
+                        <a href="/ebs/archive/detail/{{ current_batch.pk }}/rawmaterials/add/">
+                            <button type="button" class="btn btn-primary">
+                                <i class="material-icons">add</i>
+                            </button>
+                        </a>
+                    {% else %}
+                         <a href="/ebs/inprocess/detail/{{ current_batch.pk }}/rawmaterials/add/">
+                            <button type="button" class="btn btn-primary">
+                                <i class="material-icons">add</i>
+                            </button>
+                        </a>
+                    {% endif %}
                 </span>
             </div>
         </div>
@@ -73,11 +91,19 @@
             <div class="col border pl-1">{{ g.material_lot }}</div>
             <div class="col border pl-1">{{ g.material_qty }}</div>
             <div class="col-2 border">
-                <a href="/ebs/inprocess/detail/{{ current_batch.pk }}/rawmaterials/update/{{ g.id }}">
-                    <button type="button" class="btn btn-primary btn-block btn-sm">
-                        <span class="material-icons md-18">mode_edit</span>
-                    </button>
-                </a>
+                {% if '/archive' in request.path %}
+                    <a href="/ebs/archive/detail/{{ current_batch.pk }}/rawmaterials/update/{{ g.id }}">
+                        <button type="button" class="btn btn-primary btn-block btn-sm">
+                            <span class="material-icons md-18">mode_edit</span>
+                        </button>
+                    </a>
+                {% else %}
+                    <a href="/ebs/inprocess/detail/{{ current_batch.pk }}/rawmaterials/update/{{ g.id }}">
+                        <button type="button" class="btn btn-primary btn-block btn-sm">
+                            <span class="material-icons md-18">mode_edit</span>
+                        </button>
+                    </a>
+                {% endif %}
             </div>
         </div>
         {% endfor %}
@@ -94,11 +120,19 @@
             <div class="col border pl-1">{{ h.material_lot }}</div>
             <div class="col border pl-1">{{ h.material_qty }}</div>
             <div class="col-2 border">
-                <a href="/ebs/inprocess/detail/{{ current_batch.pk }}/rawmaterials/update/{{ h.id }}">
-                    <button type="button" class="btn btn-primary btn-block btn-sm">
-                        <span class="material-icons md-18">mode_edit</span>
-                    </button>
-                </a>
+                {% if '/archive' in request.path %}
+                    <a href="/ebs/archive/detail/{{ current_batch.pk }}/rawmaterials/update/{{ h.id }}">
+                        <button type="button" class="btn btn-primary btn-block btn-sm">
+                            <span class="material-icons md-18">mode_edit</span>
+                        </button>
+                    </a>
+                {% else %}
+                    <a href="/ebs/inprocess/detail/{{ current_batch.pk }}/rawmaterials/update/{{ h.id }}">
+                        <button type="button" class="btn btn-primary btn-block btn-sm">
+                            <span class="material-icons md-18">mode_edit</span>
+                        </button>
+                    </a>
+                {% endif %}
             </div>
         </div>
         {% endfor %}
@@ -115,11 +149,19 @@
             <div class="col border pl-1">{{ o.material_lot }}</div>
             <div class="col border pl-1">{{ o.material_qty }}</div>
             <div class="col-2 border">
-                <a href="/ebs/inprocess/detail/{{ current_batch.pk }}/rawmaterials/update/{{ o.id }}">
-                    <button type="button" class="btn btn-primary btn-block btn-sm">
-                        <span class="material-icons md-18">mode_edit</span>
-                    </button>
-                </a>
+                {% if '/archive' in request.path %}
+                    <a href="/ebs/archive/detail/{{ current_batch.pk }}/rawmaterials/update/{{ o.id }}">
+                        <button type="button" class="btn btn-primary btn-block btn-sm">
+                            <span class="material-icons md-18">mode_edit</span>
+                        </button>
+                    </a>
+                {% else %}
+                    <a href="/ebs/inprocess/detail/{{ current_batch.pk }}/rawmaterials/update/{{ o.id }}">
+                        <button type="button" class="btn btn-primary btn-block btn-sm">
+                            <span class="material-icons md-18">mode_edit</span>
+                        </button>
+                    </a>
+                {% endif %}
             </div>
         </div>
         {% endfor %}
@@ -127,11 +169,19 @@
         <div class="row no-gutters">
             <div class="col-12 pt-2 pb-1">
                 <span class="float-right">
-                    <a href="/ebs/inprocess/detail/{{ current_batch.pk }}/rawmaterials/add/">
-                        <button type="button" class="btn btn-primary">
-                            <i class="material-icons">add</i>
-                        </button>
-                    </a>
+                    {% if '/archive' in request.path %}
+                        <a href="/ebs/archive/detail/{{ current_batch.pk }}/rawmaterials/add/">
+                            <button type="button" class="btn btn-primary">
+                                <i class="material-icons">add</i>
+                            </button>
+                        </a>
+                    {% else %}
+                         <a href="/ebs/inprocess/detail/{{ current_batch.pk }}/rawmaterials/add/">
+                            <button type="button" class="btn btn-primary">
+                                <i class="material-icons">add</i>
+                            </button>
+                        </a>
+                    {% endif %}
                 </span>
             </div>
         </div>
@@ -150,11 +200,19 @@
             <div class="col border pl-1">{{ ul.note_type }}</div>
             <div class="col border pl-1">{{ ul.note }}</div>
             <div class="col-1 border">
-                <a href="/ebs/inprocess/detail/{{ current_batch.pk }}/batchnote/update/{{ ul.id }}">
-                    <button type="button" class="btn btn-primary btn-block btn-sm">
-                        <span class="material-icons md-18">mode_edit</span>
-                    </button>
-                </a>
+                {% if '/archive' in request.path %}
+                    <a href="/ebs/archive/detail/{{ current_batch.pk }}/batchnote/update/{{ ul.id }}">
+                        <button type="button" class="btn btn-primary btn-block btn-sm">
+                            <span class="material-icons md-18">mode_edit</span>
+                        </button>
+                    </a>
+                {% else %}
+                    <a href="/ebs/inprocess/detail/{{ current_batch.pk }}/batchnote/update/{{ ul.id }}">
+                        <button type="button" class="btn btn-primary btn-block btn-sm">
+                            <span class="material-icons md-18">mode_edit</span>
+                        </button>
+                    </a>
+                {% endif %}
             </div>
         </div>
         {% endfor %}

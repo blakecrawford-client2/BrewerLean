@@ -2,6 +2,7 @@ from django import forms
 from bootstrap_datepicker_plus import DatePickerInput
 from ebs.models.brew_sheets import Batch
 from ebs.models.master_data_facilities import Tank
+from ebs.models.master_data_products import Product
 
 class MakeUpcomingBatchForm(forms.ModelForm):
     plan_start_day = forms.DateField(
@@ -17,6 +18,14 @@ class MakeUpcomingBatchForm(forms.ModelForm):
             }
         )
     )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        #self.fields['status'].initial = 'IP'
+        #self.fields['status'].disabled = True
+        self.fields['target_fv'].queryset = Tank.objects.filter(tank_type='FV').order_by('tank_name')
+        self.fields['batch_product'].queryset = Product.objects.order_by('product_name')
+
     class Meta:
         model = Batch
         fields = ['batch_product', 'schedule_pattern', 'plan_start_day', 'target_fv']

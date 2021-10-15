@@ -9,13 +9,23 @@
     <div class="container-fluid float-left px-2">
         <div class="row no-gutters pt-3">
             <div class="col-12 pb-2">
-                <span class="float-right">
-                    <a href="/ebs/inprocess/detail/{{ batch.id }}">
-                        <button type="button" class="btn btn-warning">
-                            <span class="material-icons">arrow_back_ios_new</span>
-                        </button>
-                    </a>
-                </span>
+                {% if '/archive' in request.path %}
+                    <span class="float-right">
+                        <a href="/ebs/archive/detail/{{ batch.id }}">
+                            <button type="button" class="btn btn-warning">
+                                <span class="material-icons">arrow_back_ios_new</span>
+                            </button>
+                        </a>
+                    </span>
+                {% else %}
+                    <span class="float-right">
+                        <a href="/ebs/inprocess/detail/{{ batch.id }}">
+                            <button type="button" class="btn btn-warning">
+                                <span class="material-icons">arrow_back_ios_new</span>
+                            </button>
+                        </a>
+                    </span>
+                {% endif %}
             </div>
         </div>
         <div class="row no-gutters">

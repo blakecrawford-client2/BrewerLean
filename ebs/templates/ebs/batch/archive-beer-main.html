@@ -1,0 +1,186 @@
+{% extends "ebs/base.html" %}
+{% block title %}Archived Batch{% endblock %}
+{% block content %}
+<div class="container-fluid px-2">
+    <div class="row no-gutters pt-3">
+        <div class="col-12 pb-2">
+            <span class="float-right">
+                <a href="/ebs/archive/">
+                    <button type="button" class="btn btn-warning">
+                        <span class="material-icons">arrow_back_ios_new</span>
+                    </button>
+                </a>
+            </span>
+        </div>
+    </div>
+    <div class="row no-gutters">
+        <div class="col-2 text-right float-left border bg-light pr-1">Beer:</div>
+        <div class="col-10 border pl-1">{{ batch.batch_product.product_name }}</div>
+    </div>
+    <div class="row no-gutters">
+        <div class="col-2 text-right float-left border bg-light pr-1">Partner:</div>
+        <div class="col-10 border pl-1">{{ batch.batch_product.ownership.partner_short_code }}</div>
+    </div>
+    <div class="row no-gutters">
+        <div class="col-2 text-right float-left border bg-light pr-1">Number:</div>
+        {% if batch.obeer_batch is None %}
+            <div class="col-4 border pl-1">
+                <a href="/ebs/archive/detail/{{ batch.pk }}/obeer/">
+                    <button type="button" class="btn btn-primary btn-sm">Add</button>
+                </a>
+            </div>
+        {% else %}
+            <div class="col-4 border pl-1">{{ batch.obeer_batch }}</div>
+        {% endif %}
+        <div class="col-2 text-right border bg-light pr-1">MPN:</div>
+        {% if batch.obeer_mpn is None %}
+            <div class="col-4 border pl-1">
+                <a href="/ebs/archive/detail/{{ batch.pk }}/obeer/">
+                    <button type="button" class="btn btn-primary btn-sm">Add</button>
+                </a>
+            </div>
+        {% else %}
+            <div class="col-4 border pl-1">{{ batch.obeer_mpn }}</div>
+        {% endif %}
+    </div>
+    <div class="row no-gutters">
+        <div class="col-2 text-right float-left border bg-light pr-1">Brew:</div>
+        <div class="col-4 border pl-1">{{ act_dates.brew_date }}</div>
+        <div class="col-2 text-right border bg-light pr-1">FV:</div>
+        <div class="col-4 border pl-1">
+            {{ batch.target_fv }}
+            <a href="/ebs/archive/detail/{{ batch.pk }}/changefv/">
+                <button type="button" class="btn btn-primary btn-sm float-right">
+                    <span class="material-icons m18">change_circle</span>
+                </button>
+            </a>
+        </div>
+    </div>
+    <div class="row no-gutters">
+        <div class="col-12">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="bs-tab" data-toggle="tab" href="#bs" role="tab" aria-controls="bs" aria-selected="true">Brew Sheet</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#reports" role="tab" aria-controls="reports" aria-selected="false">Reports</a>
+              </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+              <div class="tab-pane fade show active" id="bs" role="tabpanel" aria-labelledby="bs-tab">
+                <div class="row no-gutters">
+                    <div class="col-12 pt-2">
+                        <a href="/ebs/archive/detail/{{ batch.id }}/rawmaterials/">
+                        <button type="button" class="btn btn-primary btn-block">Raw Materials Log</button>
+                        </a>
+                    </div>
+                    <div class="col-12 pt-2">
+                        <a href="/ebs/archive/detail/{{ batch.id }}/wortqc/">
+                        <button type="button" class="btn btn-primary btn-block">Wort QC Entry</button>
+                        </a>
+                    </div>
+                    <div class="col-12 pt-2">
+                        {% if yeast is None %}
+                            <a href="/ebs/archive/detail/{{ batch.id }}/yeast/">
+                                <button type="button" class="btn btn-primary btn-block">Yeast Pitch Entry</button>
+                            </a>
+                        {% else %}
+                            <a href="/ebs/archive/detail/{{ batch.id }}/yeast/{{ yeast.id }}">
+                                <button type="button" class="btn btn-primary btn-block">Yeast Pitch Entry</button>
+                            </a>
+                        {% endif %}
+                    </div>
+                    <div class="col-12 pt-2">
+                        <a href="/ebs/archive/detail/{{ batch.id }}/dates/{{ act_dates.id }}">
+                            <button type="button" class="btn btn-primary btn-block">Actual Dates</button>
+                        </a>
+                    </div>
+                    <div class="col-12 pt-2">
+                        <a href="/ebs/archive/detail/{{ batch.id }}/fermqc/">
+                        <button type="button" class="btn btn-primary btn-block">Fermentation QC Entry</button>
+                        </a>
+                    </div>
+                    <div class="col-12 pt-2">
+                        <a href="/ebs/archive/detail/{{ batch.id }}/do/">
+                        <button type="button" class="btn btn-primary btn-block">Cellar D.O. Entry</button>
+                        </a>
+                    </div>
+                    <div class="col-12 pt-2">
+                        {% if xfer is None %}
+                            <a href="/ebs/archive/detail/{{ batch.id }}/xfer/">
+                                <button type="button" class="btn btn-primary btn-block">Transfer QC Entry</button>
+                            </a>
+                        {% else %}
+                            <a href="/ebs/archive/detail/{{ batch.id }}/xfer/{{ xfer.id }}">
+                                <button type="button" class="btn btn-primary btn-block">Transfer QC Entry</button>
+                            </a>
+                        {% endif %}
+                    </div>
+                    <div class="col-12 pt-2">
+                        {% if carb is None %}
+                            <a href="/ebs/archive/detail/{{ batch.id }}/carb/">
+                                <button type="button" class="btn btn-primary btn-block">Carbonation QC Entry</button>
+                            </a>
+                        {% else %}
+                            <a href="/ebs/archive/detail/{{ batch.id }}/carb/update/{{ carb.id }}">
+                                <button type="button" class="btn btn-primary btn-block">Carbonation QC Entry</button>
+                            </a>
+                        {% endif %}
+                    </div>
+                    <div class="col-12 pt-2">
+                        <a href="/ebs/archive/detail/{{ batch.id }}/canqc/">
+                        <button type="button" class="btn btn-primary btn-block">Can Run QC Entry</button>
+                        </a>
+                    </div>
+                    <div class="col-12 pt-2">
+                        {% if packaging is None %}
+                            <a href="/ebs/archive/detail/{{ batch.id }}/package/">
+                                <button type="button" class="btn btn-primary btn-block">Final Pack-Off</button>
+                            </a>
+                        {% else %}
+                            <a href="/ebs/archive/detail/{{ batch.id }}/package/update/{{ packaging.id }}">
+                                <button type="button" class="btn btn-primary btn-block">Final Pack-Off</button>
+                            </a>
+                        {% endif %}
+                    </div>
+                    <div class="col-12 pt-2">
+                        <a href="/ebs/archive/detail/{{ batch.id }}/batchnote/">
+                            <button type="button" class="btn btn-warning btn-block">Batch Notes</button>
+                        </a>
+                    </div>
+                    <div class="col-12 pt-2">
+                        <a href="/ebs/archive/detail/{{ batch.id }}/archive/">
+                            <button type="button" class="btn btn-danger btn-block">Archive This Batch</button>
+                        </a>
+                    </div>
+                </div>
+              </div>
+              <div class="tab-pane fade" id="reports" role="tabpanel" aria-labelledby="reports-tab">
+                <div class="row no-gutters">
+                    <div class="col-12 pt-2">
+                        <a href="/ebs/reports/{{ batch.id }}/olschool/">
+                            <button type="button" class="btn btn-warning btn-block">Old School Sheet</button>
+                        </a>
+                    </div>
+                    <div class="col-12 pt-2">
+                        <a href="/ebs/reports/{{ batch.id }}/wortproduction/">
+                            <button type="button" class="btn btn-warning btn-block">Wort Production Record</button>
+                        </a>
+                    </div>
+                    <div class="col-12 pt-2">
+                        <a href="/ebs/reports/{{ batch.id }}/rawmaterials/">
+                            <button type="button" class="btn btn-warning btn-block">Raw materials Record</button>
+                        </a>
+                    </div>
+                    <div class="col-12 pt-2">
+                        <a href="/ebs/reports/{{ batch.id }}/fermentationqc/">
+                            <button type="button" class="btn btn-warning btn-block">Fermentation QC</button>
+                        </a>
+                    </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

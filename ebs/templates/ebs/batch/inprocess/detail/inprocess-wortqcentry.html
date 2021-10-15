@@ -9,13 +9,23 @@
     <div class="container-fluid px-2">
         <div class="row no-gutters pt-3">
             <div class="col-12 pb-2">
-                <span class="float-right">
-                    <a href="/ebs/inprocess/detail/{{ batch.id }}">
-                        <button type="button" class="btn btn-warning">
-                            <span class="material-icons">arrow_back_ios_new</span>
-                        </button>
-                    </a>
-                </span>
+                {% if '/archive' in request.path %}
+                    <span class="float-right">
+                        <a href="/ebs/archive/detail/{{ batch.id }}">
+                            <button type="button" class="btn btn-warning">
+                                <span class="material-icons">arrow_back_ios_new</span>
+                            </button>
+                        </a>
+                    </span>
+                {% else %}
+                    <span class="float-right">
+                        <a href="/ebs/inprocess/detail/{{ batch.id }}">
+                            <button type="button" class="btn btn-warning">
+                                <span class="material-icons">arrow_back_ios_new</span>
+                            </button>
+                        </a>
+                    </span>
+                {% endif %}
             </div>
         </div>
         <div class="row no-gutters">
@@ -92,22 +102,38 @@
             </div>
             <div class="col-4 border pl-1">{{ wqc.brewer.name }}</div>
             <div class="col-2 border">
-                <a href="/ebs/inprocess/detail/{{ batch.pk }}/wortqc/update/{{ wqc.id }}">
-                    <button type="button" class="btn btn-primary btn-block">
-                        <span class="material-icons md-18">mode_edit</span>
-                    </button>
-                </a>
+                {% if '/archive' in request.path %}
+                    <a href="/ebs/archive/detail/{{ batch.pk }}/wortqc/update/{{ wqc.id }}">
+                        <button type="button" class="btn btn-primary btn-block">
+                            <span class="material-icons md-18">mode_edit</span>
+                        </button>
+                    </a>
+                {% else %}
+                    <a href="/ebs/inprocess/detail/{{ batch.pk }}/wortqc/update/{{ wqc.id }}">
+                        <button type="button" class="btn btn-primary btn-block">
+                            <span class="material-icons md-18">mode_edit</span>
+                        </button>
+                    </a>
+                {% endif %}
             </div>
         </div>
         {% endfor %}
         <div class="row no-gutters">
             <div class="col-12 pt-2">
                 <span class="float-right">
-                    <a href="/ebs/inprocess/detail/{{ batch.pk }}/wortqc/add/">
-                        <button type="button" class="btn btn-primary">
-                            <span class="material-icons md-18">add</span>
-                        </button>
-                    </a>
+                    {% if '/archive' in request.path %}
+                        <a href="/ebs/archive/detail/{{ batch.pk }}/wortqc/add/">
+                            <button type="button" class="btn btn-primary">
+                                <span class="material-icons md-18">add</span>
+                            </button>
+                        </a>
+                    {% else %}
+                        <a href="/ebs/inprocess/detail/{{ batch.pk }}/wortqc/add/">
+                            <button type="button" class="btn btn-primary">
+                                <span class="material-icons md-18">add</span>
+                            </button>
+                        </a>
+                    {% endif %}
                 </span>
             </div>
         </div>
