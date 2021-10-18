@@ -1,4 +1,5 @@
 from django.urls import reverse_lazy, reverse
+from django.http.request import HttpRequest
 from django.contrib.auth.mixins import LoginRequiredMixin
 from common.views.BLViews import BLCreateView, BLUpdateView, BLDeleteWithoutConfirmationView
 from ebs.models.brew_sheets import Batch
@@ -36,7 +37,11 @@ class ChangeFVView(LoginRequiredMixin, BLUpdateView):
     context_object_name = 'batch'
 
     def get_success_url(self):
-        return reverse('maintenance', kwargs={'pk': self.kwargs['pk']})
+        request_path = self.request.get_full_path()
+        if '/archive' in request_path:
+            return reverse_lazy('maintenance-archive', kwargs={'pk': self.kwargs.get('pk')})
+        else:
+            return reverse_lazy('maintenance', kwargs={'pk': self.kwargs.get('pk')})
 
     def get_context_data(self, **kwargs):
         batch = Batch.objects.get(pk=self.kwargs.get('pk'))
@@ -52,7 +57,11 @@ class AddObeerDataView(LoginRequiredMixin, BLUpdateView):
     context_object_name = 'batch'
 
     def get_success_url(self):
-        return reverse('maintenance', kwargs={'pk': self.kwargs['pk']})
+        request_path = self.request.get_full_path()
+        if '/archive' in request_path:
+            return reverse_lazy('maintenance-archive', kwargs={'pk': self.kwargs.get('pk')})
+        else:
+            return reverse_lazy('maintenance', kwargs={'pk': self.kwargs.get('pk')})
 
     def get_context_data(self, **kwargs):
         batch = Batch.objects.get(pk=self.kwargs.get('pk'))
@@ -69,7 +78,11 @@ class RawMaterialsLogView(LoginRequiredMixin, BLUpdateView):
     context_object_name = 'current_batch'
 
     def get_success_url(self):
-        return reverse_lazy('maintenance', kwargs={'pk': self.object.pk})
+        request_path = self.request.get_full_path()
+        if '/archive' in request_path:
+            return reverse_lazy('maintenance-archive', kwargs={'pk': self.kwargs.get('bpk')})
+        else:
+            return reverse_lazy('maintenance', kwargs={'pk': self.kwargs.get('bpk')})
 
     def get_context_data(self, **kwargs):
         batch = Batch.objects.get(pk=self.kwargs.get('pk'))
@@ -102,7 +115,11 @@ class AddRawMaterialsLogView(LoginRequiredMixin, BLCreateView):
         return context
 
     def get_success_url(self):
-        return reverse_lazy('rawmaterials', kwargs={'pk': self.kwargs.get('bpk')})
+        request_path = self.request.get_full_path()
+        if '/archive' in request_path:
+            return reverse_lazy('rawmaterials-archive', kwargs={'pk': self.kwargs.get('bpk')})
+        else:
+            return reverse_lazy('rawmaterials', kwargs={'pk': self.kwargs.get('bpk')})
 
     def form_valid(self, form):
         form.instance.batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
@@ -116,7 +133,12 @@ class UpdateRawMaterialsLogView(LoginRequiredMixin, BLUpdateView):
     context_object_name = 'current_material'
 
     def get_success_url(self):
-        return reverse_lazy('rawmaterials', kwargs={'pk': self.kwargs.get('bpk')})
+        request_path = self.request.get_full_path()
+        if '/archive' in request_path:
+            return reverse_lazy('rawmaterials-archive', kwargs={'pk': self.kwargs.get('bpk')})
+        else:
+            return reverse_lazy('rawmaterials', kwargs={'pk': self.kwargs.get('bpk')})
+
 
     def get_context_data(self, **kwargs):
         batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
@@ -131,7 +153,11 @@ class DeleteRawMaterialsLogView(LoginRequiredMixin, BLDeleteWithoutConfirmationV
     context_object_name = 'current_material'
 
     def get_success_url(self):
-        return reverse_lazy('rawmaterials', kwargs={'pk': self.kwargs.get('bpk')})
+        request_path = self.request.get_full_path()
+        if '/archive' in request_path:
+            return reverse_lazy('rawmaterials-archive', kwargs={'pk': self.kwargs.get('bpk')})
+        else:
+            return reverse_lazy('rawmaterials', kwargs={'pk': self.kwargs.get('bpk')})
 
 
 class WortQCEntriesView(LoginRequiredMixin, BLUpdateView):
@@ -141,7 +167,12 @@ class WortQCEntriesView(LoginRequiredMixin, BLUpdateView):
     context_object_name = 'batch'
 
     def get_success_url(self):
-        return reverse_lazy('maintenance', kwargs={'pk': self.object.pk})
+        request_path = self.request.get_full_path()
+        if '/archive' in request_path:
+            return reverse_lazy('maintenance-archive', kwargs={'pk': self.kwargs.get('bpk')})
+        else:
+            return reverse_lazy('maintenance', kwargs={'pk': self.kwargs.get('bpk')})
+
 
     def get_context_data(self, **kwargs):
         batch_id = self.kwargs.get('pk')
@@ -167,7 +198,11 @@ class AddWortQCEntryView(LoginRequiredMixin, BLCreateView):
         return context
 
     def get_success_url(self):
-        return reverse_lazy('wortqcentries', kwargs={'pk': self.kwargs.get('bpk')})
+        request_path = self.request.get_full_path()
+        if '/archive' in request_path:
+            return reverse_lazy('wortqcentries-archive', kwargs={'pk': self.kwargs.get('bpk')})
+        else:
+            return reverse_lazy('wortqcentries', kwargs={'pk': self.kwargs.get('bpk')})
 
     def form_valid(self, form):
         form.instance.batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
@@ -181,7 +216,11 @@ class UpdateWortQCEntryView(LoginRequiredMixin, BLUpdateView):
     context_object_name = 'current_wortqc'
 
     def get_success_url(self):
-        return reverse_lazy('wortqcentries', kwargs={'pk': self.kwargs.get('bpk')})
+        request_path = self.request.get_full_path()
+        if '/archive' in request_path:
+            return reverse_lazy('wortqcentries-archive', kwargs={'pk': self.kwargs.get('bpk')})
+        else:
+            return reverse_lazy('wortqcentries', kwargs={'pk': self.kwargs.get('bpk')})
 
     def get_context_data(self, **kwargs):
         batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
@@ -198,7 +237,11 @@ class CreateYeastPitchView(LoginRequiredMixin, BLCreateView):
     context_object_name = 'current_wortqc'
 
     def get_success_url(self):
-        return reverse_lazy('maintenance', kwargs={'pk': self.kwargs.get('bpk')})
+        request_path = self.request.get_full_path()
+        if '/archive' in request_path:
+            return reverse_lazy('maintenance-archive', kwargs={'pk': self.kwargs.get('bpk')})
+        else:
+            return reverse_lazy('maintenance', kwargs={'pk': self.kwargs.get('bpk')})
 
     def get_context_data(self, **kwargs):
         batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
@@ -219,7 +262,11 @@ class UpdateYeastPitchView(LoginRequiredMixin, BLUpdateView):
     context_object_name = 'current_wortqc'
 
     def get_success_url(self):
-        return reverse_lazy('maintenance', kwargs={'pk': self.kwargs.get('bpk')})
+        request_path = self.request.get_full_path()
+        if '/archive' in request_path:
+            return reverse_lazy('maintenance-archive', kwargs={'pk': self.kwargs.get('bpk')})
+        else:
+            return reverse_lazy('maintenance', kwargs={'pk': self.kwargs.get('bpk')})
 
     def get_context_data(self, **kwargs):
         batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
@@ -240,7 +287,11 @@ class UpdateActualDatesView(LoginRequiredMixin, BLUpdateView):
     context_object_name = 'current_actdates'
 
     def get_success_url(self):
-        return reverse_lazy('maintenance', kwargs={'pk': self.kwargs.get('bpk')})
+        request_path = self.request.get_full_path()
+        if '/archive' in request_path:
+            return reverse_lazy('maintenance-archive', kwargs={'pk': self.kwargs.get('bpk')})
+        else:
+            return reverse_lazy('maintenance', kwargs={'pk': self.kwargs.get('bpk')})
 
     def get_context_data(self, **kwargs):
         batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
@@ -263,7 +314,11 @@ class FermQCEntriesView(LoginRequiredMixin, BLUpdateView):
     context_object_name = 'batch'
 
     def get_success_url(self):
-        return reverse_lazy('maintenance', kwargs={'pk': self.object.pk})
+        request_path = self.request.get_full_path()
+        if '/archive' in request_path:
+            return reverse_lazy('maintenance-archive', kwargs={'pk': self.kwargs.get('bpk')})
+        else:
+            return reverse_lazy('maintenance', kwargs={'pk': self.kwargs.get('bpk')})
 
     def get_context_data(self, **kwargs):
         batch_id = self.kwargs.get('pk')
@@ -292,7 +347,11 @@ class AddFermQCEntryView(LoginRequiredMixin, BLCreateView):
         return context
 
     def get_success_url(self):
-        return reverse_lazy('fermqcentries', kwargs={'pk': self.kwargs.get('bpk')})
+        request_path = self.request.get_full_path()
+        if '/archive' in request_path:
+            return reverse_lazy('fermqcentries-archive', kwargs={'pk': self.kwargs.get('bpk')})
+        else:
+            return reverse_lazy('fermqcentries', kwargs={'pk': self.kwargs.get('bpk')})
 
     def form_valid(self, form):
         form.instance.batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
@@ -306,7 +365,11 @@ class UpdateFermQCEntryView(LoginRequiredMixin, BLUpdateView):
     context_object_name = 'current_fermqc'
 
     def get_success_url(self):
-        return reverse_lazy('fermqcentries', kwargs={'pk': self.kwargs.get('bpk')})
+        request_path = self.request.get_full_path()
+        if '/archive' in request_path:
+            return reverse_lazy('fermqcentries-archive', kwargs={'pk': self.kwargs.get('bpk')})
+        else:
+            return reverse_lazy('fermqcentries', kwargs={'pk': self.kwargs.get('bpk')})
 
     def get_context_data(self, **kwargs):
         batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
@@ -323,7 +386,11 @@ class BatchDOEntriesView(LoginRequiredMixin, BLUpdateView):
     context_object_name = 'batch'
 
     def get_success_url(self):
-        return reverse_lazy('maintenance', kwargs={'pk': self.object.pk})
+        request_path = self.request.get_full_path()
+        if '/archive' in request_path:
+            return reverse_lazy('maintenance-archive', kwargs={'pk': self.kwargs.get('bpk')})
+        else:
+            return reverse_lazy('maintenance', kwargs={'pk': self.kwargs.get('bpk')})
 
     def get_context_data(self, **kwargs):
         batch_id = self.kwargs.get('pk')
@@ -352,7 +419,11 @@ class AddBatchDOEntryView(LoginRequiredMixin, BLCreateView):
         return context
 
     def get_success_url(self):
-        return reverse_lazy('doentries', kwargs={'pk': self.kwargs.get('bpk')})
+        request_path = self.request.get_full_path()
+        if '/archive' in request_path:
+            return reverse_lazy('doentries-archive', kwargs={'pk': self.kwargs.get('bpk')})
+        else:
+            return reverse_lazy('doentries', kwargs={'pk': self.kwargs.get('bpk')})
 
     def form_valid(self, form):
         form.instance.batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
@@ -366,7 +437,11 @@ class UpdateBatchDOEntryView(LoginRequiredMixin, BLUpdateView):
     context_object_name = 'current_doentry'
 
     def get_success_url(self):
-        return reverse_lazy('doentries', kwargs={'pk': self.kwargs.get('bpk')})
+        request_path = self.request.get_full_path()
+        if '/archive' in request_path:
+            return reverse_lazy('doentries-archive', kwargs={'pk': self.kwargs.get('bpk')})
+        else:
+            return reverse_lazy('doentries', kwargs={'pk': self.kwargs.get('bpk')})
 
     def get_context_data(self, **kwargs):
         batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
@@ -383,7 +458,11 @@ class CreateTransferView(LoginRequiredMixin, BLCreateView):
     context_object_name = 'current_transfer'
 
     def get_success_url(self):
-        return reverse_lazy('maintenance', kwargs={'pk': self.kwargs.get('bpk')})
+        request_path = self.request.get_full_path()
+        if '/archive' in request_path:
+            return reverse_lazy('maintenance-archive', kwargs={'pk': self.kwargs.get('pk')})
+        else:
+            return reverse_lazy('maintenance', kwargs={'pk': self.kwargs.get('pk')})
 
     def get_context_data(self, **kwargs):
         batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
@@ -404,7 +483,11 @@ class UpdateTransferView(LoginRequiredMixin, BLUpdateView):
     context_object_name = 'current_transfer'
 
     def get_success_url(self):
-        return reverse_lazy('maintenance', kwargs={'pk': self.kwargs.get('bpk')})
+        request_path = self.request.get_full_path()
+        if '/archive' in request_path:
+            return reverse_lazy('maintenance-archive', kwargs={'pk': self.kwargs.get('pk')})
+        else:
+            return reverse_lazy('maintenance', kwargs={'pk': self.kwargs.get('pk')})
 
     def get_context_data(self, **kwargs):
         batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
@@ -425,7 +508,11 @@ class CreateCarbonationQCView(LoginRequiredMixin, BLCreateView):
     context_object_name = 'current_carbqc'
 
     def get_success_url(self):
-        return reverse_lazy('maintenance', kwargs={'pk': self.kwargs.get('bpk')})
+        request_path = self.request.get_full_path()
+        if '/archive' in request_path:
+            return reverse_lazy('maintenance-archive', kwargs={'pk': self.kwargs.get('pk')})
+        else:
+            return reverse_lazy('maintenance', kwargs={'pk': self.kwargs.get('pk')})
 
     def get_context_data(self, **kwargs):
         batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
@@ -446,7 +533,11 @@ class UpdateCarbonationQCView(LoginRequiredMixin, BLUpdateView):
     context_object_name = 'current_carbqc'
 
     def get_success_url(self):
-        return reverse_lazy('maintenance', kwargs={'pk': self.kwargs.get('bpk')})
+        request_path = self.request.get_full_path()
+        if '/archive' in request_path:
+            return reverse_lazy('maintenance-archive', kwargs={'pk': self.kwargs.get('bpk')})
+        else:
+            return reverse_lazy('maintenance', kwargs={'pk': self.kwargs.get('bpk')})
 
     def get_context_data(self, **kwargs):
         batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
@@ -467,7 +558,11 @@ class CanningQCView(LoginRequiredMixin, BLUpdateView):
     context_object_name = 'batch'
 
     def get_success_url(self):
-        return reverse_lazy('maintenance', kwargs={'pk': self.object.pk})
+        request_path = self.request.get_full_path()
+        if '/archive' in request_path:
+            return reverse_lazy('maintenance-archive', kwargs={'pk': self.kwargs.get('bpk')})
+        else:
+            return reverse_lazy('maintenance', kwargs={'pk': self.kwargs.get('bpk')})
 
     def get_context_data(self, **kwargs):
         batch_id = self.kwargs.get('pk')
@@ -496,7 +591,11 @@ class AddCanningQCView(LoginRequiredMixin, BLCreateView):
         return context
 
     def get_success_url(self):
-        return reverse_lazy('canqcentries', kwargs={'pk': self.kwargs.get('bpk')})
+        request_path = self.request.get_full_path()
+        if '/archive' in request_path:
+            return reverse_lazy('canqcentries-archive', kwargs={'pk': self.kwargs.get('bpk')})
+        else:
+            return reverse_lazy('canqcentries', kwargs={'pk': self.kwargs.get('bpk')})
 
     def form_valid(self, form):
         form.instance.batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
@@ -510,7 +609,11 @@ class UpdateCanningQCView(LoginRequiredMixin, BLUpdateView):
     context_object_name = 'current_canqcentry'
 
     def get_success_url(self):
-        return reverse_lazy('canqcentries', kwargs={'pk': self.kwargs.get('bpk')})
+        request_path = self.request.get_full_path()
+        if '/archive' in request_path:
+            return reverse_lazy('canqcentries-archive', kwargs={'pk': self.kwargs.get('bpk')})
+        else:
+            return reverse_lazy('canqcentries', kwargs={'pk': self.kwargs.get('bpk')})
 
     def get_context_data(self, **kwargs):
         batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
@@ -527,7 +630,11 @@ class CreatePackagingRunView(LoginRequiredMixin, BLCreateView):
     context_object_name = 'current_packagingrun'
 
     def get_success_url(self):
-        return reverse_lazy('maintenance', kwargs={'pk': self.kwargs.get('bpk')})
+        request_path = self.request.get_full_path()
+        if '/archive' in request_path:
+            return reverse_lazy('maintenance-archive', kwargs={'pk': self.kwargs.get('bpk')})
+        else:
+            return reverse_lazy('maintenance', kwargs={'pk': self.kwargs.get('bpk')})
 
     def get_context_data(self, **kwargs):
         batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
@@ -548,7 +655,11 @@ class UpdatePackagingRunView(LoginRequiredMixin, BLUpdateView):
     context_object_name = 'current_packagingrun'
 
     def get_success_url(self):
-        return reverse_lazy('maintenance', kwargs={'pk': self.kwargs.get('bpk')})
+        request_path = self.request.get_full_path()
+        if '/archive' in request_path:
+            return reverse_lazy('maintenance-archive', kwargs={'pk': self.kwargs.get('bpk')})
+        else:
+            return reverse_lazy('maintenance', kwargs={'pk': self.kwargs.get('bpk')})
 
     def get_context_data(self, **kwargs):
         batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
@@ -569,7 +680,11 @@ class BatchNoteView(LoginRequiredMixin, BLUpdateView):
     context_object_name = 'batch'
 
     def get_success_url(self):
-        return reverse_lazy('maintenance', kwargs={'pk': self.kwargs.get('pk')})
+        request_path = self.request.get_full_path()
+        if '/archive' in request_path:
+            return reverse_lazy('maintenance-archive', kwargs={'pk': self.kwargs.get('bpk')})
+        else:
+            return reverse_lazy('maintenance', kwargs={'pk': self.kwargs.get('bpk')})
 
     def get_context_data(self, **kwargs):
         batch_id = self.kwargs.get('pk')
@@ -598,7 +713,11 @@ class AddBatchNoteView(LoginRequiredMixin, BLCreateView):
         return context
 
     def get_success_url(self):
-        return reverse_lazy('batchnotes', kwargs={'pk': self.kwargs.get('bpk')})
+        request_path = self.request.get_full_path()
+        if '/archive' in request_path:
+            return reverse_lazy('batchnotes-archive', kwargs={'pk': self.kwargs.get('bpk')})
+        else:
+            return reverse_lazy('batchnotes', kwargs={'pk': self.kwargs.get('bpk')})
 
     def form_valid(self, form):
         form.instance.batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
@@ -612,7 +731,11 @@ class UpdateBatchNoteView(LoginRequiredMixin, BLUpdateView):
     context_object_name = 'current_batchnote'
 
     def get_success_url(self):
-        return reverse_lazy('batchnotes', kwargs={'pk': self.kwargs.get('bpk')})
+        request_path = self.request.get_full_path()
+        if '/archive' in request_path:
+            return reverse_lazy('batchnotes-archive', kwargs={'pk': self.kwargs.get('bpk')})
+        else:
+            return reverse_lazy('batchnotes', kwargs={'pk': self.kwargs.get('bpk')})
 
     def get_context_data(self, **kwargs):
         batch = Batch.objects.get(pk=self.kwargs.get('bpk'))

@@ -95,11 +95,19 @@
         <div class="row no-gutters">
             <div class="col-12 pt-2 pb-1">
                 <span class="float-right">
-                    <a href="/ebs/inprocess/detail/{{ batch.pk }}/fermqc/add/">
-                        <button type="button" class="btn btn-primary">
-                            <span class="material-icons">add</span>
-                        </button>
-                    </a>
+                    {% if '/archive' in request.path %}
+                        <a href="/ebs/archive/detail/{{ batch.pk }}/fermqc/add/">
+                            <button type="button" class="btn btn-primary">
+                                <span class="material-icons">add</span>
+                            </button>
+                        </a>
+                    {% else %}
+                        <a href="/ebs/inprocess/detail/{{ batch.pk }}/fermqc/add/">
+                            <button type="button" class="btn btn-primary">
+                                <span class="material-icons">add</span>
+                            </button>
+                        </a>
+                    {% endif %}
                 </span>
             </div>
         </div>
