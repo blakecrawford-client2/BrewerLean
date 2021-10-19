@@ -74,7 +74,7 @@
             <div class="col-1 border pl-1 pr-1">{{ note.note_type}}</div>
             <div class="col-8 border pl-1 pr-1">{{ note.note }}</div>
             <div class="col-1 border">
-                {% if '/archive' request.path %}
+                {% if '/archive' in request.path %}
                     <a href="/ebs/archive/detail/{{ batch.pk }}/batchnote/update/{{ note.id }}">
                         <button type="button" class="btn btn-primary btn-block">
                             <span class="material-icons md-18">mode_edit</span>
