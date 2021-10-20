@@ -1,7 +1,7 @@
 {% extends "crm/base.html" %}
 {% block title %}Wizard Step 1 - Select Call Type{% endblock %}
 {% block content %}
-    <form method="post">
+    <form method="post" onsubmit="submitBtn.disabled=true; return true;">
         {% csrf_token %}
             <div class="container-fluid px-2">
                 <div class="row no-gutters pt-3">
@@ -24,7 +24,7 @@
                 <div class="row no-gutters pt-4">
                     <div class="col-12">
                         <a href="#">
-                            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                            <button id="submitBtn" type="submit" class="btn btn-primary btn-block">Submit</button>
                         </a>
                     </div>
                 </div>
