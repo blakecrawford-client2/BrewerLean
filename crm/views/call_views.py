@@ -35,7 +35,7 @@ class CreateCallWizardStep1View(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['account'] = self.kwargs.get('pk')
+        context['account'] = Account.objects.get(id=self.kwargs.get('pk'))
         context['call'] = self.kwargs.get('cpk')
         return context
 
@@ -46,7 +46,7 @@ class CreateCallWizardStep2View(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['type'] = self.kwargs.get('type')
-        context['account'] = self.kwargs.get('pk')
+        context['account'] = Account.objects.get(id=self.kwargs.get('pk'))
         context['call'] = self.kwargs.get('cpk')
         return context
 
@@ -58,7 +58,7 @@ class CreateCallWizardStep3View(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['type'] = self.kwargs.get('type')
-        context['account'] = self.kwargs.get('pk')
+        context['account'] = Account.objects.get(id=self.kwargs.get('pk'))
         context['call'] = self.kwargs.get('cpk')
         context['method'] = self.kwargs.get('method')
         return context
@@ -71,7 +71,7 @@ class CreateCallWizardStep4View(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['type'] = self.kwargs.get('type')
-        context['account'] = self.kwargs.get('pk')
+        context['account'] = Account.objects.get(id=self.kwargs.get('pk'))
         context['call'] = self.kwargs.get('cpk')
         context['method'] = self.kwargs.get('method')
         context['outcome'] = self.kwargs.get('outcome')
@@ -114,6 +114,7 @@ class CreateCallWizardStep5View(LoginRequiredMixin, CreateView):
                 instance.follow_up_delay = self.kwargs.get('fupweeks')
                 instance.note = form.cleaned_data['note']
                 instance.samples = form.cleaned_data['samples']
+                instance.last_modified_by = self.request.user
                 instance.save()
         else:
             instance = Call.objects.get(id=self.kwargs.get('cpk'))
@@ -125,6 +126,7 @@ class CreateCallWizardStep5View(LoginRequiredMixin, CreateView):
                 instance.follow_up_delay = self.kwargs.get('fupweeks')
                 instance.note = form.cleaned_data['note']
                 instance.samples = form.cleaned_data['samples']
+                instance.last_modified_by = self.request.user
                 instance.save()
 
         if self.kwargs.get('fupweeks') is not None:
@@ -140,7 +142,7 @@ class CreateCallWizardStep5View(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['type'] = self.kwargs.get('type')
-        context['account'] = self.kwargs.get('pk')
+        context['account'] = Account.objects.get(id=self.kwargs.get('pk'))
         context['call'] = self.kwargs.get('cpk')
         context['method'] = self.kwargs.get('method')
         context['outcome'] = self.kwargs.get('outcome')

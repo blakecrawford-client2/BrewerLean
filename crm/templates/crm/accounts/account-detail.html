@@ -12,14 +12,16 @@
                         <button type="button" class="btn btn-warning btn-sm">
                             <span class="material-icons">edit</span>
                         </button>
-
                     </a>
                     <a href="/crm/calls/wizard/{{ account.id }}/type/">
-                        <button type="button" class="btn btn-warning btn-sm">
-                            <span class="material-icons">
-                                call
-                            </span>
-                        </button>
+                        {% if open_call_exists %}
+                        {% else %}
+                            <button type="button" class="btn btn-warning btn-sm">
+                                <span class="material-icons">
+                                    call
+                                </span>
+                            </button>
+                        {% endif %}
                     </a>
                 </span>
             </div>
@@ -40,6 +42,11 @@
             </div>
         </div>
         <div class="row no-gutters pt-3">
+            <div class="col-12 border pt-1 bg-danger text-white">
+                <h4>OPEN CALL ON ACCOUNT</h4>
+            </div>
+        </div>
+        <div class="row no-gutters pt-3">
             <div class="col-12 pl-2 pb-1 pt-2 bg-secondary text-light">
                 <h4>CALL HISTORY</h4>
             </div>
@@ -53,21 +60,88 @@
         </div>
         {% for call in calls %}
         <div class="row no-gutters border">
-            <div class="col-2">
-                {{ call.schedule_week_monday|date:"dMy" }}
-            </div>
-            <div class="col-2">
-                {{ call.last_modified_on|date:"dMy" }}
-            </div>
-            <div class="col-6">
-                {{ call.type }} // {{ call.method }} // {{ call.outcome }} // {{ call.follow_up_delay }}
-            </div>
-            <div class="col-1">
-                {{ call.id }}
-            </div>
-            <div class="col-1">
-                {{ call.parent_call.id }}
-            </div>
+            {% if call.parent_call_id is None %}
+                {% with color_scheme="bg-secondary text-white" %}
+                    <div class="col-2 {{ color_scheme }}">
+                        START->
+                    </div>
+                    <div class="col-2 {{ color_scheme }}">
+                        {{ call.last_modified_on|date:"dMy" }}
+                    </div>
+                    <div class="col-6 {{ color_scheme }}">
+                        {{ call.type }} // {{ call.method }} // {{ call.outcome }} // {{ call.follow_up_delay }}
+                    </div>
+                    <div class="col-1 {{ color_scheme }}">
+                        {{ call.id }}
+                    </div>
+                    <div class="col-1 {{ color_scheme }}">
+                        {{ call.parent_call.id }}
+                    </div>
+                {% endwith %}
+            {% elif call.outcome == "ODR" %}
+                {% with color_scheme="bg-success text-light" %}
+                    <div class="col-2 {{ color_scheme }}">
+                        {{ call.schedule_week_monday|date:"dMy" }}
+                    </div>
+                    <div class="col-2 {{ color_scheme }}">
+                        {{ call.last_modified_on|date:"dMy" }}
+                    </div>
+                    <div class="col-6 {{ color_scheme }}">
+                        {{ call.type }} // {{ call.method }} // {{ call.outcome }} // {{ call.follow_up_delay }}
+                    </div>
+                    <div class="col-1 {{ color_scheme }}">
+                        {{ call.id }}
+                    </div>
+                    <div class="col-1 {{ color_scheme }}">
+                        {{ call.parent_call.id }}
+                    </div>
+                {% endwith %}
+            {% elif call.type is None and call.method is None and call.outcome is None %}
+                {% with color_scheme="bg-warning text-white" %}
+                    <div class="col-2 {{ color_scheme }}">
+                        <a href="/crm/calls/wizard/{{ account.id }}/{{ call.id }}/type/">
+                            {{ call.schedule_week_monday|date:"dMy" }}
+                        </a>
+                    </div>
+                    <div class="col-2 {{ color_scheme }}">
+                        <a href="/crm/calls/wizard/{{ account.id }}/{{ call.id }}/type/">
+                            {{ call.last_modified_on|date:"dMy" }}
+                        </a>
+                    </div>
+                    <div class="col-6 {{ color_scheme }}">
+                        <a href="/crm/calls/wizard/{{ account.id }}/{{ call.id }}/type/">
+                             Follow-Up Call
+                        </a>
+                    </div>
+                    <div class="col-1 {{ color_scheme }}">
+                        <a href="/crm/calls/wizard/{{ account.id }}/{{ call.id }}/type/">
+                            {{ call.id }}
+                        </a>
+                    </div>
+                    <div class="col-1 {{ color_scheme }}">
+                        <a href="/crm/calls/wizard/{{ account.id }}/{{ call.id }}/type/">
+                            {{ call.parent_call.id }}
+                        </a>
+                    </div>
+                {% endwith %}
+            {% else %}
+                <div class="col-2">
+                    {{ call.schedule_week_monday|date:"dMy" }}
+                </div>
+                <div class="col-2">
+                    {{ call.last_modified_on|date:"dMy" }}
+                </div>
+                <div class="col-6">
+                    {{ call.type }} // {{ call.method }} // {{ call.outcome }} // {{ call.follow_up_delay }}
+                </div>
+                <div class="col-1">
+                    {{ call.id }}
+                </div>
+                <div class="col-1">
+                    {{ call.parent_call.id }}
+                </div>
+            {% endif %}
+
         </div>
         {% endfor %}
     </div>

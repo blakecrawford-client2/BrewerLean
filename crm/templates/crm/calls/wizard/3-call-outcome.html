@@ -7,6 +7,11 @@
                 <h4>CALL OUTCOME</h4>
             </div>
         </div>
+        <div class="row no-gutters pt-0 pb-1">
+            <div class="col-12 pl-2 pt-1 bg-light">
+                <h5>Account: {{ account.account_name }}</h5>
+            </div>
+        </div>
         <div class="row no-gutters">
             <div class="col-12">
                 <br/>
@@ -15,13 +20,13 @@
         <div class="row no-gutters">
             {% if call is None %}
                 <div class="col-12">
-                    <a href="/crm/calls/wizard/{{ account }}/type/{{ type }}/method/{{ method }}/open/">
+                    <a href="/crm/calls/wizard/{{ account.id }}/type/{{ type }}/method/{{ method }}/open/">
                         <button type="button" class="btn btn-warning btn-block">Exit, Leave Open</button>
                     </a>
                 </div>
             {% else %}
                 <div class="col-12">
-                    <a href="/crm/calls/wizard/{{ account }}/{{ call }}/type/{{ type }}/method/{{ method }}/open/">
+                    <a href="/crm/calls/wizard/{{ account.id }}/{{ call }}/type/{{ type }}/method/{{ method }}/open/">
                         <button type="button" class="btn btn-warning btn-block">Exit, Leave Open</button>
                     </a>
                 </div>
@@ -35,13 +40,13 @@
         <div class="row no-gutters">
             {% if call is None %}
                 <div class="col-12">
-                    <a href="/crm/calls/wizard/{{ account }}/type/{{ type }}/method/{{ method }}/outcome/RST/followup/">
+                    <a href="/crm/calls/wizard/{{ account.id }}/type/{{ type }}/method/{{ method }}/outcome/RST/followup/">
                         <button type="button" class="btn btn-primary btn-block">Radio Silent</button>
                     </a>
                 </div>
             {% else %}
                  <div class="col-12">
-                    <a href="/crm/calls/wizard/{{ account }}/{{ call }}/type/{{ type }}/method/{{ method }}/outcome/RST/followup/">
+                    <a href="/crm/calls/wizard/{{ account.id }}/{{ call }}/type/{{ type }}/method/{{ method }}/outcome/RST/followup/">
                         <button type="button" class="btn btn-primary btn-block">Radio Silent</button>
                     </a>
                 </div>
@@ -55,13 +60,13 @@
         <div class="row no-gutters">
             {% if call is None %}
                 <div class="col-12">
-                    <a href="/crm/calls/wizard/{{ account }}/type/{{ type }}/method/{{ method }}/outcome/ODR/followup/">
+                    <a href="/crm/calls/wizard/{{ account.id }}/type/{{ type }}/method/{{ method }}/outcome/ODR/followup/">
                         <button type="button" class="btn btn-primary btn-block">Order</button>
                     </a>
                 </div>
             {% else %}
                  <div class="col-12">
-                    <a href="/crm/calls/wizard/{{ account }}/{{ call }}/type/{{ type }}/method/{{ method }}/outcome/ODR/followup/">
+                    <a href="/crm/calls/wizard/{{ account.id }}/{{ call }}/type/{{ type }}/method/{{ method }}/outcome/ODR/followup/">
                         <button type="button" class="btn btn-primary btn-block">Order</button>
                     </a>
                 </div>
@@ -75,13 +80,13 @@
         <div class="row no-gutters">
             {% if call is None %}
                 <div class="col-12">
-                    <a href="/crm/calls/wizard/{{ account }}/type/{{ type }}/method/{{ method }}/outcome/LWP/followup/">
+                    <a href="/crm/calls/wizard/{{ account.id }}/type/{{ type }}/method/{{ method }}/outcome/LWP/followup/">
                         <button type="button" class="btn btn-primary btn-block">Later, Wrong Person</button>
                     </a>
                 </div>
             {% else %}
                 <div class="col-12">
-                    <a href="/crm/calls/wizard/{{ account }}/{{ call }}/type/{{ type }}/method/{{ method }}/outcome/LWP/followup/">
+                    <a href="/crm/calls/wizard/{{ account.id }}/{{ call }}/type/{{ type }}/method/{{ method }}/outcome/LWP/followup/">
                         <button type="button" class="btn btn-primary btn-block">Later, Wrong Person</button>
                     </a>
                 </div>
@@ -95,13 +100,13 @@
         <div class="row no-gutters">
             {% if call is None %}
                 <div class="col-12">
-                    <a href="/crm/calls/wizard/{{ account }}/type/{{ type }}/method/{{ method }}/outcome/LNA/followup/">
+                    <a href="/crm/calls/wizard/{{ account.id }}/type/{{ type }}/method/{{ method }}/outcome/LNA/followup/">
                         <button type="button" class="btn btn-primary btn-block">Later, Not Available</button>
                     </a>
                 </div>
             {% else %}
                  <div class="col-12">
-                    <a href="/crm/calls/wizard/{{ account }}/{{ call }}/type/{{ type }}/method/{{ method }}/outcome/LNA/followup/">
+                    <a href="/crm/calls/wizard/{{ account.id }}/{{ call }}/type/{{ type }}/method/{{ method }}/outcome/LNA/followup/">
                         <button type="button" class="btn btn-primary btn-block">Later, Not Available</button>
                     </a>
                 </div>
@@ -115,13 +120,13 @@
         <div class="row no-gutters">
             {% if call is None %}
                 <div class="col-12">
-                    <a href="/crm/calls/wizard/{{ account }}/type/{{ type }}/method/{{ method }}/outcome/LNS/followup/">
+                    <a href="/crm/calls/wizard/{{ account.id }}/type/{{ type }}/method/{{ method }}/outcome/LNS/followup/">
                         <button type="button" class="btn btn-primary btn-block">Later, No Space</button>
                     </a>
                 </div>
             {% else %}
                  <div class="col-12">
-                    <a href="/crm/calls/wizard/{{ account }}/{{ call }}/type/{{ type }}/method/{{ method }}/outcome/LNS/followup/">
+                    <a href="/crm/calls/wizard/{{ account.id }}/{{ call }}/type/{{ type }}/method/{{ method }}/outcome/LNS/followup/">
                         <button type="button" class="btn btn-primary btn-block">Later, No Space</button>
                     </a>
                 </div>
@@ -135,13 +140,13 @@
         <div class="row no-gutters">
             {% if call is None %}
                 <div class="col-12">
-                    <a href="/crm/calls/wizard/{{ account }}/type/{{ type }}/method/{{ method }}/outcome/LDP/followup/">
+                    <a href="/crm/calls/wizard/{{ account.id }}/type/{{ type }}/method/{{ method }}/outcome/LDP/followup/">
                         <button type="button" class="btn btn-primary btn-block">Later, No Diff Product</button>
                     </a>
                 </div>
             {% else %}
                 <div class="col-12">
-                    <a href="/crm/calls/wizard/{{ account }}/{{ call }}/type/{{ type }}/method/{{ method }}/outcome/LDP/followup/">
+                    <a href="/crm/calls/wizard/{{ account.id }}/{{ call }}/type/{{ type }}/method/{{ method }}/outcome/LDP/followup/">
                         <button type="button" class="btn btn-primary btn-block">Later, No Diff Product</button>
                     </a>
                 </div>

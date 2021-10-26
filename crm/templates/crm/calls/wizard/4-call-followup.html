@@ -7,6 +7,11 @@
                 <h4>FOLLOW-UP</h4>
             </div>
         </div>
+        <div class="row no-gutters pt-0 pb-1">
+            <div class="col-12 pl-2 pt-1 bg-light">
+                <h5>Account: {{ account.account_name }}</h5>
+            </div>
+        </div>
         <div class="row no-gutters">
             <div class="col-12">
                 <br/>
@@ -15,11 +20,11 @@
         <div class="row no-gutters">
             <div class="col-12">
                 {% if call is None %}
-                    <a href="/crm/calls/wizard/{{ account }}/type/{{ type }}/method/{{ method }}/outcome/{{ outcome }}/followup/0/note/">
+                    <a href="/crm/calls/wizard/{{ account.id }}/type/{{ type }}/method/{{ method }}/outcome/{{ outcome }}/followup/0/note/">
                         <button type="button" class="btn btn-primary btn-block">This Week</button>
                     </a>
                 {% else %}
-                    <a href="/crm/calls/wizard/{{ account }}/{{ call }}/type/{{ type }}/method/{{ method }}/outcome/{{ outcome }}/followup/0/note/">
+                    <a href="/crm/calls/wizard/{{ account.id }}/{{ call }}/type/{{ type }}/method/{{ method }}/outcome/{{ outcome }}/followup/0/note/">
                         <button type="button" class="btn btn-primary btn-block">This Week</button>
                     </a>
                 {% endif %}
@@ -33,11 +38,11 @@
         <div class="row no-gutters">
             <div class="col-12">
                 {% if call is None %}
-                    <a href="/crm/calls/wizard/{{ account }}/type/{{ type }}/method/{{ method }}/outcome/{{ outcome }}/followup/1/note/">
+                    <a href="/crm/calls/wizard/{{ account.id }}/type/{{ type }}/method/{{ method }}/outcome/{{ outcome }}/followup/1/note/">
                         <button type="button" class="btn btn-primary btn-block">Next Week</button>
                     </a>
                 {% else %}
-                      <a href="/crm/calls/wizard/{{ account }}/{{ call }}/type/{{ type }}/method/{{ method }}/outcome/{{ outcome }}/followup/1/note/">
+                      <a href="/crm/calls/wizard/{{ account.id }}/{{ call }}/type/{{ type }}/method/{{ method }}/outcome/{{ outcome }}/followup/1/note/">
                         <button type="button" class="btn btn-primary btn-block">Next Week</button>
                       </a>
                 {% endif %}
@@ -51,11 +56,11 @@
         <div class="row no-gutters">
             <div class="col-12">
                 {% if call is None %}
-                    <a href="/crm/calls/wizard/{{ account }}/type/{{ type }}/method/{{ method }}/outcome/{{ outcome }}/followup/2/note/">
+                    <a href="/crm/calls/wizard/{{ account.id }}/type/{{ type }}/method/{{ method }}/outcome/{{ outcome }}/followup/2/note/">
                         <button type="button" class="btn btn-primary btn-block">Two Weeks</button>
                     </a>
                 {% else %}
-                    <a href="/crm/calls/wizard/{{ account }}/{{ call }}/type/{{ type }}/method/{{ method }}/outcome/{{ outcome }}/followup/2/note/">
+                    <a href="/crm/calls/wizard/{{ account.id }}/{{ call }}/type/{{ type }}/method/{{ method }}/outcome/{{ outcome }}/followup/2/note/">
                         <button type="button" class="btn btn-primary btn-block">Two Weeks</button>
                     </a>
                 {% endif %}
@@ -69,11 +74,11 @@
         <div class="row no-gutters">
             <div class="col-12">
                 {% if call is None %}
-                    <a href="/crm/calls/wizard/{{ account }}/type/{{ type }}/method/{{ method }}/outcome/{{ outcome }}/followup/3/note/">
+                    <a href="/crm/calls/wizard/{{ account.id }}/type/{{ type }}/method/{{ method }}/outcome/{{ outcome }}/followup/3/note/">
                         <button type="button" class="btn btn-primary btn-block">Three Weeks</button>
                     </a>
                 {% else %}
-                    <a href="/crm/calls/wizard/{{ account }}/{{ call }}/type/{{ type }}/method/{{ method }}/outcome/{{ outcome }}/followup/3/note/">
+                    <a href="/crm/calls/wizard/{{ account.id }}/{{ call }}/type/{{ type }}/method/{{ method }}/outcome/{{ outcome }}/followup/3/note/">
                         <button type="button" class="btn btn-primary btn-block">Three Weeks</button>
                     </a>
                 {% endif %}
@@ -87,11 +92,11 @@
         <div class="row no-gutters">
             <div class="col-12">
                 {% if call is None %}
-                    <a href="/crm/calls/wizard/{{ account }}/type/{{ type }}/method/{{ method }}/outcome/{{ outcome }}/followup/4/note/">
+                    <a href="/crm/calls/wizard/{{ account.id }}/type/{{ type }}/method/{{ method }}/outcome/{{ outcome }}/followup/4/note/">
                         <button type="button" class="btn btn-primary btn-block">Month</button>
                     </a>
                 {% else %}
-                     <a href="/crm/calls/wizard/{{ account }}/{{ call }}/type/{{ type }}/method/{{ method }}/outcome/{{ outcome }}/followup/4/note/">
+                     <a href="/crm/calls/wizard/{{ account.id }}/{{ call }}/type/{{ type }}/method/{{ method }}/outcome/{{ outcome }}/followup/4/note/">
                         <button type="button" class="btn btn-primary btn-block">Month</button>
                     </a>
                 {% endif %}
@@ -105,11 +110,11 @@
         <div class="row no-gutters">
             <div class="col-12">
                 {% if call is None %}
-                    <a href="/crm/calls/wizard/{{ account }}/type/{{ type }}/method/{{ method }}/outcome/{{ outcome }}/followup/12/note/">
+                    <a href="/crm/calls/wizard/{{ account.id }}/type/{{ type }}/method/{{ method }}/outcome/{{ outcome }}/followup/12/note/">
                         <button type="button" class="btn btn-primary btn-block">Three Months</button>
                     </a>
                 {% else %}
-                    <a href="/crm/calls/wizard/{{ account }}/{{ call }}/type/{{ type }}/method/{{ method }}/outcome/{{ outcome }}/followup/12/note/">
+                    <a href="/crm/calls/wizard/{{ account.id }}/{{ call }}/type/{{ type }}/method/{{ method }}/outcome/{{ outcome }}/followup/12/note/">
                         <button type="button" class="btn btn-primary btn-block">Three Months</button>
                     </a>
                 {% endif %}
@@ -123,11 +128,11 @@
         <div class="row no-gutters">
             <div class="col-12">
                 {% if call is None %}
-                    <a href="/crm/calls/wizard/{{ account }}/type/{{ type }}/method/{{ method }}/outcome/{{ outcome }}/followup/26/note/">
+                    <a href="/crm/calls/wizard/{{ account.id }}/type/{{ type }}/method/{{ method }}/outcome/{{ outcome }}/followup/26/note/">
                         <button type="button" class="btn btn-primary btn-block">Six Months</button>
                     </a>
                 {% else %}
-                    <a href="/crm/calls/wizard/{{ account }}/{{ call }}/type/{{ type }}/method/{{ method }}/outcome/{{ outcome }}/followup/26/note/">
+                    <a href="/crm/calls/wizard/{{ account.id }}/{{ call }}/type/{{ type }}/method/{{ method }}/outcome/{{ outcome }}/followup/26/note/">
                         <button type="button" class="btn btn-primary btn-block">Six Months</button>
                     </a>
                 {% endif %}

@@ -7,6 +7,11 @@
                 <h4>CALL METHOD</h4>
             </div>
         </div>
+        <div class="row no-gutters pt-0 pb-1">
+            <div class="col-12 pl-2 pt-1 bg-light">
+                <h5>Account: {{ account.account_name }}</h5>
+            </div>
+        </div>
         <div class="row no-gutters">
             <div class="col-12">
                 <br/>
@@ -15,13 +20,13 @@
         <div class="row no-gutters">
             {% if call is None %}
                 <div class="col-12">
-                    <a href="/crm/calls/wizard/{{ account }}/type/{{ type }}/method/P/outcome/">
+                    <a href="/crm/calls/wizard/{{ account.id }}/type/{{ type }}/method/P/outcome/">
                         <button type="button" class="btn btn-primary btn-block">Phone</button>
                     </a>
                 </div>
             {% else %}
                 <div class="col-12">
-                    <a href="/crm/calls/wizard/{{ account }}/{{ call }}/type/{{ type }}/method/P/outcome/">
+                    <a href="/crm/calls/wizard/{{ account.id }}/{{ call }}/type/{{ type }}/method/P/outcome/">
                         <button type="button" class="btn btn-primary btn-block">Phone</button>
                     </a>
                 </div>
@@ -35,13 +40,13 @@
         <div class="row no-gutters">
             {% if call is None %}
                 <div class="col-12">
-                    <a href="/crm/calls/wizard/{{ account }}/type/{{ type }}/method/T/outcome/">
+                    <a href="/crm/calls/wizard/{{ account.id }}/type/{{ type }}/method/T/outcome/">
                         <button type="button" class="btn btn-primary btn-block">Text</button>
                     </a>
                 </div>
             {% else %}
                  <div class="col-12">
-                    <a href="/crm/calls/wizard/{{ account }}/{{ call }}/type/{{ type }}/method/T/outcome/">
+                    <a href="/crm/calls/wizard/{{ account.id }}/{{ call }}/type/{{ type }}/method/T/outcome/">
                         <button type="button" class="btn btn-primary btn-block">Text</button>
                     </a>
                 </div>
@@ -55,13 +60,13 @@
         <div class="row no-gutters">
             {% if call is None %}
                 <div class="col-12">
-                    <a href="/crm/calls/wizard/{{ account }}/type/{{ type }}/method/E/outcome/">
+                    <a href="/crm/calls/wizard/{{ account.id }}/type/{{ type }}/method/E/outcome/">
                         <button type="button" class="btn btn-primary btn-block">E-Mail</button>
                     </a>
                 </div>
             {% else %}
                  <div class="col-12">
-                    <a href="/crm/calls/wizard/{{ account }}/{{ call }}/type/{{ type }}/method/E/outcome/">
+                    <a href="/crm/calls/wizard/{{ account.id }}/{{ call }}/type/{{ type }}/method/E/outcome/">
                         <button type="button" class="btn btn-primary btn-block">E-Mail</button>
                     </a>
                 </div>
@@ -75,13 +80,13 @@
         <div class="row no-gutters">
             {% if call is None %}
                 <div class="col-12">
-                    <a href="/crm/calls/wizard/{{ account }}/type/{{ type }}/method/V/outcome/">
+                    <a href="/crm/calls/wizard/{{ account.id }}/type/{{ type }}/method/V/outcome/">
                         <button type="button" class="btn btn-primary btn-block">Visit</button>
                     </a>
                 </div>
             {% else %}
                 <div class="col-12">
-                    <a href="/crm/calls/wizard/{{ account }}/{{ call }}/type/{{ type }}/method/V/outcome/">
+                    <a href="/crm/calls/wizard/{{ account.id }}/{{ call }}/type/{{ type }}/method/V/outcome/">
                         <button type="button" class="btn btn-primary btn-block">Visit</button>
                     </a>
                 </div>

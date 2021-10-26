@@ -52,7 +52,14 @@ class AccountDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(AccountDetailView, self).get_context_data(**kwargs)
         try:
-            calls = Call.objects.filter(account=self.kwargs.get('pk')).order_by('-schedule_week_monday')
+            # bugfix
+            # re-ordering calls w/ most recent at top, original call all the way at the bottom
+            # sorting this by ID is wrong, but it seems as though the lack of a schedule week
+            # on original calls is interpreted as the
+            calls = Call.objects.filter(account=self.kwargs.get('pk')).order_by('-last_modified_on', '-id')
+            for call in calls:
+                if call.type is None and call.method is None and call.outcome is None:
+                    context['open_call_exists'] = True
         except:
             calls = None
         context['page_name'] = 'Account Detail'
