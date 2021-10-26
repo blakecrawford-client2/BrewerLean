@@ -41,11 +41,13 @@
                 {{ account.account_type }}
             </div>
         </div>
-        <div class="row no-gutters pt-3">
-            <div class="col-12 border pt-1 bg-danger text-white">
-                <h4>OPEN CALL ON ACCOUNT</h4>
+        {% if open_call_exists %}
+            <div class="row no-gutters pt-3">
+                <div class="col-12 border pt-1 bg-danger text-white">
+                    <h4>OPEN CALL ON ACCOUNT</h4>
+                </div>
             </div>
-        </div>
+        {% endif %}
         <div class="row no-gutters pt-3">
             <div class="col-12 pl-2 pb-1 pt-2 bg-secondary text-light">
                 <h4>CALL HISTORY</h4>
