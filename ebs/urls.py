@@ -37,6 +37,8 @@ from ebs.views.batch_inprocess_detail_views import BatchNoteView
 from ebs.views.batch_inprocess_detail_views import AddBatchNoteView
 from ebs.views.batch_inprocess_detail_views import UpdateBatchNoteView
 from ebs.views.batch_inprocess_detail_views import ChangeFVView
+from ebs.views.batch_inprocess_detail_views import CreateYeastCrashHarvestView
+from ebs.views.batch_inprocess_detail_views import CreateFinalCrashDateView
 from ebs.views.batch_close_views import ArchiveBatchListView
 from ebs.views.batch_close_views import ArchiveBatchView
 from ebs.views.batch_close_views import ArchiveBatchFullView
@@ -74,12 +76,14 @@ urlpatterns = [
     path('inprocess/detail/<int:pk>/fermqc/', FermQCEntriesView.as_view(), name='fermqcentries'),
     path('inprocess/detail/<int:bpk>/fermqc/add/', AddFermQCEntryView.as_view()),
     path('inprocess/detail/<int:bpk>/fermqc/update/<int:pk>', UpdateFermQCEntryView.as_view()),
+    path('inprocess/detail/<int:pk>/yeastcrashharvest/', CreateYeastCrashHarvestView.as_view()),
     path('inprocess/detail/<int:pk>/do/', BatchDOEntriesView.as_view(), name='doentries'),
     path('inprocess/detail/<int:bpk>/do/add/', AddBatchDOEntryView.as_view()),
     path('inprocess/detail/<int:bpk>/do/update/<int:pk>', UpdateBatchDOEntryView.as_view()),
+    path('inprocess/detail/<int:bpk>/finalcrash/<int:pk>', CreateFinalCrashDateView.as_view()),
     path('inprocess/detail/<int:bpk>/xfer/', CreateTransferView.as_view(), name='transfer'),
     path('inprocess/detail/<int:bpk>/xfer/<int:pk>', UpdateTransferView.as_view()),
-    path('inprocess/detail/<int:bpk>/carb/', CreateCarbonationQCView.as_view()),
+    path('inprocess/detail/<int:pk>/carb/', CreateCarbonationQCView.as_view()),
     path('inprocess/detail/<int:bpk>/carb/update/<int:pk>', UpdateCarbonationQCView.as_view()),
     path('inprocess/detail/<int:pk>/canqc/', CanningQCView.as_view(), name='canqcentries'),
     path('inprocess/detail/<int:bpk>/canqc/add/', AddCanningQCView.as_view()),

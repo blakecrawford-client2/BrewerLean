@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+###
+# A Facility is a building where beer
+# production takes place
 class Facility(models.Model):
     class Meta:
         verbose_name='Facility'
@@ -10,6 +13,9 @@ class Facility(models.Model):
     def __str__(self):
         return self.facility_name
 
+###
+# a tank is a vessel of a utility type
+# in which beer resides for process purposes
 class Tank(models.Model):
     class Meta:
         verbose_name_plural='Tanks'
@@ -31,6 +37,11 @@ class Tank(models.Model):
     def __str__(self):
         return self.tank_name
 
+###
+# Staff are people with login privileges who also
+# have a role.  This didn't workout as intended and
+# can be considered deprecated for all intents and
+# purposes.
 class Staff(models.Model):
     class Meta:
         verbose_name_plural = 'Staff'

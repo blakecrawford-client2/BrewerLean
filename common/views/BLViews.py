@@ -1,10 +1,8 @@
 from datetime import datetime
 from django.views.generic.edit import FormView, UpdateView, CreateView, DeleteView
-from django.views.generic import ListView
-
 
 ##########
-# Extended standard class-based viewx to always include
+# Extended standard class-based views to always include
 # the updating user as well as the updating time in the
 # y/m/d format.  Create and Update view are required
 # for this app's purposes.

@@ -11,6 +11,8 @@ from ebs.models.brew_sheets import CarbonationQCEntry
 from ebs.models.brew_sheets import PackagingRun
 from ebs.forms.batch_upcoming_forms import MakeUpcomingBatchForm
 
+###
+# See a full list of in-process batches
 class InprocessBatchList(LoginRequiredMixin, ListView):
     model = Batch
     template_name = 'ebs/batch/inprocess-batch-list.html'
@@ -19,6 +21,9 @@ class InprocessBatchList(LoginRequiredMixin, ListView):
     def get_queryset(self):
         return Batch.objects.filter(status='IP').order_by('-plan_start_day')
 
+##
+# Start a batch, meaning take an upcoming batch and change
+# the status
 class InprocessBatchCreateView(LoginRequiredMixin, BLCreateView):
     model = Batch
     template_name = 'ebs/batch/inprocess-batch-create-or-update.html'
@@ -26,6 +31,8 @@ class InprocessBatchCreateView(LoginRequiredMixin, BLCreateView):
     success_url = '/inprocess-batch-list/'
     context_object_name = 'inprocess_batch_list'
 
+###
+# Update the batch-level information on an in-process batch
 class InprocessBatchUpdateView(LoginRequiredMixin, BLUpdateView):
     model = Batch
     template_name = "ebs/inprocess-batch-create-or-update.html"
@@ -33,6 +40,9 @@ class InprocessBatchUpdateView(LoginRequiredMixin, BLUpdateView):
     success_url = '/inprocess-batch-list/'
     context_object_name = 'inprocess_batch_list'
 
+###
+# Detail view to show the full batch screen with all of the
+# current information and process buttons
 class InprocessBatchDetailView(LoginRequiredMixin, TemplateView):
     template_name = "ebs/batch/inprocess/inprocess-beer-main.html"
 
@@ -65,5 +75,4 @@ class InprocessBatchDetailView(LoginRequiredMixin, TemplateView):
         context['xfer'] = xfer
         context['carb'] = carb
         context['packaging'] = packaging
-
         return context

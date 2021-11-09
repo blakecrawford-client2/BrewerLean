@@ -8,7 +8,8 @@ from ebs.models.brew_sheets import BatchPlanDates, BatchActualDates
 from ebs.forms.batch_upcoming_forms import MakeUpcomingBatchForm
 from ebs.forms.batch_upcoming_forms import StartUpcomingBatchForm
 
-
+###
+# See a list of upcoming (not started) batches
 class UpcomingBatchList(LoginRequiredMixin, ListView):
     model = Batch
     template_name = 'ebs/batch/upcoming-batch-list.html'
@@ -17,7 +18,8 @@ class UpcomingBatchList(LoginRequiredMixin, ListView):
     def get_queryset(self):
         return Batch.objects.filter(status='PL').order_by('plan_start_day')
 
-
+###
+# Create a new upcoming batch
 class UpcomingBatchCreateView(LoginRequiredMixin, BLCreateView):
     model = Batch
     template_name = 'ebs/batch/upcoming-batch-create-or-update.html'
@@ -29,7 +31,8 @@ class UpcomingBatchCreateView(LoginRequiredMixin, BLCreateView):
         m = form.save(self)
         return HttpResponseRedirect(self.success_url)
 
-
+###
+# Update the batch-level data for an upcoming batch
 class UpcomingBatchUpdateView(LoginRequiredMixin, BLUpdateView):
     model = Batch
     template_name = "ebs/batch/upcoming-batch-create-or-update.html"
@@ -42,7 +45,10 @@ class UpcomingBatchUpdateView(LoginRequiredMixin, BLUpdateView):
         m = form.save(self)
         return HttpResponseRedirect(self.success_url)
 
-
+###
+# Start an upcoming batch, which is to say--change the status
+# to in-process, calculate the plan days, and set the ACTUAL
+# start day
 class UpcomingBatchStartView(LoginRequiredMixin, BLUpdateView):
     model = Batch
     template_name = "ebs/batch/upcoming-batch-start.html"

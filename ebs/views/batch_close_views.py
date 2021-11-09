@@ -12,7 +12,8 @@ from ebs.models.brew_sheets import CarbonationQCEntry
 from ebs.models.brew_sheets import PackagingRun
 from ebs.forms.batch_close_forms import CloseBatchForm
 
-
+###
+# Convenience view for listing archived batches.
 class ArchiveBatchListView(LoginRequiredMixin, ListView):
     model = Batch
     template_name = 'ebs/batch/archive-batch-list.html'
@@ -21,7 +22,8 @@ class ArchiveBatchListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         return Batch.objects.filter(status='AR').order_by('-plan_start_day')
 
-
+###
+# See an archived batch
 class ArchiveBatchView(LoginRequiredMixin, BLUpdateView):
     model = Batch
     template_name = "ebs/batch/inprocess/detail/inprocess-add-subitem.html"
@@ -35,7 +37,8 @@ class ArchiveBatchView(LoginRequiredMixin, BLUpdateView):
         context['name'] = 'Close Batch'
         return context
 
-
+###
+# Archived batch with all the deets.
 class ArchiveBatchFullView(LoginRequiredMixin, TemplateView):
     template_name = "ebs/batch/archive-beer-main.html"
 

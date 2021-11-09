@@ -1,9 +1,11 @@
 from django import forms
-from django.utils.safestring import mark_safe
-from crm.models.crm_models import Account
 from crm.models.crm_models import Call
 
-
+###########
+# Call for to be used for debugging purposes, note that
+# this call form is NOT USED in production, but rather
+# the call wizard is used for all call generation and
+# completion.
 class CallForm(forms.ModelForm):
     class Meta:
         model = Call
@@ -24,6 +26,12 @@ class CallForm(forms.ModelForm):
                   'note',]
 
 
+##########
+# The call wizard works by creating a series of parameters
+# inside a URL, so the real 'form' entry only cares about
+# call notes and the dropped samples checkbox.  The view
+# that handles this form takes care of taking the URL apart
+# and trapping any errors
 class CallWizardForm(forms.ModelForm):
     class Meta:
         model = Call

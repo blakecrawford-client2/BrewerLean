@@ -2,6 +2,20 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+class Territory(models.Model):
+    class Meta:
+        verbose_name_plural='Territories'
+
+    territory_code = models.CharField(max_length=5, default='TERR')
+    territory_name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.territory_name
+
+    def __unicode__(self):
+        return self.territory_name
+
+
 class Account(models.Model):
     class Meta:
         verbose_name_plural='Accounts'
@@ -24,6 +38,9 @@ class Account(models.Model):
     obeer_code = models.CharField(max_length=10,
                                   null=True,
                                   blank=True)
+    account_territory = models.ForeignKey(Territory,
+                                          null=True,
+                                          on_delete=models.SET_NULL)
     ale_owner = models.ForeignKey(User,
                                   null=True,
                                   on_delete=models.SET_NULL)

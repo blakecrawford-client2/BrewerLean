@@ -4,6 +4,8 @@ from ebs.models.brew_sheets import Batch
 from ebs.models.master_data_facilities import Tank
 from ebs.models.master_data_products import Product
 
+###
+# form for creating a new 'upcoming' batch
 class MakeUpcomingBatchForm(forms.ModelForm):
     plan_start_day = forms.DateField(
         input_formats=['%d %b %Y'],
@@ -21,8 +23,6 @@ class MakeUpcomingBatchForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        #self.fields['status'].initial = 'IP'
-        #self.fields['status'].disabled = True
         self.fields['target_fv'].queryset = Tank.objects.filter(tank_type='FV').order_by('tank_name')
         self.fields['batch_product'].queryset = Product.objects.order_by('product_name')
 
@@ -30,6 +30,9 @@ class MakeUpcomingBatchForm(forms.ModelForm):
         model = Batch
         fields = ['batch_product', 'schedule_pattern', 'plan_start_day', 'target_fv']
 
+###
+# Form for 'starting' a batch that is in the
+# 'upcoming' list
 class StartUpcomingBatchForm(forms.ModelForm):
     class Meta:
         model=Batch
@@ -46,8 +49,6 @@ class StartUpcomingBatchForm(forms.ModelForm):
                   ]
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        #self.fields['status'].initial = 'IP'
-        #self.fields['status'].disabled = True
         self.fields['target_fv'].queryset = Tank.objects.filter(tank_type='FV').order_by('tank_name')
         self.fields['target_bt'].queryset = Tank.objects.filter(tank_type='BT').order_by('tank_name')
         self.fields['batch_product'].disabled = True

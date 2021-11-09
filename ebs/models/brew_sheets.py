@@ -5,7 +5,19 @@ from ebs.models.master_data_products import Product
 from ebs.models.master_data_facilities import Tank, Staff
 from ebs.models.master_data_rawmaterials import Material
 
-
+###
+# Schedule Pattern definition.  Note that a schedule pattern
+# defines reasonably generic process steps along with the number
+# of days offset FROM START that we'd predict that process
+# step to be completed.  It is well-understod that every brewery
+# will have fine-grained process controls that are not covered by
+# these steps, but it is also well-understood that being too
+# prescriptive in the process increases implementation time and
+# decreases compliance since *everything* is modeled in the process.
+#
+# In the brewerlean model, we opt for a series of higher-level
+# process steps that should be generic enough so as to not interfere
+# with local preferences.
 class SchedulePattern(models.Model):
     class Meta:
         ordering = ['pattern_name']
@@ -36,7 +48,8 @@ class SchedulePattern(models.Model):
     def __str__(self):
         return self.pattern_name
 
-
+###
+# Unique project sizes
 class BatchSize(models.Model):
     class Meta:
         verbose_name_plural = 'Batch Sizes'
@@ -47,6 +60,12 @@ class BatchSize(models.Model):
         return self.batch_size_name
 
 
+###
+# Defining model for a 'batch', where a batch is a single
+# fermenter, but not necessarily a single brite.  Turn numbers
+# and day numbers are *hard coded* at the moment, since this
+# seems like a minor detail to bother with additional tables
+# and most smaller breweries don't run 24hr schedules.
 class Batch(models.Model):
     TURN_CHOICES = ((1, 1), (2, 2), (3, 3), (4, 4))
     DAY_CHOICES = ((1, 1), (2, 2), (3, 3), (4, 4))
@@ -133,7 +152,10 @@ class Batch(models.Model):
                           + '::NO BATCH'
         return return_name
 
-
+###
+# Plan dates are calculated by the associated view when a
+# planned batch is scheduled, based on teh schedule pattern
+# that is applied.
 class BatchPlanDates(models.Model):
     class Meta:
         verbose_name_plural = 'Batch Plan Dates'
@@ -165,7 +187,9 @@ class BatchPlanDates(models.Model):
     def __str__(self):
         return self.brew_date.__str__()
 
-
+###
+# Batch actual dates track actual performance.  In early
+# versions this was manually filled in.
 class BatchActualDates(models.Model):
     class Meta:
         verbose_name_plural = 'Batch Actual Dates'
@@ -216,7 +240,9 @@ class BatchActualDates(models.Model):
                           + '::NO BATCH'
         return return_name
 
-
+###
+# A full list of all the raw materials that were used in any
+# particular batch.
 class BatchRawMaterialsLog(models.Model):
     class Meta:
         verbose_name_plural = 'Batch Raw Materials Logs'
@@ -258,7 +284,8 @@ class BatchRawMaterialsLog(models.Model):
                           + '::' + self.material.material_name
         return return_name
 
-
+###
+# Key wort QC items
 class BatchWortQC(models.Model):
     class Meta:
         verbose_name_plural = 'Batch Wort QC Data'
@@ -340,7 +367,10 @@ class BatchWortQC(models.Model):
                           + '::' + self.turn.__str__()
         return return_name
 
-
+###
+# Basic yeast pitch information, related to in-stock materials.
+# this will be deprecated eventually by a yeast management
+# module.
 class BatchYeastPitch(models.Model):
     class Meta:
         verbose_name_plural = 'Batch Yeast Pitches'
@@ -391,7 +421,9 @@ class BatchYeastPitch(models.Model):
                           + '::' + self.yeast.material_name
         return return_name
 
-
+###
+# Daily fermentation QC log, with extract (calculated and real,
+# usable for various methods), temps, and pHs
 class BatchFermentationQC(models.Model):
     class Meta:
         verbose_name_plural = 'Batch Fermentation QC Data'
@@ -451,7 +483,10 @@ class BatchFermentationQC(models.Model):
                           + '::' + self.date.__str__()
         return return_name
 
-
+###
+# Dissolved Oxygen entries at some number of places
+# in the process.  Once again, these are hard-coded
+# since it seemed odd to make this a configuration.
 class BatchDOEntry(models.Model):
     class Meta:
         verbose_name_plural = 'Batch DO Entries'
@@ -498,7 +533,8 @@ class BatchDOEntry(models.Model):
                           + '::' + self.do_type
         return return_name
 
-
+###
+# FV->BT transfer record, volume in gallons.
 class BatchTransfer(models.Model):
     class Meta:
         verbose_name_plural = 'Batch Transfers'
@@ -535,7 +571,8 @@ class BatchTransfer(models.Model):
                           + '::NO BATCH'
         return return_name
 
-
+###
+# Carbonation entry, in volumes
 class CarbonationQCEntry(models.Model):
     class Meta:
         verbose_name_plural = 'Carbonation QC Entries'
@@ -570,7 +607,10 @@ class CarbonationQCEntry(models.Model):
                           + '::NO BATCH'
         return return_name
 
-
+###
+# A packaging run is a summary of the number of half barrels
+# sixtels and cases that were filled, along with the number
+# of skids used for each
 class PackagingRun(models.Model):
     class Meta:
         verbose_name_plural = 'Packaging Runs'
@@ -615,7 +655,11 @@ class PackagingRun(models.Model):
                           + '::NO BATCH'
         return return_name
 
-
+###
+# Canning QC is comprised of relevant measurements
+# made by a canning line operator.  Again, these measurements
+# types are hard coded, since it seems odd to make them
+# a more complicated configuration.
 class CanningQC(models.Model):
     class Meta:
         verbose_name_plural = 'Canning QC Data'
@@ -664,7 +708,13 @@ class CanningQC(models.Model):
                           + '::NO BATCH'
         return return_name
 
-
+###
+# A note is a random bit of infomration about a batch.  Notes that are
+# private are notes that don't get printed on certain reports (say,
+# if you are a contract brewer and you publish information that you don't
+# want a client to see).  Unlisted Material notes are for adding info
+# about raw materials that weren't in the materials list or couldn't easily
+# be found--so that prodution staff may continue as normal.
 class BatchNote(models.Model):
 
     class NoteType(models.TextChoices):

@@ -16,20 +16,32 @@ from ebs.models.brew_sheets import CanningQC
 from ebs.models.brew_sheets import BatchNote
 
 
+##########
+# Convenience formn for updating the target FV
+# of an in-process batch after it has been set
+# in the start batch process.
 class ChangeFVForm(forms.ModelForm):
     target_fv = forms.ModelChoiceField(queryset=Tank.objects.filter(tank_type='FV').order_by('tank_name'))
+
     class Meta:
         model = Batch
         fields = ['target_fv']
 
-
+##########
+# Convenience form for adding OBeer MPN and
+# Batch number information.  Truly, this is silly
+# to use OBeer-specific terminology.  Future work
+# should generalized this to allow the use of
+# BL-specific batch generation.
 class AddObeerDataForm(forms.ModelForm):
     class Meta:
         model = Batch
         fields = ['obeer_batch',
                   'obeer_mpn', ]
 
-
+###
+# Detail form for adding raw material records to a
+# material log
 class AddRawMaterialsForm(forms.ModelForm):
     material = forms.ModelChoiceField(queryset=Material.objects.order_by('material_type', 'material_name'))
     class Meta:
@@ -39,7 +51,8 @@ class AddRawMaterialsForm(forms.ModelForm):
                   'material_qty',
                   'is_dh']
 
-
+###
+# Detail form for adding wort QC info
 class AddWortQCEntryForm(forms.ModelForm):
     class Meta:
         model = BatchWortQC
@@ -59,6 +72,8 @@ class AddWortQCEntryForm(forms.ModelForm):
         ]
 
 
+###
+# Detail form for adding yeast pitch info
 class AddYeastPitchEntryForm(forms.ModelForm):
     yeast = forms.ModelChoiceField(queryset=Material.objects.filter(material_type='YT'))
     class Meta:
@@ -72,6 +87,13 @@ class AddYeastPitchEntryForm(forms.ModelForm):
         ]
 
 
+###
+# Detail form for adding/changing actual dates, but
+# note that this is counter-balanced by new  features
+# that automatically populate the actual dates based on
+# other details, such as DH, etc.  The need to edit
+# actual dates is somewhat obviated by this, but we're
+# leaving it in for now.
 class UpdateActualDatesForm(forms.ModelForm):
     brew_date = forms.DateField(
         input_formats=['%d %b %Y'],
@@ -169,7 +191,8 @@ class UpdateActualDatesForm(forms.ModelForm):
             'package_date',
         ]
 
-
+###
+# Detail form for adding ferm QC data
 class BatchFermentationQCForm(forms.ModelForm):
     date = forms.DateField(
         required=False,
@@ -194,7 +217,8 @@ class BatchFermentationQCForm(forms.ModelForm):
             'temp_pv'
         ]
 
-
+###
+# Detail form for adding a DO measurement
 class BatchDOEntryForm(forms.ModelForm):
     date = forms.DateField(
         required=False,
@@ -216,7 +240,9 @@ class BatchDOEntryForm(forms.ModelForm):
                   'do_type',
                   'do_measurement']
 
-
+###
+# Detail form for adding FV->BT transfer
+# information.
 class BatchTransferForm(forms.ModelForm):
     date = forms.DateField(
         required=False,
@@ -242,7 +268,8 @@ class BatchTransferForm(forms.ModelForm):
                   'volume_transfer_approx',
                   'to_tank']
 
-
+###
+# Detail form for adding carb info
 class CarbonationQCEntryForm(forms.ModelForm):
     date = forms.DateField(
         required=False,
@@ -263,7 +290,8 @@ class CarbonationQCEntryForm(forms.ModelForm):
                   'date',
                   'carb_vols_brite']
 
-
+###
+# Detail form for adding Packaging info
 class PackagingRunForm(forms.ModelForm):
     date = forms.DateField(
         required=False,
@@ -288,7 +316,9 @@ class PackagingRunForm(forms.ModelForm):
                   'filled_cases',
                   'skids_cases']
 
-
+###
+# Detail form for adding canning qc info
+# like weights, seams, etc.
 class CanningQCForm(forms.ModelForm):
     date = forms.DateField(
         required=False,
@@ -310,10 +340,64 @@ class CanningQCForm(forms.ModelForm):
                   'type',
                   'measurement']
 
-
+###
+# Detail form for batch notes
 class BatchNoteForm(forms.ModelForm):
 
     class Meta:
         model = BatchNote
         fields = ['note_type',
                   'note']
+
+###
+# New Feature in V0.7, the "harvest" function
+# is built out to include the disposition of
+# the yeast.
+class YeastCrashHarvestForm(forms.Form):
+    OPTIONS = [('1','Dry Pitch Discarded'),
+               ('2','Dry Pitch Harvested'),
+               ('3','Wet Pitch Discarded'),
+               ('4','Wet Pitch Harvested')]
+    yeast_crash_date = forms.DateField(label='Yeast Crash Date',
+                                       required=False,
+                                       input_formats=['%d %b %Y'],
+                                       widget=DatePickerInput(
+                                           options={
+                                               "format": "DD MMM YYYY",
+                                               "showClose": True,
+                                               "showClear": True,
+                                               "showTodayButton": True,
+                                           }
+                                       ))
+    yeast_harvest_date = forms.DateField(label='Yeast Harvest Date',
+                                       required=False,
+                                       input_formats=['%d %b %Y'],
+                                       widget=DatePickerInput(
+                                           options={
+                                               "format": "DD MMM YYYY",
+                                               "showClose": True,
+                                               "showClear": True,
+                                               "showTodayButton": True,
+                                           }
+                                       ))
+
+###
+# Detail form for tracking the final crash
+# date (this is prior to FV->BT transfer in
+# most processes
+class FinalCrashForm(forms.ModelForm):
+    final_crash_date = forms.DateField(
+        required=False,
+        input_formats=['%d %b %Y'],
+        widget=DatePickerInput(
+            options={
+                "format": "DD MMM YYYY",
+                "showClose": True,
+                "showClear": True,
+                "showTodayButton": True,
+            }
+        )
+    )
+    class Meta:
+        model = BatchActualDates
+        fields = ['final_crash_date']

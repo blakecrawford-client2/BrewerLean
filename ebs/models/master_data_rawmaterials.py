@@ -1,6 +1,11 @@
 from django.db import models
 from django.contrib import admin
 
+###
+# An originator is a brand of raw materials.  "Simpson's"
+# or "Weyermann" for example.  It's not intended to be a
+# distributor such as BSG or CMG, but there's no reason
+# why it couldn't be.
 class Originator(models.Model):
     class Meta:
         verbose_name_plural='Originators'
@@ -9,6 +14,10 @@ class Originator(models.Model):
     def __str__(self):
         return self.originator_name
 
+###
+# A material is an ingredient, more or less.  The
+# granularity with which you want to manage materials is
+# entirely up to you.
 #TODO: Raw materials management needs significant fleshing out
 #TODO:  Yeast management needs significant fleshing out
 class Material(models.Model):

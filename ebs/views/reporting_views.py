@@ -1,22 +1,12 @@
 from django.views.generic import DetailView
 from django.views.generic import TemplateView
 from django.views.generic import ListView
-from ebs.models.brew_sheets import Batch
-from ebs.models.brew_sheets import BatchRawMaterialsLog
-from ebs.models.brew_sheets import BatchWortQC
-from ebs.models.brew_sheets import BatchYeastPitch
-from ebs.models.brew_sheets import BatchPlanDates
-from ebs.models.brew_sheets import BatchActualDates
-from ebs.models.brew_sheets import BatchFermentationQC
-from ebs.models.brew_sheets import BatchDOEntry
-from ebs.models.brew_sheets import BatchTransfer
-from ebs.models.brew_sheets import CarbonationQCEntry
-from ebs.models.brew_sheets import CanningQC
-from ebs.models.brew_sheets import PackagingRun
-from ebs.models.brew_sheets import BatchNote
+from ebs.models.brew_sheets import *
 from ebs.models.master_data_facilities import Tank
 
-
+###
+# Status report for the entire brewery, intended to be
+# projected on a large TV or projector
 class BigTVStatusReport(ListView):
     model = Batch
     context_object_name = 'batches'
@@ -31,7 +21,9 @@ class BigTVStatusReport(ListView):
         context['act_dates'] = BatchActualDates.objects.filter(batch__status='IP')
         return context
 
-
+###
+# Report to show all wort production QC data by turn
+# for a particular batch
 class BatchWortProductionRecord(DetailView):
     model = Batch
     context_object_name = 'batch'
@@ -46,7 +38,9 @@ class BatchWortProductionRecord(DetailView):
         context['yeast'] = BatchYeastPitch.objects.get(batch=batch_id)
         return context
 
-
+###
+# Report to show batch raw materials log, not by turns,
+# for a particular batch
 class BatchRawMaterialsRecord(DetailView):
     model = Batch
     context_object_name = 'batch'
@@ -61,7 +55,9 @@ class BatchRawMaterialsRecord(DetailView):
         context['other'] = BatchRawMaterialsLog.objects.filter(batch=batch_id, material__material_type='OT')
         return context
 
-
+###
+# Report to show the fermentation QC data for
+# a particular batch
 class BatchFermentationQCRecord(DetailView):
     model = Batch
     context_object_name = 'batch'
@@ -73,7 +69,8 @@ class BatchFermentationQCRecord(DetailView):
         context['fermqcs'] = BatchFermentationQC.objects.filter(batch=batch_id)
         return context
 
-
+###
+# Generates the OG alementary brew sheet
 class OldSchoolBrewSheet(DetailView):
     model = Batch
     context_object_name = 'batch'
@@ -90,7 +87,9 @@ class OldSchoolBrewSheet(DetailView):
         context['notes'] = BatchNote.objects.filter(batch=batch_id)
         return context
 
-
+###
+# Work-in-progress report to show the tank status for
+# each tank in a facility
 class TankStatusReport(ListView):
     model = Batch
     context_object_name = 'batches'

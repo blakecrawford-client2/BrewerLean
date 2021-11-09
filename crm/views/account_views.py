@@ -73,6 +73,16 @@ class AccountUpdateView(LoginRequiredMixin, UpdateView):
     success_url = '/crm/account-lists/'
 
 
+class AccountListInTerritory(ListView, LoginRequiredMixin):
+    model = Account
+    template_name = 'crm/accounts/account-lists.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        accounts = Account.objects.all()
+        context['accounts'] = accounts
+        return context
+
 class AccountListOnPremView(AccountListView, LoginRequiredMixin):
 
     def get_queryset(self):
