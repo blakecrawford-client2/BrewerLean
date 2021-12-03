@@ -1,6 +1,6 @@
 # Linux Installation
 Since BrewerLean is simply python and postgresql, you should be able to get it up and running on any Linux distribution.  Our development environments are all Ubuntu, however, so that or a lightweight install like Lubuntu are most likely to work without fuss.
-NOTE:  This installation is for a "test" or "development" server, not a production server.  To start a production server, you'll complete these same steps followed by the PRODUCTION_CONFIG.md addendum.
+NOTE:  This installation is for a "test" or "development" server, not a production server.  To start a production server, you'll complete these same steps followed by the INSTALLATION_LINUX_PRODUCTION.md addendum.
 
 ## First, get an environment
 You can definitely just install BrewerLean in a base install.  But, if you prefer a virtualized environment that should be okay too as long as the same steps are followed.
