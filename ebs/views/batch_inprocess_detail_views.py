@@ -1,10 +1,11 @@
-from django.urls import reverse_lazy, reverse
-from django.http.request import HttpRequest
-from django.views.generic.edit import FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
+from django.views.generic.edit import FormView
+
 from common.views.BLViews import BLCreateView, BLUpdateView, BLDeleteWithoutConfirmationView
-from ebs.models.brew_sheets import *
 from ebs.forms.batch_maintenance_detail_forms import *
+from ebs.models.brew_sheets import *
+
 
 ###
 # View to handle changing the FV for a batch
@@ -27,6 +28,7 @@ class ChangeFVView(LoginRequiredMixin, BLUpdateView):
         context['batch'] = batch
         context['name'] = 'Change FV'
         return context
+
 
 ###
 # Detail view for adding OBeer data, which is silly
@@ -54,6 +56,7 @@ class AddObeerDataView(LoginRequiredMixin, BLUpdateView):
         context['name'] = 'OBeer Data'
         return context
 
+
 ###
 # Detail view to manage the raw materials log for a
 # particular batch
@@ -73,9 +76,12 @@ class RawMaterialsLogView(LoginRequiredMixin, BLUpdateView):
     def get_context_data(self, **kwargs):
         batch = Batch.objects.get(pk=self.kwargs.get('pk'))
         materials = BatchRawMaterialsLog.objects.filter(batch=batch.id).order_by('material__material_name')
-        grain = BatchRawMaterialsLog.objects.filter(batch=batch.id, material__material_type='GR').order_by('material__material_name')
-        hops = BatchRawMaterialsLog.objects.filter(batch=batch.id, material__material_type='HP').order_by('material__material_name')
-        other = BatchRawMaterialsLog.objects.filter(batch=batch.id, material__material_type='OT').order_by('material__material_name')
+        grain = BatchRawMaterialsLog.objects.filter(batch=batch.id, material__material_type='GR').order_by(
+            'material__material_name')
+        hops = BatchRawMaterialsLog.objects.filter(batch=batch.id, material__material_type='HP').order_by(
+            'material__material_name')
+        other = BatchRawMaterialsLog.objects.filter(batch=batch.id, material__material_type='OT').order_by(
+            'material__material_name')
         not_listed = BatchNote.objects.filter(batch=batch.id, note_type='UM')
         context = super(RawMaterialsLogView, self).get_context_data(**kwargs)
         context['batch'] = batch
@@ -85,6 +91,7 @@ class RawMaterialsLogView(LoginRequiredMixin, BLUpdateView):
         context['materials'] = materials
         context['not_listed'] = not_listed
         return context
+
 
 ###
 # Detail view to add a raw material to a batch
@@ -112,6 +119,7 @@ class AddRawMaterialsLogView(LoginRequiredMixin, BLCreateView):
         form.instance.batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
         return super(AddRawMaterialsLogView, self).form_valid(form)
 
+
 ###
 # Detail view to update a raw materials line item for a batch
 class UpdateRawMaterialsLogView(LoginRequiredMixin, BLUpdateView):
@@ -127,13 +135,13 @@ class UpdateRawMaterialsLogView(LoginRequiredMixin, BLUpdateView):
         else:
             return reverse_lazy('rawmaterials', kwargs={'pk': self.kwargs.get('bpk')})
 
-
     def get_context_data(self, **kwargs):
         batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
         context = super(UpdateRawMaterialsLogView, self).get_context_data(**kwargs)
         context['batch'] = batch
         context['name'] = 'Edit Material'
         return context
+
 
 ###
 # Detail view for handling deletion of a raw materials line-item
@@ -147,6 +155,7 @@ class DeleteRawMaterialsLogView(LoginRequiredMixin, BLDeleteWithoutConfirmationV
             return reverse_lazy('rawmaterials-archive', kwargs={'pk': self.kwargs.get('bpk')})
         else:
             return reverse_lazy('rawmaterials', kwargs={'pk': self.kwargs.get('bpk')})
+
 
 ###
 # Detail view for wort QC entries, per turn.
@@ -163,7 +172,6 @@ class WortQCEntriesView(LoginRequiredMixin, BLUpdateView):
         else:
             return reverse_lazy('maintenance', kwargs={'pk': self.kwargs.get('bpk')})
 
-
     def get_context_data(self, **kwargs):
         batch_id = self.kwargs.get('pk')
         batch = Batch.objects.get(pk=batch_id)
@@ -172,6 +180,7 @@ class WortQCEntriesView(LoginRequiredMixin, BLUpdateView):
         context['batch'] = batch
         context['wortqcentries'] = wort_qc_entries
         return context
+
 
 ###
 # Detail view for adding a new wort QC entry,
@@ -200,6 +209,7 @@ class AddWortQCEntryView(LoginRequiredMixin, BLCreateView):
         form.instance.batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
         return super(AddWortQCEntryView, self).form_valid(form)
 
+
 ###
 # Detail view for updating a wort QC entry line item
 class UpdateWortQCEntryView(LoginRequiredMixin, BLUpdateView):
@@ -221,6 +231,7 @@ class UpdateWortQCEntryView(LoginRequiredMixin, BLUpdateView):
         context['batch'] = batch
         context['name'] = 'Edit Wort QC'
         return context
+
 
 ###
 # Detail view for creating a new yeast pitch
@@ -248,6 +259,7 @@ class CreateYeastPitchView(LoginRequiredMixin, BLCreateView):
         form.instance.batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
         return super(CreateYeastPitchView, self).form_valid(form)
 
+
 ###
 # Detail view for updating a yeast pitch
 class UpdateYeastPitchView(LoginRequiredMixin, BLUpdateView):
@@ -273,6 +285,7 @@ class UpdateYeastPitchView(LoginRequiredMixin, BLUpdateView):
     def form_valid(self, form):
         form.instance.batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
         return super(UpdateYeastPitchView, self).form_valid(form)
+
 
 ###
 # Detail view for updating an actual date
@@ -302,6 +315,7 @@ class UpdateActualDatesView(LoginRequiredMixin, BLUpdateView):
         form.instance.batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
         return super(UpdateActualDatesView, self).form_valid(form)
 
+
 ###
 # Detail view for seeing the list of current ferm QC entries
 class FermQCEntriesView(LoginRequiredMixin, BLUpdateView):
@@ -324,10 +338,40 @@ class FermQCEntriesView(LoginRequiredMixin, BLUpdateView):
             ferm_qc_entries = BatchFermentationQC.objects.filter(batch=batch.id)
         except BatchFermentationQC.DoesNotExist:
             ferm_qc_entries = None
+
+        ###
+        # Average all real gravities from existing wort QC entries
+        # and use that to determine the starting extract that will
+        # be used for calculations
+        sum_og_entries = 0.0
+        basis_og = 0.0
+        basis_rdf = 0.80
+        wort_qc_entries = BatchWortQC.objects.filter(batch=batch.id)
+        if wort_qc_entries:
+            for entry in wort_qc_entries:
+                sum_og_entries += float(entry.extract_postboil)
+            basis_og = sum_og_entries / wort_qc_entries.count()
+        #basis_fg = basis_og * (1.0 - basis_rdf)
+        #real_rdf = (100 * (basis_og - basis_fg) / basis_og) * (1 / (1 - 0.005161 * basis_fg))
+
+        ###
+        # Calculate the RDF for all ferm qc entries.  This should probably
+        # be calculated at save time and stored in the model, but for now
+        # we're just calculating at display time out of an abundance of
+        # caution to ensure we don't end up with piles of bad data in the DB
+        fermqc_rdf_list = []
+        for fermqc in ferm_qc_entries:
+            temp_rdf = (100 * (basis_og - float(fermqc.extract_real)) / basis_og) * (1 / (1 - 0.005161 * float(fermqc.extract_real)))
+            fermqc_rdf_list.append([fermqc.date, fermqc.extract_real, fermqc.ph, fermqc.temp_pv, temp_rdf])
+
         context = super(FermQCEntriesView, self).get_context_data(**kwargs)
         context['batch'] = batch
-        context['fermqcentries'] = ferm_qc_entries
+        #context['fermqcentries'] = ferm_qc_entries
+        context['fermqcentries'] = fermqc_rdf_list
+        context['basis_og'] = basis_og
+        context['basis_rdf'] = basis_rdf
         return context
+
 
 ###
 # detail view for adding a new ferm qc line item
@@ -355,6 +399,7 @@ class AddFermQCEntryView(LoginRequiredMixin, BLCreateView):
         form.instance.batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
         return super(AddFermQCEntryView, self).form_valid(form)
 
+
 ###
 # Detail view for updating a ferm QC line item
 class UpdateFermQCEntryView(LoginRequiredMixin, BLUpdateView):
@@ -376,6 +421,7 @@ class UpdateFermQCEntryView(LoginRequiredMixin, BLUpdateView):
         context['batch'] = batch
         context['name'] = 'Update Ferm QC'
         return context
+
 
 ###
 # Detail view for seeing the set of DO entries.
@@ -404,6 +450,7 @@ class BatchDOEntriesView(LoginRequiredMixin, BLUpdateView):
         context['doentries'] = do_entries
         return context
 
+
 ###
 # Detail view for adding a new DO line item
 class AddBatchDOEntryView(LoginRequiredMixin, BLCreateView):
@@ -430,6 +477,7 @@ class AddBatchDOEntryView(LoginRequiredMixin, BLCreateView):
         form.instance.batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
         return super(AddBatchDOEntryView, self).form_valid(form)
 
+
 ###
 # Detail view for updating a DO entry view
 class UpdateBatchDOEntryView(LoginRequiredMixin, BLUpdateView):
@@ -451,6 +499,7 @@ class UpdateBatchDOEntryView(LoginRequiredMixin, BLUpdateView):
         context['batch'] = batch
         context['name'] = 'Update D.O. Entry'
         return context
+
 
 ###
 # Detail view for creating a new transfer entry
@@ -477,11 +526,12 @@ class CreateTransferView(LoginRequiredMixin, BLCreateView):
     def form_valid(self, form):
         form.instance.batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
         temp_form = form.save(commit=False)
-        act_dates = BatchActualDates.objects.get(batch_id = form.instance.batch.id)
+        act_dates = BatchActualDates.objects.get(batch_id=form.instance.batch.id)
         act_dates.transfer_date = temp_form.date
         act_dates.save()
         temp_form.save()
         return super(CreateTransferView, self).form_valid(form)
+
 
 ###
 # Detail view for updating a transfer record
@@ -514,6 +564,7 @@ class UpdateTransferView(LoginRequiredMixin, BLUpdateView):
         temp_form.save()
         return super(UpdateTransferView, self).form_valid(form)
 
+
 ###
 # Detail view for creating a carbonation entry
 class CreateCarbonationQCView(LoginRequiredMixin, BLCreateView):
@@ -540,6 +591,7 @@ class CreateCarbonationQCView(LoginRequiredMixin, BLCreateView):
         form.instance.batch = Batch.objects.get(pk=self.kwargs.get('pk'))
         return super(CreateCarbonationQCView, self).form_valid(form)
 
+
 ###
 # Detail view for updating a carbonation entry
 class UpdateCarbonationQCView(LoginRequiredMixin, BLUpdateView):
@@ -565,6 +617,7 @@ class UpdateCarbonationQCView(LoginRequiredMixin, BLUpdateView):
     def form_valid(self, form):
         form.instance.batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
         return super(UpdateCarbonationQCView, self).form_valid(form)
+
 
 ###
 # Detail view for seeing a list of current canning QC
@@ -594,6 +647,7 @@ class CanningQCView(LoginRequiredMixin, BLUpdateView):
         context['canqcentries'] = can_qc_entries
         return context
 
+
 ###
 # Detail view for adding a new can QC line item
 class AddCanningQCView(LoginRequiredMixin, BLCreateView):
@@ -620,6 +674,7 @@ class AddCanningQCView(LoginRequiredMixin, BLCreateView):
         form.instance.batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
         return super(AddCanningQCView, self).form_valid(form)
 
+
 ###
 # Detail view for updating an existing can QC line item
 class UpdateCanningQCView(LoginRequiredMixin, BLUpdateView):
@@ -641,6 +696,7 @@ class UpdateCanningQCView(LoginRequiredMixin, BLUpdateView):
         context['batch'] = batch
         context['name'] = 'Update Can QC'
         return context
+
 
 ###
 # Detail view for creating a new packaging run
@@ -672,6 +728,7 @@ class CreatePackagingRunView(LoginRequiredMixin, BLCreateView):
         act_dates.save()
         temp_form.save()
         return super(CreatePackagingRunView, self).form_valid(form)
+
 
 ###
 # Detail view for updating an existing packaging run
@@ -706,6 +763,7 @@ class UpdatePackagingRunView(LoginRequiredMixin, BLUpdateView):
         temp_form.save()
         return super(UpdatePackagingRunView, self).form_valid(form)
 
+
 ###
 # Detail view for seeing a list of existing batch notes
 class BatchNoteView(LoginRequiredMixin, BLUpdateView):
@@ -733,6 +791,7 @@ class BatchNoteView(LoginRequiredMixin, BLUpdateView):
         context['batchnotes'] = batch_notes
         return context
 
+
 ###
 # Detail view for adding a new batch note line item
 class AddBatchNoteView(LoginRequiredMixin, BLCreateView):
@@ -758,6 +817,7 @@ class AddBatchNoteView(LoginRequiredMixin, BLCreateView):
     def form_valid(self, form):
         form.instance.batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
         return super(AddBatchNoteView, self).form_valid(form)
+
 
 ###
 # Detail view for updating an existing batch note line item
@@ -804,7 +864,7 @@ class CreateYeastCrashHarvestView(FormView, LoginRequiredMixin):
         batch = Batch.objects.get(pk=self.kwargs.get('pk'))
         act_dates = BatchActualDates.objects.get(batch=batch)
         initial_dict = {
-            "yeast_crash_date" : act_dates.yeast_crash_date,
+            "yeast_crash_date": act_dates.yeast_crash_date,
             "yeast_harvest_date": act_dates.yeast_harvest_date,
         }
         form = YeastCrashHarvestForm(request.POST or None, initial=initial_dict)
@@ -830,6 +890,7 @@ class CreateYeastCrashHarvestView(FormView, LoginRequiredMixin):
         act_dates.yeast_crash_date = valid_data['yeast_crash_date']
         act_dates.yeast_harvest_date = valid_data['yeast_harvest_date']
         act_dates.save()
+
 
 ###
 # Similarly to the YeastCrashHarvestView, I separated this for
@@ -858,4 +919,3 @@ class CreateFinalCrashDateView(LoginRequiredMixin, BLUpdateView):
     def form_valid(self, form):
         form.instance.batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
         return super(CreateFinalCrashDateView, self).form_valid(form)
-

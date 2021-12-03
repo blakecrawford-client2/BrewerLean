@@ -149,7 +149,7 @@ AUTHENTICATION_BACKENDS = (
 #     SITE_ID = 4
 # else:
 #     SITE_ID = env.int('EBS_SITE_ID', default='4')
-SITE_ID = config('G_SITE_ID')
+SITE_ID = config('G_SITE_ID', cast=int)
 
 LOGIN_REDIRECT_URL = "/"
 
@@ -177,3 +177,7 @@ SOCIALACCOUNT_PROVIDERS = {
 BOOTSTRAP4 = {
     'include_jquery': True,
 }
+
+##########
+# This is required after a django 3.2 migration
+DEFAULT_AUTO_FIELD='django.db.models.AutoField'

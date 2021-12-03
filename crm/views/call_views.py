@@ -83,9 +83,10 @@ class CreateOpenCallExitAwaitResponse(LoginRequiredMixin, TemplateView):
 
     def dispatch(self, request, *args, **kwargs):
         if self.kwargs.get('cpk') is None:
-            call = Call.objects.create_call(self.kwargs.get('pk'),
+            call = Call.objects.create_call_lmu(self.kwargs.get('pk'),
                                             self.kwargs.get('type'),
-                                            self.kwargs.get('method'))
+                                            self.kwargs.get('method'),
+                                            self.request.user)
             return HttpResponseRedirect(reverse_lazy('call_list'))
         else:
             call = Call.objects.get(id=self.kwargs.get('cpk'))
@@ -93,6 +94,7 @@ class CreateOpenCallExitAwaitResponse(LoginRequiredMixin, TemplateView):
             call.account = account
             call.type = self.kwargs.get('type')
             call.method = self.kwargs.get('method')
+            call.last_modified_by = self.request.user
             call.save()
             return HttpResponseRedirect(reverse_lazy('call_list'))
 

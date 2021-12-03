@@ -64,6 +64,11 @@ class CallManager(models.Manager):
         call = self.create(account=account, type=type, method=method)
         return call
 
+    def create_call_lmu(self, apk, type, method, rep):
+        account = Account.objects.get(id=apk)
+        call = self.create(account=account, type=type, method=method, last_modified_by=rep)
+        return call
+
 
 class Call(models.Model):
     class Meta:
