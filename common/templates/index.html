@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load socialaccount %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row no-gutters">
+        <div class="col-12 bg-light pl-2 pt-2">
+            <h1>Welcome to BL1</h1>
+            <h3>The Brewery Operations Platform by The Alementary</h3>
+            <h3>This is the place where you will do the things.</h3>
+        </div>
+        {% if user.is_authenticated %}
+            <div class="col-12 pl-2 pt-2">
+                You are authenticated, please proceed with the things.<br/>
+                {% if authmethod == 'google' %}
+                    ...or you can <a href="{% url 'account_logout' %}">log out.</a>
+                {% else %}
+                    ...or you can <a href="{% url 'logout' %}">log out.</a>
+                {% endif %}
+            </div>
+        {% else %}
+            <div class="col-12 bg-light pl-2 pt-2">
+                {% if authmethod == 'google' %}
+                    You are not authenticated, please
+                    <a href="{% provider_login_url 'google' %}">login with your Alementary e-mail credentials.</a>
+                {% else %}
+                    You are not authenticated, please
+                    <a href="{% url 'login' %}">login with your BrewerLean credentials</a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

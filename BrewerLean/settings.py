@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'common',
     'ebs',
     'crm',
     'yeast',
@@ -140,10 +141,15 @@ else:
 
 STATIC_URL = '/static/'
 
-AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
-)
+if config('USE_GOOGLE_AUTH', cast=bool):
+    AUTHENTICATION_BACKENDS = (
+        'django.contrib.auth.backends.ModelBackend',
+        'allauth.account.auth_backends.AuthenticationBackend',
+    )
+else:
+    AUTHENTICATION_BACKENDS = (
+        'django.contrib.auth.backends.ModelBackend',
+    )
 
 # if DEBUG is True:
 #     SITE_ID = 4
@@ -152,6 +158,7 @@ AUTHENTICATION_BACKENDS = (
 SITE_ID = config('G_SITE_ID', cast=int)
 
 LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
 
 ##########
 # BrewerLean uses GSuite authentication out of

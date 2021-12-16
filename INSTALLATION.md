@@ -29,6 +29,8 @@ DATABASE_PORT = yourdbport
 TIME_ZONE = yourtz
 MY_STATIC_ROOT = yourstaticrootpath
 MY_STATIC_URL = yourstaticurl
+USE_DJANGO_AUTH=(True|False)
+USE_GOOGLE_AUTH=(True|False)
 G_SITE_ID = googlesiteidforsocialauth
 ```
 

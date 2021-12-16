@@ -35,6 +35,7 @@
         <option value="$MODULE_DIR$/crm/templates" />
         <option value="$MODULE_DIR$/yeast/templates" />
         <option value="$MODULE_DIR$/delivery/templates" />
+        <option value="$MODULE_DIR$/common/templates" />
       </list>
     </option>
   </component>

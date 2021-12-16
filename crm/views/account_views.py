@@ -1,19 +1,20 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView
-from django.views.generic import CreateView
-from django.views.generic import DetailView
-from django.views.generic import UpdateView
-from django.views.generic import TemplateView
 
-import crm.forms.account_forms
+from common.views.BLViews import BLListView, BLCreateView, BLUpdateView, BLDetailView
+from common.views.BLViews import IndexTemplateView
+from crm.forms.account_forms import AccountForm
 from crm.models.crm_models import Account
 from crm.models.crm_models import Call
-from crm.forms.account_forms import AccountForm
 
 
-class AccountListView(ListView, LoginRequiredMixin):
+class CRMIndexView(IndexTemplateView):
+    template_name = 'crm/home.html'
+
+
+class AccountListView(BLListView, LoginRequiredMixin):
     model = Account
-    template_name= 'crm/accounts/account-list.html'
+    template_name = 'crm/accounts/account-list.html'
     context_object_name = 'accounts'
 
     def get_context_data(self, **kwargs):
@@ -22,7 +23,7 @@ class AccountListView(ListView, LoginRequiredMixin):
         return context
 
 
-class AccountListsView(ListView, LoginRequiredMixin):
+class AccountListsView(BLListView, LoginRequiredMixin):
     model = Account
     template_name = 'crm/accounts/account-lists.html'
 
@@ -33,7 +34,7 @@ class AccountListsView(ListView, LoginRequiredMixin):
         return context
 
 
-class FindAccountForCallView(LoginRequiredMixin, ListView):
+class FindAccountForCallView(BLListView, LoginRequiredMixin):
     model = Account
     template_name = 'crm/accounts/account_call_search.html'
 
@@ -44,7 +45,7 @@ class FindAccountForCallView(LoginRequiredMixin, ListView):
         return context
 
 
-class AccountDetailView(LoginRequiredMixin, DetailView):
+class AccountDetailView(BLDetailView, LoginRequiredMixin):
     model = Account
     template_name = 'crm/accounts/account-detail.html'
     context_object_name = 'account'
@@ -66,14 +67,15 @@ class AccountDetailView(LoginRequiredMixin, DetailView):
         context['calls'] = calls
         return context
 
-class AccountUpdateView(LoginRequiredMixin, UpdateView):
+
+class AccountUpdateView(BLUpdateView, LoginRequiredMixin):
     model = Account
     template_name = 'crm/accounts/account-create.html'
     form_class = AccountForm
     success_url = '/crm/account-lists/'
 
 
-class AccountListInTerritory(ListView, LoginRequiredMixin):
+class AccountListInTerritory(BLListView, LoginRequiredMixin):
     model = Account
     template_name = 'crm/accounts/account-lists.html'
 
@@ -82,6 +84,7 @@ class AccountListInTerritory(ListView, LoginRequiredMixin):
         accounts = Account.objects.all()
         context['accounts'] = accounts
         return context
+
 
 class AccountListOnPremView(AccountListView, LoginRequiredMixin):
 
@@ -193,9 +196,9 @@ class AccountListOffPremDeadView(AccountListView, LoginRequiredMixin):
         return context
 
 
-class CreateAccountView(CreateView, LoginRequiredMixin):
+class CreateAccountView(BLCreateView, LoginRequiredMixin):
     model = Account
-    template_name= 'crm/accounts/account-create.html'
+    template_name = 'crm/accounts/account-create.html'
     context_object_name = 'accounts'
     form_class = AccountForm
     success_url = '/crm/account-lists/'

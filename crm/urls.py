@@ -1,10 +1,10 @@
-from django.urls import path, re_path
-from django.views.generic import TemplateView
+from django.urls import path
+
 from crm.views.account_views import *
 from crm.views.call_views import *
 
 urlpatterns = [
-    path('', TemplateView.as_view(template_name='crm/home.html')),
+    path('', CRMIndexView.as_view()),
     path('accounts/', AccountListView.as_view()),
     path('account-lists/', AccountListsView.as_view(), name='account_lists'),
     path('accounts/on-prem/', AccountListOnPremView.as_view()),
@@ -28,14 +28,23 @@ urlpatterns = [
     path('calls/wizard/<int:pk>/type/<str:type>/method/', CreateCallWizardStep2View.as_view()),
     path('calls/wizard/<int:pk>/<int:cpk>/type/<str:type>/method/', CreateCallWizardStep2View.as_view()),
     path('calls/wizard/<int:pk>/type/<str:type>/method/<str:method>/open/', CreateOpenCallExitAwaitResponse.as_view()),
-    path('calls/wizard/<int:pk>/<int:cpk>/type/<str:type>/method/<str:method>/open/', CreateOpenCallExitAwaitResponse.as_view()),
+    path('calls/wizard/<int:pk>/<int:cpk>/type/<str:type>/method/<str:method>/open/',
+         CreateOpenCallExitAwaitResponse.as_view()),
     path('calls/wizard/<int:pk>/type/<str:type>/method/<str:method>/outcome/', CreateCallWizardStep3View.as_view()),
-    path('calls/wizard/<int:pk>/<int:cpk>/type/<str:type>/method/<str:method>/outcome/', CreateCallWizardStep3View.as_view()),
-    path('calls/wizard/<int:pk>/type/<str:type>/method/<str:method>/outcome/<str:outcome>/followup/', CreateCallWizardStep4View.as_view()),
-    path('calls/wizard/<int:pk>/<int:cpk>/type/<str:type>/method/<str:method>/outcome/<str:outcome>/followup/',CreateCallWizardStep4View.as_view()),
-    path('calls/wizard/<int:pk>/type/<str:type>/method/<str:method>/outcome/<str:outcome>/followup/<int:fupweeks>/note/', CreateCallWizardStep5View.as_view()),
-    path('calls/wizard/<int:pk>/<int:cpk>/type/<str:type>/method/<str:method>/outcome/<str:outcome>/followup/', CreateCallWizardStep4View.as_view()),
-    path('calls/wizard/<int:pk>/<int:cpk>/type/<str:type>/method/<str:method>/outcome/<str:outcome>/followup/<int:fupweeks>/note/', CreateCallWizardStep5View.as_view()),
+    path('calls/wizard/<int:pk>/<int:cpk>/type/<str:type>/method/<str:method>/outcome/',
+         CreateCallWizardStep3View.as_view()),
+    path('calls/wizard/<int:pk>/type/<str:type>/method/<str:method>/outcome/<str:outcome>/followup/',
+         CreateCallWizardStep4View.as_view()),
+    path('calls/wizard/<int:pk>/<int:cpk>/type/<str:type>/method/<str:method>/outcome/<str:outcome>/followup/',
+         CreateCallWizardStep4View.as_view()),
+    path(
+        'calls/wizard/<int:pk>/type/<str:type>/method/<str:method>/outcome/<str:outcome>/followup/<int:fupweeks>/note/',
+        CreateCallWizardStep5View.as_view()),
+    path('calls/wizard/<int:pk>/<int:cpk>/type/<str:type>/method/<str:method>/outcome/<str:outcome>/followup/',
+         CreateCallWizardStep4View.as_view()),
+    path(
+        'calls/wizard/<int:pk>/<int:cpk>/type/<str:type>/method/<str:method>/outcome/<str:outcome>/followup/<int:fupweeks>/note/',
+        CreateCallWizardStep5View.as_view()),
     path('reports/', TemplateView.as_view(template_name='crm/reports/sales-weekly-status.html')),
 
 ]
