@@ -349,6 +349,8 @@ class FermQCEntriesView(LoginRequiredMixin, BLUpdateView):
         wort_qc_entries = BatchWortQC.objects.filter(batch=batch.id)
         if wort_qc_entries:
             for entry in wort_qc_entries:
+                # need better error handling here.  case where there's no postboil for
+                # second turn throws error
                 sum_og_entries += float(entry.extract_postboil)
             basis_og = sum_og_entries / wort_qc_entries.count()
         #basis_fg = basis_og * (1.0 - basis_rdf)

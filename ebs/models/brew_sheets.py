@@ -271,7 +271,7 @@ class BatchRawMaterialsLog(models.Model):
     is_dh = models.BooleanField(null=True,
                                 blank=True,
                                 default=False,
-                                verbose_name='Is Dry Hop?')
+                                verbose_name='Is Cold Side?')
     last_modified_on = models.DateField(auto_now=True)
     last_modified_by = models.ForeignKey(User,
                                          null=True,
@@ -652,6 +652,9 @@ class PackagingRun(models.Model):
     skids_cases = models.IntegerField(null=True,
                                       blank=True,
                                       verbose_name='No. Case Skids')
+    line_count = models.IntegerField(null=True,
+                                     blank=True,
+                                     verbose_name='Line Can Count')
     last_modified_on = models.DateField(auto_now=True, blank=True)
     last_modified_by = models.ForeignKey(User,
                                          null=True,

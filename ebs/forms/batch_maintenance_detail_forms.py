@@ -314,7 +314,8 @@ class PackagingRunForm(forms.ModelForm):
                   'filled_sixtels',
                   'skids_kegs',
                   'filled_cases',
-                  'skids_cases']
+                  'skids_cases',
+                  'line_count']
 
 ###
 # Detail form for adding canning qc info
