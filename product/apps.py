@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class FormulationsConfig(AppConfig):
-    name = 'formulations'
+    name = 'product'

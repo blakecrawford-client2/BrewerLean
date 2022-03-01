@@ -1,5 +1,8 @@
 from django.contrib import admin
 from django.urls import path,include
+from django.conf import settings
+from django.conf.urls.static import static
+from django.urls import re_path
 from django.views.generic import TemplateView
 from common.views.BLViews import IndexTemplateView
 from decouple import config
@@ -22,7 +25,8 @@ if config('USE_GOOGLE_AUTH', cast=bool):
         path('ebs/', include ('ebs.urls')),
         path('crm/', include ('crm.urls')),
         path('yeast/', include ('yeast.urls')),
-        path('delivery/', include ('delivery.urls'))
+        path('delivery/', include ('delivery.urls')),
+        path('product/', include('product.urls')),
     ]
 else:
     urlpatterns = [
@@ -32,5 +36,10 @@ else:
         path('ebs/', include ('ebs.urls')),
         path('crm/', include ('crm.urls')),
         path('yeast/', include ('yeast.urls')),
-        path('delivery/', include ('delivery.urls'))
+        path('delivery/', include ('delivery.urls')),
+        path('product/', include('product.urls')),
     ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)

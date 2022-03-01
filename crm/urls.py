@@ -1,4 +1,6 @@
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 
 from crm.views.account_views import *
 from crm.views.call_views import *
@@ -48,3 +50,7 @@ urlpatterns = [
     path('reports/', TemplateView.as_view(template_name='crm/reports/sales-weekly-status.html')),
 
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

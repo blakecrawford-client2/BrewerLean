@@ -1,6 +1,7 @@
 ##########
 # Django configration for BrewerLean brewery process
 # optimization software
+import os.path
 from pathlib import Path
 from decouple import config
 from decouple import Csv
@@ -41,6 +42,7 @@ INSTALLED_APPS = [
     'crm',
     'yeast',
     'delivery',
+    'product',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -127,6 +129,14 @@ USE_L10N = True
 
 USE_TZ = True
 
+# MEDIA files for pillow image upload
+
+if DEBUG is True:
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+else:
+    MEDIA_ROOT = config('MEDIA_ROOT')
+
+MEDIA_URL = config('MEDIA_URL')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
