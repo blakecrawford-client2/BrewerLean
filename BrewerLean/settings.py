@@ -1,10 +1,10 @@
 ##########
 # Django configration for BrewerLean brewery process
 # optimization software
-import os.path
-from pathlib import Path
+import os
 from decouple import config
 from decouple import Csv
+from pathlib import Path
 
 ##########
 # BrewerLean uses python-decouple to managed the separation
