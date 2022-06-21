@@ -39,6 +39,7 @@ from ebs.views.batch_inprocess_detail_views import UpdateBatchNoteView
 from ebs.views.batch_inprocess_detail_views import ChangeFVView
 from ebs.views.batch_inprocess_detail_views import CreateYeastCrashHarvestView
 from ebs.views.batch_inprocess_detail_views import CreateFinalCrashDateView
+from ebs.views.batch_inprocess_detail_views import CreateDryhopDateView
 from ebs.views.batch_close_views import ArchiveBatchListView
 from ebs.views.batch_close_views import ArchiveBatchView
 from ebs.views.batch_close_views import ArchiveBatchFullView
@@ -77,6 +78,7 @@ urlpatterns = [
     path('inprocess/detail/<int:bpk>/fermqc/add/', AddFermQCEntryView.as_view()),
     path('inprocess/detail/<int:bpk>/fermqc/update/<int:pk>', UpdateFermQCEntryView.as_view()),
     path('inprocess/detail/<int:pk>/yeastcrashharvest/', CreateYeastCrashHarvestView.as_view()),
+    path('inprocess/detail/<int:pk>/coldsideaddition/', CreateDryhopDateView.as_view(), name="coldside"),
     path('inprocess/detail/<int:pk>/do/', BatchDOEntriesView.as_view(), name='doentries'),
     path('inprocess/detail/<int:bpk>/do/add/', AddBatchDOEntryView.as_view()),
     path('inprocess/detail/<int:bpk>/do/update/<int:pk>', UpdateBatchDOEntryView.as_view()),
@@ -113,6 +115,7 @@ urlpatterns = [
     path('archive/detail/<int:pk>/fermqc/', FermQCEntriesView.as_view(), name='fermqcentries-archive'),
     path('archive/detail/<int:bpk>/fermqc/add/', AddFermQCEntryView.as_view()),
     path('archive/detail/<int:bpk>/fermqc/update/<int:pk>', UpdateFermQCEntryView.as_view()),
+    path('archive/detail/<int:pk>/coldsideaddition/', CreateDryhopDateView.as_view(), name="coldside"),
     path('archive/detail/<int:pk>/do/', BatchDOEntriesView.as_view(), name='doentries-archive'),
     path('archive/detail/<int:bpk>/do/add/', AddBatchDOEntryView.as_view()),
     path('archive/detail/<int:bpk>/do/update/<int:pk>', UpdateBatchDOEntryView.as_view()),

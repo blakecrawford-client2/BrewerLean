@@ -1,5 +1,4 @@
 {% extends "ebs/base.html" %}
-{% load bootstrap4 %}
 {% load widget_tweaks %}
 {% block extrahead %}
     {{ form.media }}
@@ -63,7 +62,7 @@
             <div class="col">
                 <form method="POST">
                     {% csrf_token %}
-                    {%  if form.non_field_errors %}
+                    {% if form.non_field_errors %}
                         <div class="alert alert-danger" role="alert">
                             {% for error in form.non_field_errors %}
                                 {{ error }}
@@ -107,8 +106,11 @@
                         </span>
                     {% endif %}
                     <span class="float-right">
+                        {{ request.META.HTTP_REFERER }}
+                        <input type="hidden" value="{{ request.META.HTTP_REFERER }}">
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </span>
+
                 </form>
             </div>
         </div>

@@ -84,13 +84,13 @@
             <div class="col border pl-1">{{ fqc.4|floatformat:1 }}%</div>
             <div class="col-2 border">
                 {% if '/archive' in request.path %}
-                    <a href="/ebs/archive/detail/{{ batch.pk }}/fermqc/update/{{ fqc.id }}">
+                    <a href="/ebs/archive/detail/{{ batch.pk }}/fermqc/update/{{ fqc.5 }}">
                         <button type="button" class="btn btn-primary btn-block">
                             <span class="material-icons md-18">mode_edit</span>
                         </button>
                     </a>
                 {% else %}
-                    <a href="/ebs/inprocess/detail/{{ batch.pk }}/fermqc/update/{{ fqc.id }}">
+                    <a href="/ebs/inprocess/detail/{{ batch.pk }}/fermqc/update/{{ fqc.5 }}">
                         <button type="button" class="btn btn-primary btn-block">
                             <span class="material-icons md-18">mode_edit</span>
                         </button>

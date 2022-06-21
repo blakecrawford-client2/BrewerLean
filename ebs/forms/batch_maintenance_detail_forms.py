@@ -1,5 +1,5 @@
 from django import forms
-from bootstrap_datepicker_plus import DatePickerInput
+from bootstrap_datepicker_plus.widgets import DatePickerInput
 from ebs.models.master_data_facilities import Tank
 from ebs.models.master_data_rawmaterials import Material
 from ebs.models.brew_sheets import Batch
@@ -43,13 +43,13 @@ class AddObeerDataForm(forms.ModelForm):
 # Detail form for adding raw material records to a
 # material log
 class AddRawMaterialsForm(forms.ModelForm):
-    material = forms.ModelChoiceField(queryset=Material.objects.order_by('material_type', 'material_name'))
+    material = forms.ModelChoiceField(queryset=Material.objects.filter(material_active=True).order_by('material_type', 'material_name'))
     class Meta:
         model = BatchRawMaterialsLog
         fields = ['material',
                   'material_lot',
                   'material_qty',
-                  'is_dh']
+                  'is_dh',]
 
 ###
 # Detail form for adding wort QC info
@@ -402,3 +402,21 @@ class FinalCrashForm(forms.ModelForm):
     class Meta:
         model = BatchActualDates
         fields = ['final_crash_date']
+
+
+class DryHopForm(forms.ModelForm):
+    dryhop_date = forms.DateField(
+        required=False,
+        input_formats=['%d %b %Y'],
+        widget=DatePickerInput(
+            options={
+                "format": "DD MMM YYYY",
+                "showClose": True,
+                "showClear": True,
+                "showTodayButton": True,
+            }
+        )
+    )
+    class Meta:
+        model = BatchActualDates
+        fields = ['dryhop_date']

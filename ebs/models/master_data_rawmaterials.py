@@ -35,6 +35,7 @@ class Material(models.Model):
     material_name = models.CharField(max_length=100)
     material_obeer_code = models.CharField(max_length=25, null=True, blank=True)
     material_test_field = models.CharField(max_length=5, null=True, blank=True)
+    material_active = models.BooleanField(default=True)
 
     def __str__(self):
         #return self.material_type + '::' + self.material_origin.originator_name + '::' + self.material_name

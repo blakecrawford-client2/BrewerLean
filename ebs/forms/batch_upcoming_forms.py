@@ -1,7 +1,8 @@
 from django import forms
-from bootstrap_datepicker_plus import DatePickerInput
+from bootstrap_datepicker_plus.widgets import DatePickerInput
 from ebs.models.brew_sheets import Batch
 from ebs.models.master_data_facilities import Tank
+from ebs.models.master_data_facilities import Staff
 from ebs.models.master_data_products import Product
 
 ###
@@ -34,6 +35,7 @@ class MakeUpcomingBatchForm(forms.ModelForm):
 # Form for 'starting' a batch that is in the
 # 'upcoming' list
 class StartUpcomingBatchForm(forms.ModelForm):
+    brewer = forms.ModelChoiceField(queryset=Staff.objects.filter(is_active=True).order_by('name'))
     class Meta:
         model=Batch
         fields = [

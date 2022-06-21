@@ -2,6 +2,7 @@
 from django.http import HttpResponseRedirect
 from product.models import ProductServiceInfo
 from product.forms import ProductServiceInfoForm
+from ebs.models.master_data_products import Product
 from django.contrib.auth.mixins import LoginRequiredMixin
 from common.views.BLViews import BLCreateView
 from common.views.BLViews import BLListView
@@ -41,6 +42,14 @@ class ProductServiceInfoPrintView(LoginRequiredMixin, BLDetailView):
     model = ProductServiceInfo
     context_object_name = 'psi'
     template_name = 'product/productserviceinfo_print.html'
+
+
+class ProductListView(LoginRequiredMixin, BLListView):
+    model = Product
+    context_object_name = 'prod_list'
+    template_name = 'product/product_list.html'
+
+
 
 
 

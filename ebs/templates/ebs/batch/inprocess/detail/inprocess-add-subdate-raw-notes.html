@@ -1,0 +1,272 @@
+{% extends "ebs/base.html" %}
+{% load widget_tweaks %}
+{% block extrahead %}
+    {{ form.media }}
+{% endblock %}
+{% block title %}Add Subitem{% endblock %}
+{% block content %}
+    <div class="container-fluid px-2">
+        <div class="row no-gutters pt-3">
+            <div class="col-12 pb-2">
+                {% if '/archive' in request.path %}
+                    <span class="float-right">
+                        <a href="/ebs/archive/detail/{{ batch.id }}">
+                            <button type="button" class="btn btn-warning">
+                                <span class="material-icons">arrow_back_ios_new</span>
+                            </button>
+                        </a>
+                    </span>
+                {% else %}
+                    <span class="float-right">
+                        <a href="/ebs/inprocess/detail/{{ batch.id }}">
+                            <button type="button" class="btn btn-warning">
+                                <span class="material-icons">arrow_back_ios_new</span>
+                            </button>
+                        </a>
+                    </span>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col-2 text-right float-left border bg-light pr-1">Beer:</div>
+            <div class="col-10 border pl-1">{{ batch.batch_product.product_name }}</div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col-2 text-right float-left border bg-light pr-1">Partner:</div>
+            <div class="col-10 border pl-1">{{ batch.batch_product.ownership.partner_short_code }}</div>
+        </div>
+        {% if '/obeer' not in request.path %}
+        <div class="row no-gutters">
+            <div class="col-2 text-right float-left border bg-light pr-1">Number:</div>
+            {% if batch.obeer_batch is None %}
+                <div class="col-4 border pl-1">
+                    <button type="button" class="btn btn-primary btn-sm">Add</button>
+                </div>
+            {% else %}
+                <div class="col-4 border pl-1">{{ batch.obeer_batch }}</div>
+            {% endif %}
+            <div class="col-2 text-right border bg-light pr-1">MPN:</div>
+            {% if batch.obeer_batch is None %}
+                <div class="col-4 border pl-1">
+                    <button type="button" class="btn btn-primary btn-sm">Add</button>
+                </div>
+            {% else %}
+                <div class="col-4 border pl-1">{{ batch.obeer_mpn }}</div>
+            {% endif %}
+        </div>
+        {% endif %}
+        <div class="row no-gutters">
+            <div class="col-12 border pt-2 pl-1"><h4>{{ name }}</h4></div>
+        </div>
+        <div class="row no-gutters pt-3 border pl-3 pr-3 pb-3">
+            <div class="col">
+                <form id="genform" method="POST">
+                    {% csrf_token %}
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {% for error in form.non_field_errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    {% for field in form.visible_fields %}
+                        <div class="form-group">
+                            {{ field.label_tag }}
+                            {% if form.is_bound %}
+                                {% if field.errors %}
+                                    {% render_field field class='form-control is-invalid' %}
+                                    {% for error in field.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    {% render_field field class="form-control is-valid" %}
+                                {% endif %}
+                            {% else %}
+                                {% render_field field class="form-control"  %}
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <span class="float-right">
+                        <button id="savebtn" type="submit" class="btn btn-primary">Save</button>
+                        <script>
+                            function sleep(ms) {
+                                return new Promise(resolve => setTimeout(resolve, ms));
+                            }
+                            const btn = document.getElementById('savebtn');
+                            const genform = document.getElementById('genform');
+                            btn.addEventListener('click', function onClick(event) {
+                                btn.textContent = 'saving';
+                                btn.disabled = true;
+                                sleep(1000).then(()=>{genform.submit();});
+                            });
+
+                        </script>
+                    </span>
+                </form>
+            </div>
+        </div>
+
+        <div class="row no-gutters">
+            <div class="col-12 pl-1 pt-3">Current Raw Materials</div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col border bg-light pl-1">Grain</div>
+            <div class="col border bg-light pl-1">Lot</div>
+            <div class="col border bg-light pl-1">Qty</div>
+            <div class="col-2 border bg-light pl-1"></div>
+        </div>
+        {% for g in grain %}
+            <div class="row no-gutters">
+                <div class="col border pl-1">{{ g.material.material_name }}</div>
+                <div class="col border pl-1">{{ g.material_lot }}</div>
+                <div class="col border pl-1">{{ g.material_qty }}</div>
+                <div class="col-2 border">
+                    {% if '/archive' in request.path %}
+                        <a href="/ebs/archive/detail/{{ batch.pk }}/rawmaterials/update/{{ g.id }}">
+                            <button type="button" class="btn btn-primary btn-block btn-sm">
+                                <span class="material-icons md-18">mode_edit</span>
+                            </button>
+                        </a>
+                    {% else %}
+                        <a href="/ebs/inprocess/detail/{{ batch.pk }}/rawmaterials/update/{{ g.id }}">
+                            <button type="button" class="btn btn-primary btn-block btn-sm">
+                                <span class="material-icons md-18">mode_edit</span>
+                            </button>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+
+        <div class="row no-gutters">
+            <div class="col border bg-light pl-1">Hops</div>
+            <div class="col border bg-light pl-1">Lot</div>
+            <div class="col border bg-light pl-1">Qty</div>
+            <div class="col-2 border bg-light pl-1"></div>
+        </div>
+        {% for h in hops %}
+            <div class="row no-gutters">
+                <div class="col border pl-1">{{ h.material.material_name }}</div>
+                <div class="col border pl-1">{{ h.material_lot }}</div>
+                <div class="col border pl-1">{{ h.material_qty }}</div>
+                <div class="col-2 border">
+                    {% if '/archive' in request.path %}
+                        <a href="/ebs/archive/detail/{{ batch.pk }}/rawmaterials/update/{{ h.id }}">
+                            <button type="button" class="btn btn-primary btn-block btn-sm">
+                                <span class="material-icons md-18">mode_edit</span>
+                            </button>
+                        </a>
+                    {% else %}
+                        <a href="/ebs/inprocess/detail/{{ batch.pk }}/rawmaterials/update/{{ h.id }}">
+                            <button type="button" class="btn btn-primary btn-block btn-sm">
+                                <span class="material-icons md-18">mode_edit</span>
+                            </button>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+
+        <div class="row no-gutters">
+            <div class="col border bg-light pl-1">Other Stuff</div>
+            <div class="col border bg-light pl-1">Lot</div>
+            <div class="col border bg-light pl-1">Qty</div>
+            <div class="col-2 border bg-light pl-1"></div>
+        </div>
+        {% for o in other %}
+            <div class="row no-gutters">
+                <div class="col border pl-1">{{ o.material.material_name }}</div>
+                <div class="col border pl-1">{{ o.material_lot }}</div>
+                <div class="col border pl-1">{{ o.material_qty }}</div>
+                <div class="col-2 border">
+                    {% if '/archive' in request.path %}
+                        <a href="/ebs/archive/detail/{{ batch.pk }}/rawmaterials/update/{{ o.id }}">
+                            <button type="button" class="btn btn-primary btn-block btn-sm">
+                                <span class="material-icons md-18">mode_edit</span>
+                            </button>
+                        </a>
+                    {% else %}
+                        <a href="/ebs/inprocess/detail/{{ batch.pk }}/rawmaterials/update/{{ o.id }}">
+                            <button type="button" class="btn btn-primary btn-block btn-sm">
+                                <span class="material-icons md-18">mode_edit</span>
+                            </button>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+
+        <div class="row no-gutters">
+            <div class="col-12 pt-2 pb-1">
+                <span class="float-right">
+                    {% if '/archive' in request.path %}
+                        <a href="/ebs/archive/detail/{{ batch.pk }}/rawmaterials/add/">
+                            <button type="button" class="btn btn-primary">
+                                <i class="material-icons">add</i>
+                            </button>
+                        </a>
+                    {% else %}
+                         <a href="/ebs/inprocess/detail/{{ batch.pk }}/rawmaterials/add/">
+                            <button type="button" class="btn btn-primary">
+                                <i class="material-icons">add</i>
+                            </button>
+                        </a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+
+        <div class="row no-gutters">
+            <div class="col-12 pl-1 pt-3">Materials Not Listed</div>
+        </div>
+
+        <div class="row no-gutters">
+            <div class="col border bg-light pl-1">Type</div>
+            <div class="col border bg-light pl-1">Note</div>
+            <div class="col-1 border bg-light pl-1"></div>
+        </div>
+        {% for ul in not_listed %}
+            <div class="row no-gutters">
+                <div class="col border pl-1">{{ ul.note_type }}</div>
+                <div class="col border pl-1">{{ ul.note }}</div>
+                <div class="col-1 border">
+                    {% if '/archive' in request.path %}
+                        <a href="/ebs/archive/detail/{{ batch.pk }}/batchnote/update/{{ ul.id }}">
+                            <button type="button" class="btn btn-primary btn-block btn-sm">
+                                <span class="material-icons md-18">mode_edit</span>
+                            </button>
+                        </a>
+                    {% else %}
+                        <a href="/ebs/inprocess/detail/{{ batch.pk }}/batchnote/update/{{ ul.id }}">
+                            <button type="button" class="btn btn-primary btn-block btn-sm">
+                                <span class="material-icons md-18">mode_edit</span>
+                            </button>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+        <div class="row no-gutters">
+            <div class="col-12 pt-2 pb-1">
+                <span class="float-right">
+                    {% if '/archive' in request.path %}
+                        <a href="/ebs/archive/detail/{{ batch.pk }}/batchnote/add/">
+                            <button type="button" class="btn btn-primary">
+                                <i class="material-icons">add</i>
+                            </button>
+                        </a>
+                    {% else %}
+                         <a href="/ebs/inprocess/detail/{{ batch.pk }}/batchnote/add/">
+                            <button type="button" class="btn btn-primary">
+                                <i class="material-icons">add</i>
+                            </button>
+                        </a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+    </div>
+    <br/><br/><br/>
+{% endblock %}

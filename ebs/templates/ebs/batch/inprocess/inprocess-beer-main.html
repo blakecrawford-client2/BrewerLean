@@ -1,4 +1,5 @@
 {% extends "ebs/base.html" %}
+{% load widget_tweaks %}
 {% block title %}In Process Batches{% endblock %}
 {% block content %}
 <div class="container-fluid px-2">
@@ -112,7 +113,7 @@
                         </div>
                         <div class="col-12 pt-2">
                             <a href="/ebs/inprocess/detail/{{ batch.id }}/coldsideaddition/">
-                                <button type="button" disabled="true" class="btn btn-primary btn-block">Cold-Side Additions</button>
+                                <button type="button" class="btn btn-primary btn-block">Cold-Side Additions</button>
                             </a>
                         </div>
                         <div class="col-12 pt-2">

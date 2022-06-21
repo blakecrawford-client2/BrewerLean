@@ -6,6 +6,7 @@ from product.views import ProductServiceInfoCreateView
 from product.views import ProductServiceInfoListView
 from product.views import ProductServiceInfoUpdateView
 from product.views import ProductServiceInfoPrintView
+from product.views import ProductListView
 
 urlpatterns = [
     ##########
@@ -14,5 +15,6 @@ urlpatterns = [
     path('serviceinfo/list/',ProductServiceInfoListView.as_view()),
     path('serviceinfo/update/<int:pk>/', ProductServiceInfoUpdateView.as_view()),
     path('serviceinfo/print/<int:pk>/', ProductServiceInfoPrintView.as_view()),
+    path('list/', ProductListView.as_view()),
 ]
 

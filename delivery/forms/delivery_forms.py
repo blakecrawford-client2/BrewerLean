@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.safestring import mark_safe
 from delivery.models.delivery_models import DeliveryMetrics
-from bootstrap_datepicker_plus import DatePickerInput
+from bootstrap_datepicker_plus.widgets import DatePickerInput
 
 
 class DeliveryForm(forms.ModelForm):

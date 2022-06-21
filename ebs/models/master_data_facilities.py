@@ -55,6 +55,7 @@ class Staff(models.Model):
     role = models.CharField(max_length=2,
                             choices=StaffRole.choices,
                             default=StaffRole.HOTSIDE)
+    is_active = models.BooleanField(default=True)
     last_modified_on = models.DateField(auto_now=True)
     last_modified_by = models.ForeignKey(User,
                                          null=True,

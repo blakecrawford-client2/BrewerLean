@@ -216,7 +216,24 @@
             </div>
         </div>
         {% endfor %}
-
+        <div class="row no-gutters">
+            <div class="col-12 pt-2 pb-1">
+                <span class="float-right">
+                    {% if '/archive' in request.path %}
+                        <a href="/ebs/archive/detail/{{ current_batch.pk }}/batchnot/add/">
+                            <button type="button" class="btn btn-primary">
+                                <i class="material-icons">add</i>
+                            </button>
+                        </a>
+                    {% else %}
+                         <a href="/ebs/inprocess/detail/{{ current_batch.pk }}/rawmaterials/add/">
+                            <button type="button" class="btn btn-primary">
+                                <i class="material-icons">add</i>
+                            </button>
+                        </a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
     </div>
-
 {% endblock %}

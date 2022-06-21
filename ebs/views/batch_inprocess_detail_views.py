@@ -364,7 +364,7 @@ class FermQCEntriesView(LoginRequiredMixin, BLUpdateView):
         fermqc_rdf_list = []
         for fermqc in ferm_qc_entries:
             temp_rdf = (100 * (basis_og - float(fermqc.extract_real)) / basis_og) * (1 / (1 - 0.005161 * float(fermqc.extract_real)))
-            fermqc_rdf_list.append([fermqc.date, fermqc.extract_real, fermqc.ph, fermqc.temp_pv, temp_rdf])
+            fermqc_rdf_list.append([fermqc.date, fermqc.extract_real, fermqc.ph, fermqc.temp_pv, temp_rdf, fermqc.id])
 
         context = super(FermQCEntriesView, self).get_context_data(**kwargs)
         context['batch'] = batch
@@ -907,9 +907,9 @@ class CreateFinalCrashDateView(LoginRequiredMixin, BLUpdateView):
     def get_success_url(self):
         request_path = self.request.get_full_path()
         if '/archive' in request_path:
-            return reverse_lazy('maintenance-archive', kwargs={'pk': self.kwargs.get('bpk')})
+            return reverse_lazy('maintenance-archive', kwargs={'pk': self.kwargs.get('pk')})
         else:
-            return reverse_lazy('maintenance', kwargs={'pk': self.kwargs.get('bpk')})
+            return reverse_lazy('maintenance', kwargs={'pk': self.kwargs.get('pk')})
 
     def get_context_data(self, **kwargs):
         batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
@@ -921,3 +921,40 @@ class CreateFinalCrashDateView(LoginRequiredMixin, BLUpdateView):
     def form_valid(self, form):
         form.instance.batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
         return super(CreateFinalCrashDateView, self).form_valid(form)
+
+
+class CreateDryhopDateView(LoginRequiredMixin, BLUpdateView):
+        model = BatchActualDates
+        template_name = 'ebs/batch/inprocess/detail/inprocess-add-subdate-raw-notes.html'
+        form_class = DryHopForm
+
+        def get_success_url(self):
+            request_path = self.request.get_full_path()
+            if '/archive' in request_path:
+                return reverse_lazy('maintenance-archive', kwargs={'pk': self.kwargs.get('pk')})
+            else:
+                return reverse_lazy('maintenance', kwargs={'pk': self.kwargs.get('pk')})
+
+        def get_context_data(self, **kwargs):
+            batch = Batch.objects.get(pk=self.kwargs.get('pk'))
+            materials = BatchRawMaterialsLog.objects.filter(batch=batch.id).order_by('material__material_name')
+            grain = BatchRawMaterialsLog.objects.filter(batch=batch.id, material__material_type='GR').order_by(
+                'material__material_name')
+            hops = BatchRawMaterialsLog.objects.filter(batch=batch.id, material__material_type='HP').order_by(
+                'material__material_name')
+            other = BatchRawMaterialsLog.objects.filter(batch=batch.id, material__material_type='OT').order_by(
+                'material__material_name')
+            not_listed = BatchNote.objects.filter(batch=batch.id, note_type='UM')
+            context = super(CreateDryhopDateView, self).get_context_data(**kwargs)
+            context['batch'] = batch
+            context['grain'] = grain
+            context['hops'] = hops
+            context['other'] = other
+            context['materials'] = materials
+            context['not_listed'] = not_listed
+            context['name'] = 'Cold Side Addition Date'
+            return context
+
+        def form_valid(self, form):
+            form.instance.batch = Batch.objects.get(pk=self.kwargs.get('pk'))
+            return super(CreateDryhopDateView, self).form_valid(form)
