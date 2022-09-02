@@ -10,6 +10,8 @@ class ProductServiceInfo(models.Model):
                                 null=True,
                                 blank=True,
                                 on_delete=models.SET_NULL,
+                                limit_choices_to={'ownership_id': 1},
+
                                 verbose_name='Product')
     style_detail = models.CharField(max_length=256,
                                     blank=True,

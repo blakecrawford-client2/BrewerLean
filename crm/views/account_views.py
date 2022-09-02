@@ -6,6 +6,7 @@ from common.views.BLViews import IndexTemplateView
 from crm.forms.account_forms import AccountForm
 from crm.models.crm_models import Account
 from crm.models.crm_models import Call
+from crm.models.crm_models import Tasting
 
 
 class CRMIndexView(IndexTemplateView):
@@ -63,8 +64,11 @@ class AccountDetailView(BLDetailView, LoginRequiredMixin):
                     context['open_call_exists'] = True
         except:
             calls = None
+        tastings = Tasting.objects.filter(at_account=self.kwargs.get('pk')).order_by('-last_modified_on', '-id')
+
         context['page_name'] = 'Account Detail'
         context['calls'] = calls
+        context['tastings'] = tastings
         return context
 
 

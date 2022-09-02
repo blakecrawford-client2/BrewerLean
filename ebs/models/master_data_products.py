@@ -25,6 +25,7 @@ class ProductType(models.Model):
 class Product(models.Model):
     class Meta:
         verbose_name_plural='Products'
+        ordering=['product_name']
 
     ownership = models.ForeignKey(Partner, null=True, on_delete=models.SET_NULL)
     product_type = models.ForeignKey(ProductType, null=True, on_delete=models.SET_NULL)

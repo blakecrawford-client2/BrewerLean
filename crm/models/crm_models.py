@@ -149,3 +149,39 @@ class Call(models.Model):
     def __unicode__(self):
         return self.account.account_name \
                + "::" + self.method
+
+
+class Tasting(models.Model):
+    class Sentiments(models.TextChoices):
+        SMILEYFACE = 'S', 'Smiley Face'
+        OKAYFACE = 'O', 'Okay Face'
+        FROWNYFACE = 'F', 'Frowny Face'
+
+    tasting_date = models.DateField(null=True,
+                                    blank=True)
+    at_account = models.ForeignKey(Account,
+                                   null=True,
+                                   on_delete=models.SET_NULL)
+    estimated_interations = models.IntegerField()
+    estimated_attributable_units_sold = models.IntegerField()
+    estimated_units_used = models.IntegerField()
+    sentiment = models.CharField(max_length=1,
+                                 choices=Sentiments.choices,
+                                 null=True,
+                                 blank=True)
+    notes = models.TextField(null=True,
+                        blank=True,
+                        max_length=500)
+    last_modified_on = models.DateField(auto_now=True)
+    last_modified_by = models.ForeignKey(User,
+                                         null=True,
+                                         on_delete=models.SET_NULL,
+                                         default=1)
+
+    def __str__(self):
+        return self.at_account.account_name \
+               + "::" + self.sentiment
+
+    def __unicode__(self):
+        return self.at_account.account_name \
+               + "::" + self.sentiment

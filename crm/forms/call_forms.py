@@ -1,5 +1,7 @@
 from django import forms
 from crm.models.crm_models import Call
+from crm.models.crm_models import Tasting
+from bootstrap_datepicker_plus.widgets import DatePickerInput
 
 ###########
 # Call for to be used for debugging purposes, note that
@@ -37,6 +39,30 @@ class CallWizardForm(forms.ModelForm):
         model = Call
         fields = ['note',
                   'samples']
+
+
+
+class TastingForm(forms.ModelForm):
+    tasting_date = forms.DateField(
+        input_formats=['%d %b %Y'],
+        widget=DatePickerInput(
+            options={
+                "format": "DD MMM YYYY",
+                "showClose": True,
+                "showClear":True,
+                "showTodayButton": True,
+            }
+        )
+    )
+
+    class Meta:
+        model = Tasting
+        fields = ['tasting_date',
+                  'estimated_interations',
+                  'estimated_attributable_units_sold',
+                  'estimated_units_used',
+                  'sentiment',
+                  'notes']
 
 
 

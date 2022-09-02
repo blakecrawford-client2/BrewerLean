@@ -8,6 +8,11 @@
             </div>
             <div class="col-4 pb-2 pt-2 pr-2 bg-secondary">
                 <span class="float-right">
+                    <a href="/crm/accounts/{{ account.id }}/tasting/">
+                        <button type="button" class="btn btn-warning btn-sm">
+                            <span class="material-icons">groups</span>
+                        </button>
+                    </a>
                     <a href="/crm/accounts/{{ account.id }}/update/">
                         <button type="button" class="btn btn-warning btn-sm">
                             <span class="material-icons">edit</span>
@@ -48,6 +53,42 @@
                 </div>
             </div>
         {% endif %}
+         <div class="row no-gutters pt-3">
+            <div class="col-12 pl-2 pb-1 pt-2 bg-secondary text-light">
+                <h4>TASTING HISTORY</h4>
+            </div>
+        </div>
+        <div class="row no-gutters burder bg-light">
+            <div class="col-2">Date</div>
+            <div class="col-2">Interact</div>
+            <div class="col-2">Sales</div>
+            <div class="col-2">Used</div>
+            <div class="col-2">Sentiment</div>
+        </div>
+        {% if not tastings %}
+            <div class="col-12">No tastings at this account.</div>
+        {% endif %}
+        {%  for tasting in tastings %}
+        <div class="row no-gutters border">
+            <div class="col-2">
+                <a href="/crm/accounts/{{ account.id }}/tasting/{{ tasting.id }}/update">
+                    {{ tasting.tasting_date|date:"dMy" }}
+                </a>
+            </div>
+            <div class="col-2">{{ tasting.estimated_interations }}</div>
+            <div class="col-2">{{ tasting.estimated_attributable_units_sold }}</div>
+            <div class="col-2">{{ tasting.estimated_units_used }}</div>
+            {% if tasting.sentiment == 'S' %}
+                <div class="col-2">YAY!</div>
+            {% endif %}
+            {% if tasting.sentiment == 'O' %}
+                <div class="col-2">So-So</div>
+            {% endif %}
+            {% if tasting.sentiment == 'F' %}
+                <div class="col-2">Bad</div>
+            {% endif %}
+        </div>
+        {% endfor %}
         <div class="row no-gutters pt-3">
             <div class="col-12 pl-2 pb-1 pt-2 bg-secondary text-light">
                 <h4>CALL HISTORY</h4>

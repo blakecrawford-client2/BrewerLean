@@ -22,6 +22,8 @@ urlpatterns = [
     path('accounts/create/', CreateAccountView.as_view()),
     path('accounts/<int:pk>/detail/', AccountDetailView.as_view()),
     path('accounts/<int:pk>/update/', AccountUpdateView.as_view()),
+    path('accounts/<int:pk>/tasting/', CreateAccountTastingView.as_view()),
+    path('accounts/<int:apk>/tasting/<int:pk>/update', UpdateAccountTastingView.as_view()),
     path('calls/account/', FindAccountForCallView.as_view()),
     path('calls/create/', CreateCallView.as_view()),
     path('calls/list/', CallsListView.as_view(), name='call_list'),

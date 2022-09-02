@@ -11,8 +11,10 @@ from django.views.generic import UpdateView
 from django.views.generic import TemplateView
 from crm.models.crm_models import Call
 from crm.models.crm_models import Account
+from crm.models.crm_models import Tasting
 from crm.forms.call_forms import CallForm
 from crm.forms.call_forms import CallWizardForm
+from crm.forms.call_forms import TastingForm
 
 
 class CallsForAccountListView(LoginRequiredMixin, ListView):
@@ -180,4 +182,41 @@ class CallsListView(LoginRequiredMixin, ListView):
         context['fup_this_week'] = follow_up_this_week_calls
         context['fup_next_week'] = follow_up_next_week_calls
         return context
+
+
+class CreateAccountTastingView(LoginRequiredMixin, CreateView):
+    model = Tasting
+    template_name = 'crm/tastings/create-tasting.html'
+    form_class = TastingForm
+    #success_url = '/crm/'
+
+    def form_valid(self, form):
+        account = Account.objects.get(id=self.kwargs.get('pk'))
+        form.instance.at_account = account
+        return super(CreateAccountTastingView, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        account = Account.objects.get(id=self.kwargs.get('pk'))
+        context['page_name'] = 'Create Tasting'
+        context['account'] = account
+        return context
+
+    def get_success_url(self):
+        return '/crm/accounts/' + str(self.kwargs.get('pk')) + '/detail/'
+
+
+class UpdateAccountTastingView(UpdateView, LoginRequiredMixin):
+    model = Tasting
+    template_name = 'crm/tastings/create-tasting.html'
+    form_class = TastingForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_name'] = 'Update Tasting'
+        return context
+
+    def get_success_url(self):
+        return '/crm/accounts/' + str(self.kwargs.get('apk')) + '/detail/'
+
 
