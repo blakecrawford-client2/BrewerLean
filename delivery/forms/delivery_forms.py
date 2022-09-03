@@ -2,20 +2,29 @@ from django import forms
 from django.utils.safestring import mark_safe
 from delivery.models.delivery_models import DeliveryMetrics
 from bootstrap_datepicker_plus.widgets import DatePickerInput
+from tempus_dominus.widgets import DatePicker
 
 
 class DeliveryForm(forms.ModelForm):
     delivery_date = forms.DateField(
         input_formats=['%d %b %Y'],
-        widget=DatePickerInput(
+        widget=DatePicker(
             options={
-                "format": "DD MMM YYYY",
-                "showClose": True,
-                "showClear":True,
-                "showTodayButton": True,
+
             }
         )
     )
+    # delivery_date = forms.DateField(
+    #     input_formats=['%d %b %Y'],
+    #     widget=DatePickerInput(
+    #         options={
+    #             "format": "DD MMM YYYY",
+    #             "showClose": True,
+    #             "showClear": True,
+    #             "showTodayButton": True,
+    #         }
+    #     )
+    # )
     class Meta:
         model = DeliveryMetrics
         fields = ['delivery_date',

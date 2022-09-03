@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'bootstrap_datepicker_plus',
     'bootstrap4',
     'reset_migrations',
+    'tempus_dominus',
 ]
 
 MIDDLEWARE = [
