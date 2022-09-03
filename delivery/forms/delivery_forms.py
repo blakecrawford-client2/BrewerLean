@@ -10,7 +10,8 @@ class DeliveryForm(forms.ModelForm):
         input_formats=['%d %b %Y'],
         widget=DatePicker(
             options={
-
+                'format': 'DD MMM YYYY',
+                'useCurrent': True,
             }
         )
     )

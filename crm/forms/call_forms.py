@@ -2,6 +2,7 @@ from django import forms
 from crm.models.crm_models import Call
 from crm.models.crm_models import Tasting
 from bootstrap_datepicker_plus.widgets import DatePickerInput
+from tempus_dominus.widgets import DatePicker
 
 ###########
 # Call for to be used for debugging purposes, note that
@@ -45,12 +46,10 @@ class CallWizardForm(forms.ModelForm):
 class TastingForm(forms.ModelForm):
     tasting_date = forms.DateField(
         input_formats=['%d %b %Y'],
-        widget=DatePickerInput(
+        widget=DatePicker(
             options={
-                "format": "DD MMM YYYY",
-                "showClose": True,
-                "showClear":True,
-                "showTodayButton": True,
+                'format': 'DD MMM YYYY',
+                'useCurrent': True,
             }
         )
     )

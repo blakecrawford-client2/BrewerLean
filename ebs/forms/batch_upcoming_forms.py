@@ -1,23 +1,21 @@
 from django import forms
 from bootstrap_datepicker_plus.widgets import DatePickerInput
+from tempus_dominus.widgets import DatePicker
 from ebs.models.brew_sheets import Batch
 from ebs.models.master_data_facilities import Tank
 from ebs.models.master_data_facilities import Staff
 from ebs.models.master_data_products import Product
+
 
 ###
 # form for creating a new 'upcoming' batch
 class MakeUpcomingBatchForm(forms.ModelForm):
     plan_start_day = forms.DateField(
         input_formats=['%d %b %Y'],
-        widget=DatePickerInput(
-            attrs={'readonly':'readonly'},
+        widget=DatePicker(
             options={
-                "ignoreReadonly": True,
-                "format":"DD MMM YYYY",
-                "showClose":True,
-                "showClear":True,
-                "showTodayButton":True,
+                'format': 'DD MMM YYYY',
+                'useCurrent': True,
             }
         )
     )
