@@ -47,9 +47,9 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-    'bootstrap4',
     'widget_tweaks',
     'bootstrap_datepicker_plus',
+    'bootstrap4',
     'reset_migrations',
 ]
 
