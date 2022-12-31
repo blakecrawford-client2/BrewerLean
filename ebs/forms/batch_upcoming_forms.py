@@ -14,9 +14,8 @@ class MakeUpcomingBatchForm(forms.ModelForm):
         input_formats=['%d %b %Y'],
         widget=DatePicker(
             options={
-                'format': 'DD MMM YYYY',
+                'format': 'L',
                 'useCurrent': True,
-                'timeZone': 'EST',
             }
         )
     )
