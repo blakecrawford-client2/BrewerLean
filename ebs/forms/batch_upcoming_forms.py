@@ -16,6 +16,7 @@ class MakeUpcomingBatchForm(forms.ModelForm):
             options={
                 'format': 'DD MMM YYYY',
                 'useCurrent': True,
+                'timeZone': 'EST',
             }
         )
     )
