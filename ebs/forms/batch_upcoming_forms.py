@@ -12,9 +12,9 @@ from ebs.models.master_data_products import Product
 class MakeUpcomingBatchForm(forms.ModelForm):
     plan_start_day = forms.DateField(
         input_formats=['%d %b %Y'],
-        widget=DatePicker(
+        widget=DatePickerInput(
             options={
-                'format': 'DD MMM YYYY',
+                'format': 'DD MMM YY',
                 'useCurrent': True,
             }
         )
