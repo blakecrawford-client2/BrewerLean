@@ -97,7 +97,7 @@ class AddYeastPitchEntryForm(forms.ModelForm):
 # leaving it in for now.
 class UpdateActualDatesForm(forms.ModelForm):
     brew_date = forms.DateField(
-        input_formats=['%d %b %Y'],
+        #input_formats=['%d %b %Y'],
         widget=DatePickerInput(
             options={
                 'format': 'DD MMM YY',
@@ -107,7 +107,7 @@ class UpdateActualDatesForm(forms.ModelForm):
     )
     yeast_crash_date = forms.DateField(
         required=False,
-        input_formats=['%d %b %Y'],
+        #input_formats=['%d %b %Y'],
         widget=DatePickerInput(
             options={
                 'format': 'DD MMM YY',
@@ -117,7 +117,7 @@ class UpdateActualDatesForm(forms.ModelForm):
     )
     yeast_harvest_date = forms.DateField(
         required=False,
-        input_formats=['%d %b %Y'],
+        #input_formats=['%d %b %Y'],
         widget=DatePickerInput(
             options={
                 'format': 'DD MMM YY',
@@ -127,7 +127,7 @@ class UpdateActualDatesForm(forms.ModelForm):
     )
     dryhop_date = forms.DateField(
         required=False,
-        input_formats=['%d %b %Y'],
+        #input_formats=['%d %b %Y'],
         widget=DatePickerInput(
             options={
                 'format': 'DD MMM YY',
@@ -137,7 +137,7 @@ class UpdateActualDatesForm(forms.ModelForm):
     )
     final_crash_date = forms.DateField(
         required=False,
-        input_formats=['%d %b %Y'],
+        #input_formats=['%d %b %Y'],
         widget=DatePickerInput(
             options={
                 'format': 'DD MMM YY',
@@ -147,7 +147,7 @@ class UpdateActualDatesForm(forms.ModelForm):
     )
     transfer_date = forms.DateField(
         required=False,
-        input_formats=['%d %b %Y'],
+        #input_formats=['%d %b %Y'],
         widget=DatePickerInput(
             options={
                 'format': 'DD MMM YY',
@@ -157,7 +157,7 @@ class UpdateActualDatesForm(forms.ModelForm):
     )
     package_date = forms.DateField(
         required=False,
-        input_formats=['%d %b %Y'],
+        #input_formats=['%d %b %Y'],
         widget=DatePickerInput(
             options={
                 'format': 'DD MMM YY',
@@ -183,7 +183,7 @@ class UpdateActualDatesForm(forms.ModelForm):
 class BatchFermentationQCForm(forms.ModelForm):
     date = forms.DateField(
         required=False,
-        input_formats=['%d %b %Y'],
+        #input_formats=['%d %b %Y'],
         widget=DatePickerInput(
             options={
                 'format': 'DD MMM YY',
@@ -207,7 +207,7 @@ class BatchFermentationQCForm(forms.ModelForm):
 class BatchDOEntryForm(forms.ModelForm):
     date = forms.DateField(
         required=False,
-        input_formats=['%d %b %Y'],
+        #input_formats=['%d %b %Y'],
         widget=DatePickerInput(
             options={
                 'format': 'DD MMM YY',
@@ -229,7 +229,7 @@ class BatchDOEntryForm(forms.ModelForm):
 class BatchTransferForm(forms.ModelForm):
     date = forms.DateField(
         required=False,
-        input_formats=['%d %b %Y'],
+        #input_formats=['%d %b %Y'],
         widget=DatePickerInput(
             options={
                 'format': 'DD MMM YY',
@@ -254,7 +254,7 @@ class BatchTransferForm(forms.ModelForm):
 class CarbonationQCEntryForm(forms.ModelForm):
     date = forms.DateField(
         required=False,
-        input_formats=['%d %b %Y'],
+        #input_formats=['%d %b %Y'],
         widget=DatePickerInput(
             options={
                 'format': 'DD MMM YY',
@@ -274,7 +274,7 @@ class CarbonationQCEntryForm(forms.ModelForm):
 class PackagingRunForm(forms.ModelForm):
     date = forms.DateField(
         required=False,
-        input_formats=['%d %b %Y'],
+        #input_formats=['%d %b %Y'],
         widget=DatePickerInput(
             options={
                 'format': 'DD MMM YY',
@@ -300,7 +300,7 @@ class PackagingRunForm(forms.ModelForm):
 class CanningQCForm(forms.ModelForm):
     date = forms.DateField(
         required=False,
-        input_formats=['%d %b %Y'],
+        #input_formats=['%d %b %Y'],
         widget=DatePickerInput(
             options={
                 'format': 'DD MMM YY',
@@ -336,7 +336,7 @@ class YeastCrashHarvestForm(forms.Form):
                ('4','Wet Pitch Harvested')]
     yeast_crash_date = forms.DateField(label='Yeast Crash Date',
                                        required=False,
-                                       input_formats=['%d %b %Y'],
+                                       #input_formats=['%d %b %Y'],
                                        widget=DatePickerInput(
                                            options={
                                                'format': 'DD MMM YY',
@@ -345,7 +345,7 @@ class YeastCrashHarvestForm(forms.Form):
                                        ))
     yeast_harvest_date = forms.DateField(label='Yeast Harvest Date',
                                        required=False,
-                                       input_formats=['%d %b %Y'],
+                                       #input_formats=['%d %b %Y'],
                                          widget=DatePickerInput(
                                              options={
                                                  'format': 'DD MMM YY',
@@ -360,7 +360,7 @@ class YeastCrashHarvestForm(forms.Form):
 class FinalCrashForm(forms.ModelForm):
     final_crash_date = forms.DateField(
         required=False,
-        input_formats=['%d %b %Y'],
+        #input_formats=['%d %b %Y'],
         widget=DatePickerInput(
             options={
                 'format': 'DD MMM YY',
@@ -376,7 +376,7 @@ class FinalCrashForm(forms.ModelForm):
 class DryHopForm(forms.ModelForm):
     dryhop_date = forms.DateField(
         required=False,
-        input_formats=['%d %b %Y'],
+        #input_formats=['%d %b %Y'],
         widget=DatePickerInput(
             options={
                 'format': 'DD MMM YY',
