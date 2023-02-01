@@ -1,0 +1,244 @@
+{% extends "product/base.html" %}
+{% block title %}{{ context.page_name }}{% endblock %}
+{% block content %}
+<div class="container-fluid px-2">
+    <div class="row no-gutters pt-3">
+        <div class="col-11" pb-2>
+            <h3>Product Detail</h3>
+        </div>
+        <div class="col-1 pb-2">
+            <span class="float-right">
+                <a href="/product/">
+                    <button type="button" class="btn btn-warning">
+                        <span class="material-icons">arrow_back_ios_new</span>
+                    </button>
+                </a>
+            </span>
+        </div>
+    </div>
+    <div class="row no-gutters">
+        <div class="col-2 text-right float-left border bg-light pr-1">Beer:</div>
+        <div class="col-10 border pl-1">{{ object.product_name }}</div>
+    </div>
+    <div class="row no-gutters">
+        <div class="col-2 text-right float-left border bg-light pr-1">Style:</div>
+        <div class="col-10 border pl-1">{{ object.product_type }}</div>
+    </div>
+    <div class="row no-gutters">
+        <div class="col-2 text-right float-left border bg-light pr-1">Partner:</div>
+        <div class="col-10 border pl-1">{{ object.ownership.partner_name }}</div>
+    </div>
+    <div class="row no-gutters">
+        <div class="col-2 text-right float-left border bg-light pr-1">Partner Active?</div>
+        <div class="col-10 border pl-1">{{ object.ownership.partner_active }}</div>
+    </div>
+    <div class="row no-gutters">
+        <div class="col-2 text-right float-left border bg-light pr-1">Product Active?</div>
+        <div class="col-10 border pl-1">{{ object.product_active }}</div>
+    </div>
+    <div class="row no-gutters">
+        <div class="col-12 text-right float-left  pr-1 pt-2 pb-2">
+            <a href="/product/update/{{ object.id }}/fromdetail">
+                <button type="button" class="btn btn-warning">
+                    <span class="material-icons" style="vertical-align: middle;">edit</span>
+                    <span style="vertical-align: middle;">Edit Details</span>
+                </button>
+            </a>
+        </div>
+    </div>
+    <div class="row no-gutters pt-5">
+        <div class="col-12 pl-2 pt-1 bg-secondary">
+            <h3 style="color: white;">Materials Abstract</h3>
+        </div>
+    </div>
+    {% if not materials_abstract %}
+        <div class="row no-gutters">
+            <div class="col-7">
+                No Materials Abstract Available
+            </div>
+        </div>
+    {% else %}
+        <div class="row no-gutters">
+            <div class="col-12 bg-light border">Mash</div>
+        </div>
+        {% for material in materials_abstract %}
+            {% if material.material_phase == 'MSH' %}
+                <div class="row no-gutters">
+                        <div class="col-5  border-bottom pr-1">{{ material.material.material_name}}</div>
+                        <div class="col-3 border-bottom pl-1">{{ material.material_qty }}</div>
+                        <div class="col-2 border-bottom pl-1 text-right float-right">
+                            <a href="/product/detail/{{ material.product_id }}/materialsabstractitem/update/{{ material.id }}">
+                                <button type="button" class="btn btn-warning">
+                                    <span class="material-icons" style="vertical-align: middle;">edit</span>
+                                </button>
+                            </a>
+                        </div>
+                        <div class="col-2 border-bottom pl-1 text-right float-right">
+                            <a href="/product/detail/{{ material.product_id }}/materialsabstractitem/delete/{{ material.id }}">
+                                <button type="button" class="btn btn-danger">
+                                    <span class="material-icons" style="vertical-align: middle;">delete</span>
+                                </button>
+                            </a>
+                        </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+        <div class="row no-gutters">
+            <div class="col-12 bg-light border">Hotside</div>
+        </div>
+        {% for material in materials_abstract %}
+            {% if material.material_phase == 'HSD' %}
+                <div class="row no-gutters">
+                        <div class="col-5  border-bottom pr-1">{{ material.material.material_name}}</div>
+                        <div class="col-3 border-bottom pl-1">{{ material.material_qty }}</div>
+                        <div class="col-2 border-bottom pl-1 text-right float-right">
+                            <a href="/product/detail/{{ material.product_id }}/materialsabstractitem/update/{{ material.id }}">
+                                <button type="button" class="btn btn-warning">
+                                    <span class="material-icons" style="vertical-align: middle;">edit</span>
+                                </button>
+                            </a>
+                        </div>
+                        <div class="col-2 border-bottom pl-1 text-right float-right">
+                            <a href="/product/detail/{{ material.product_id }}/materialsabstractitem/delete/{{ material.id }}">
+                                <button type="button" class="btn btn-danger">
+                                    <span class="material-icons" style="vertical-align: middle;">delete</span>
+                                </button>
+                            </a>
+                        </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+        <div class="row no-gutters">
+            <div class="col-12 bg-light border">Coldside</div>
+        </div>
+        {% for material in materials_abstract %}
+            {% if material.material_phase == 'CSD' %}
+                <div class="row no-gutters">
+                        <div class="col-5  border-bottom pr-1">{{ material.material.material_name}}</div>
+                        <div class="col-3 border-bottom pl-1">{{ material.material_qty }}</div>
+                        <div class="col-2 border-bottom pl-1 text-right float-right">
+                            <a href="/product/detail/{{ material.product_id }}/materialsabstractitem/update/{{ material.id }}">
+                                <button type="button" class="btn btn-warning">
+                                    <span class="material-icons" style="vertical-align: middle;">edit</span>
+                                </button>
+                            </a>
+                        </div>
+                        <div class="col-2 border-bottom pl-1 text-right float-right">
+                            <a href="/product/detail/{{ material.product_id }}/materialsabstractitem/delete/{{ material.id }}">
+                                <button type="button" class="btn btn-danger">
+                                    <span class="material-icons" style="vertical-align: middle;">delete</span>
+                                </button>
+                            </a>
+                        </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    <div class="row no-gutters">
+        <div class="col-12 text-right float-left  pr-1 pt-2 pb-2">
+            <a href="materialsabstractitem/create/">
+                <button type="button" class="btn btn-warning">
+                    <span class="material-icons" style="vertical-align: middle;">add</span>
+                    <span style="vertical-align: middle;">Add Material</span>
+                </button>
+            </a>
+        </div>
+    </div>
+
+    <div class="row no-gutters pt-5">
+        <div class="col-12 pl-2 pt-1 bg-secondary">
+            <h3 style="color: white;">Ops Info</h3>
+        </div>
+    </div>
+    {% if not ops_info %}
+        <div class="row no-gutters">
+            <div class="col-7">
+                No Ops Info Available
+            </div>
+            <div class="col-5 text-right">
+                <a href="opsinfo/create/">
+                <button type="button" class="btn btn-warning">
+                    <span class="material-icons" style="vertical-align: middle;">add</span>
+                    <span style="vertical-align: middle;">Add Ops Info</span>
+                </button>
+                </a>
+            </div>
+        </div>
+    {% else %}
+        <div class="row no-gutters">
+                <div class="col-2 text-right float-left border bg-light pr-1">Default Yield</div>
+                <div class="col-10 border pl-1">{{ ops_info.default_package_yield }}</div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col-12 text-right float-left  pr-1 pt-2 pb-2">
+                    <a href="/product/detail/{{ ops_info.product.id }}/opsinfo/update/{{ ops_info.id }}/">
+                    <button type="button" class="btn btn-warning">
+                        <span class="material-icons" style="vertical-align: middle;">edit</span>
+                        <span style="vertical-align: middle;">Edit Ops Info</span>
+                    </button>
+                    </a>
+            </div>
+        </div>
+    {% endif %}
+    <div class="row no-gutters pt-5">
+        <div class="col-12 pl-2 pt-1 bg-secondary">
+            <h3 style="color: white;">Service Info</h3>
+        </div>
+    </div>
+    {% if not service_info %}
+        <div class="row no-gutters">
+            <div class="col-7">
+                No Service Info Available
+            </div>
+            <div class="col-5 text-right">
+                <a href="serviceinfo/create/">
+                    <button type="button" class="btn btn-warning">
+                        <span class="material-icons" style="vertical-align: middle;">add</span>
+                        <span style="vertical-align: middle;">Add Service Info</span>
+                    </button>
+                </a>
+            </div>
+        </div>
+    {% else %}
+        <div class="row no-gutters">
+                <div class="col-2 text-right float-left border bg-light pr-1">Style Detail:</div>
+                <div class="col-10 border pl-1">{{ service_info.style_detail }}</div>
+        </div>
+        <div class="row no-gutters">
+                <div class="col-2 text-right float-left border bg-light pr-1">Label ABV:</div>
+                <div class="col-10 border pl-1">{{ service_info.label_abv }}</div>
+        </div>
+        <div class="row no-gutters">
+                <div class="col-2 text-right float-left border bg-light pr-1">Regulator PSI:</div>
+                <div class="col-10 border pl-1">{{ service_info.tap_regulator_psi }}</div>
+        </div>
+        <div class="row no-gutters">
+                <div class="col-2 text-right float-left border bg-light pr-1">Public Notes:</div>
+                <div class="col-10 border pl-1">{{ service_info.public_tasting_notes }}</div>
+        </div>
+        <div class="row no-gutters">
+                <div class="col-2 text-right float-left border bg-light pr-1">May Also Like:</div>
+                <div class="col-10 border pl-1">{{ service_info.may_also_like }}</div>
+        </div>
+        <div class="row no-gutters">
+                <div class="col-2 text-right float-left border bg-light pr-1">Ideal Photo</div>
+                <div class="col-10 border pl-1">
+                    {% if service_info.picture %}
+                        {{ service_info.picture }}
+                    {% else %}
+                        No Photo Uploaded
+                    {% endif %}
+                </div>
+        </div>
+        <div class="col-22 text-right pt-2 pb-2">
+                <a href="/product/detail/{{ service_info.product.id }}/serviceinfo/update/{{ service_info.id }}/">
+                <button type="button" class="btn btn-warning">
+                    <span class="material-icons" style="vertical-align: middle;">edit</span>
+                    <span style="vertical-align: middle;">Edit Ops Info</span>
+                </button>
+                </a>
+        </div>
+    {% endif %}
+    </div>
+  </div>
+{% endblock %}

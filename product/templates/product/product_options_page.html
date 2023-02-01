@@ -1,0 +1,79 @@
+{% extends "product/base.html" %}
+{% block title %}{{ context.page_name }}{% endblock %}
+{% block content %}
+<div class="container-fluid px-2">
+        <div class="row no-gutters pt-3">
+            <div class="col-10 bg-light"><h3>Products</h3></div>
+            <div class="col-2 bg-light">
+                <span class="float-right">
+                    <a href="/product/create/">
+                            <button class="btn btn-primary">
+                                <span class="material-icons">add</span>
+                            </button>
+                    </a>
+                </span>
+            </div>
+        </div>
+        <div class="row no-gutters pt-3">
+            <div class="col-3">
+                    <div class="dropdown">
+                        <button disabled="true" class="btn btn-secondary dropdown-toggle" type="button" id="ownerFilter" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Owner
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="ownerFilter">
+                            <a class="dropdown-item" href="#">All</a>
+                            {% for owner in owner_list %}
+                                <a class="dropdown-item" href="#">{{ owner.partner_short_code }}</a>
+                            {% endfor %}
+                        </div>
+                    </div>
+            </div>
+            <div class="col-3">
+                    <div class="form-check">
+                        <input  disabled="true" type="checkbox" class="form-check-input" checked="checked" id="filterInactive">
+                        <label class="form-check-label" for="filterInactive">Show Inactive</label>
+                    </div>
+            </div>
+            <div class="row no-gutters pt-3 text-right">
+
+            </div>
+        </div>
+
+        <div class="row no-gutters pt-2 pb-2 border-bottom bg-light">
+                <div class="col-7">Name</div>
+                <div class="col-2">
+                    Owner
+                </div>
+                <div class="col-1">
+                    On?
+                </div>
+                <div class="col-2">
+
+                </div>
+            </div>
+        <div id="dataGrid">
+        {% for prod in product_list %}
+            <div class="row no-gutters pt-2 pb-2 border-bottom">
+                <div class="col-7">
+                    <a href="/product/detail/{{ prod.id }}">
+                        {{ prod.product_name }}
+                    </a>
+                </div>
+                <div class="col-2">
+                    {{prod.ownership.partner_short_code}}
+                </div>
+                <div class="col-1">
+                    {% if prod.product_active is True %}
+                    <span class="material-icons" style="color: green;">check_circle</span>
+                    {%  else %}
+                    <span class="material-icons" style="color: red;">block</span>
+                    {% endif %}
+                </div>
+                <div class="col-2">
+                    <a href="/product/update/{{ prod.id }}/">Edit</a>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+</div>
+{% endblock %}

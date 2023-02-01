@@ -10,14 +10,19 @@ from ebs.models.brew_sheets import *
 admin.site.register(ProductType)
 admin.site.register(Product)
 admin.site.register(PartnerType)
-admin.site.register(Partner)
+
+@admin.register(Partner)
+class PartnerAdmin(admin.ModelAdmin):
+    list_display = ('partner_name', 'partner_type', 'partner_active')
+    ordering = ('partner_name', 'partner_active')
+
 admin.site.register(Facility)
 admin.site.register(Tank)
 admin.site.register(Originator)
-#admin.site.register(Material)
+
 @admin.register(Material)
 class MaterialAdmin(admin.ModelAdmin):
-    list_display = ('material_name', 'material_type', 'material_origin')
+    list_display = ('material_name', 'material_type', 'material_origin', 'material_active')
 
 admin.site.register(SchedulePattern)
 admin.site.register(BatchSize)

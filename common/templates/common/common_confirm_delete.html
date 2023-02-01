@@ -1,0 +1,14 @@
+{% extends "common/base.html" %}
+{% block title %}Confirm This Delete{% endblock %}
+{% block content %}
+<div class="container-fluid px-2">
+        <div class="row no-gutters pt-3">
+            <div class="col-12">
+                <form method="post">{% csrf_token %}
+                    Are you sure you want to delete "{{ object }}"?
+                    <input type="submit" value="Confirm">
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -158,6 +158,37 @@ class Batch(models.Model):
 
 
 ###
+# New for '23, moving batch package plans into
+# ebs.  In this structure it is HIGHLY ENCOURAGED
+# for users to enter batch package plans as part
+# of the upcoming batch process.  In this way, a
+# forward-looking pressure on inventory can be easily
+# calculated.
+class BatchPackagePlan(models.Model):
+    class Meta:
+        verbose_name_plural = 'Batch Package Plans'
+
+    batch = models.OneToOneField(Batch,
+                             null=True,
+                             on_delete=models.SET_NULL)
+    kg_half_owned = models.IntegerField(default=0)
+    kg_half_oneway = models.IntegerField(default=0)
+    kg_half_client = models.IntegerField(default=0)
+    kg_half_client_oneway = models.IntegerField(default=0)
+    kg_sixth_owned = models.IntegerField(default=0)
+    kg_sixth_oneway = models.IntegerField(default=0)
+    kg_sixth_client = models.IntegerField(default=0)
+    kg_sixth_client_oneway = models.IntegerField(default=0)
+    cs_16oz = models.IntegerField(default=0)
+    cs_12oz = models.IntegerField(default=0)
+    cs_500ml = models.IntegerField(default=0)
+    cs_750ml = models.IntegerField(default=0)
+    package_note = models.TextField(null=True,
+                                    blank=True,
+                                    max_length=500)
+
+
+###
 # Plan dates are calculated by the associated view when a
 # planned batch is scheduled, based on teh schedule pattern
 # that is applied.

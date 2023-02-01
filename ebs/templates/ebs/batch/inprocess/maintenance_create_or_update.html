@@ -48,7 +48,7 @@
             <br/>
             <div class="row no-gutters">
                 <div class="col">
-                    <form method="POST">
+                    <form method="POST" onsubmit="submitBtn.disabled=true; return true;">
                         {% csrf_token %}
                         {%  if form.non_field_errors %}
                             <div class="alert alert-danger" role="alert">
@@ -76,7 +76,7 @@
                                 {% endif %}
                             </div>
                         {% endfor %}
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button id="submitBtn" type="submit" class="btn btn-primary">Submit</button>
                     </form>
                 </div>
             </div>

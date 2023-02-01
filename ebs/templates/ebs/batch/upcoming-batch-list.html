@@ -16,9 +16,22 @@
         </div>
         {% for x in upcoming_batch_list %}
             <div class="row no-gutters pt-2">
-                <div class="col-3">{{ x.plan_start_day|date:"d M" }}</div>
+                <div class="col-2">{{ x.plan_start_day|date:"d M" }}</div>
                 <div class="col-1">{{x.batch_product.ownership.partner_short_code}}</div>
-                <div class="col-5">{{ x.batch_product.product_name }}</div>
+                <div class="col-6">
+                    <a href="/ebs/upcoming/detail/{{ x.id }}">
+                        {{ x.batch_product.product_name }}
+                    </a>
+                </div>
+                <div class="col-1">
+                    <span class="float-right">
+                        <a href="/ebs/upcoming/delete/{{ x.id }}">
+                            <button type="button" class="btn btn-danger">
+                                <span class="material-icons">delete</span>
+                            </button>
+                        </a>
+                    </span>
+                </div>
                 <div class="col-1">
                     <span class="float-right">
                         <a href="/ebs/upcoming/update/{{ x.id }}">
@@ -28,7 +41,7 @@
                         </a>
                     </span>
                 </div>
-                <div class="col-2 pb-5">
+                <div class="col-1 pb-5">
                     <span class="float-right">
                         <a href="/ebs/upcoming/start/{{ x.id }}">
                             <button type="button" class="btn btn-success">

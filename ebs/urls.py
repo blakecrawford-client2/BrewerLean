@@ -3,7 +3,11 @@ from django.urls import re_path
 from ebs.views.batch_upcoming_views import UpcomingBatchList, \
     UpcomingBatchCreateView, \
     UpcomingBatchUpdateView, \
-    UpcomingBatchStartView
+    UpcomingBatchStartView, \
+    UpcomingBatchDeleteView, \
+    UpcomingBatchDetailView, \
+    UpcomingBatchPkgPlanCreateView, \
+    UpcomingBatchPkgPlanUpdateView
 from ebs.views.batch_inprocess_views import InprocessBatchList, \
     InprocessBatchCreateView, \
     InprocessBatchDetailView
@@ -57,6 +61,10 @@ urlpatterns = [
     path('upcoming/create/', UpcomingBatchCreateView.as_view()),
     path('upcoming/update/<int:pk>', UpcomingBatchUpdateView.as_view()),
     path('upcoming/start/<int:pk>', UpcomingBatchStartView.as_view()),
+    path('upcoming/delete/<int:pk>', UpcomingBatchDeleteView.as_view()),
+    path('upcoming/detail/<int:pk>', UpcomingBatchDetailView.as_view()),
+    path('upcoming/detail/<int:bpk>/pkgplanline/create/', UpcomingBatchPkgPlanCreateView.as_view()),
+    path('upcoming/detail/<int:bpk>/pkgplanline/update/<int:pk>', UpcomingBatchPkgPlanUpdateView.as_view()),
     ##########
     ## Inprocess URLs
     path('inprocess/', InprocessBatchList.as_view()),

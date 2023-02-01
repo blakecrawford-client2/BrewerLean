@@ -1,33 +1,22 @@
-{% extends "ebs/base.html" %}
+{% extends "product/base.html" %}
 {% load bootstrap4 %}
 {% load widget_tweaks %}
 {% block extrahead %}
     {{ form.media }}
 {% endblock %}
-{% block title %}Upcoming Batch{% endblock %}
+{% block title %}{{ page_name }}{% endblock %}
 {% block content %}
     <div class="container-fluid px-2">
         <div class="row no-gutters pt-3">
-            <div class="col bg-light">
-                <h3>Upcoming Batch</h3>
-            </div>
-            <div class="col-2 bg-light">
-                <span class="float-right">
-                <a href="/ebs/upcoming/">
-                    <button class="btn btn-warning">
-                        <span class="material-icons">
-                            arrow_back_ios_new
-                        </span>
-                    </button>
-                </a>
-                </span>
+            <div class="col-12 pb-2">
+                <h3>{{ page_name }}</h3>
             </div>
         </div>
-        <div class="row no-gutters">
-            <div class="col">
-                <form method="POST" onsubmit="submitBtn.disabled=true; return true;">
+        <div class="row no-gutters pt-3">
+            <div class="col-12 pb-2">
+                <form method="POST">
                     {% csrf_token %}
-                    {%  if form.non_field_errors %}
+                    {% if form.non_field_errors %}
                         <div class="alert alert-danger" role="alert">
                             {% for error in form.non_field_errors %}
                                 {{ error }}
@@ -54,7 +43,7 @@
                         </div>
                     {% endfor %}
                     <span class="float-right">
-                    <button id="submitBtn" type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
                     </span>
                 </form>
             </div>

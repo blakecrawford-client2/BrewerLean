@@ -25,7 +25,7 @@
             </div>
             <div class="row no-gutters">
                 <div class="col">
-                    <form method="POST">
+                    <form method="POST" onsubmit="submitBtn.disabled=true; return true;">
                         {% csrf_token %}
                         {%  if form.non_field_errors %}
                             <div class="alert alert-danger" role="alert">
@@ -54,7 +54,7 @@
                             </div>
                         {% endfor %}
                         <span class="float-right">
-                        <button type="submit" class="btn btn-success">
+                        <button id="submitBtn" type="submit" class="btn btn-success">
                             <span class="material-icons">arrow_forward_ios</span>
                         </button>
                         </span>

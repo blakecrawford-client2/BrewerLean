@@ -1,0 +1,234 @@
+{% extends "ebs/base.html" %}
+{% load bootstrap4 %}
+{% load widget_tweaks %}
+{% block extrahead %}
+    {{ form.media }}
+{% endblock %}
+{% block title %}Upcoming Batch Detail{% endblock %}
+{% block content %}
+    <div class="container-fluid px-2">
+        <div class="row no-gutters pt-3">
+            <div class="col bg-light ">
+                <h3>Upcoming Batch Detail</h3>
+            </div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col-3 bg-light border pl-2">
+                Beer
+            </div>
+            <div class="col-9 border pl-2">
+                {{ object.batch_product.product_name }}
+            </div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col-3 bg-light border pl-2">
+                Owner
+            </div>
+            <div class="col-9 border pl-2">
+                {{ object.batch_product.ownership.partner_short_code }} // {{ object.batch_product.ownership.partner_name }}
+            </div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col-3 bg-light border pl-2">
+                Schedule Pattern
+            </div>
+            <div class="col-9 border pl-2">
+                {{ object.schedule_pattern.pattern_name }}
+            </div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col-3 bg-light border pl-2">
+                Plan Start Day
+            </div>
+            <div class="col-9 border pl-2">
+                {{ object.plan_start_day }}
+            </div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col-3 bg-light border pl-2">
+                Batch Size
+            </div>
+            <div class="col-9 border pl-2">
+                {{ object.total_batch_size }}
+            </div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col-3 bg-light border pl-2">
+                Target Fermenter
+            </div>
+            <div class="col-9 border pl-2">
+                {{ object.target_fv.tank_name }}
+            </div>
+        </div>
+        <div class="row no-gutters pt-5">
+            <div class="col-12 pl-2 pt-1 bg-secondary">
+                <h3 style="color: white;">Package Plan</h3>
+            </div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col-3 pl-2 pt-1 bg-light">
+                Base Yield:
+            </div>
+            <div class="col-3 pl-2 pt-1">
+                {{ base_yield }}%
+            </div>
+            <div class="col-3 pl-2 pt-1 bg-light">
+                Base Vol:
+            </div>
+            <div class="col-3 pl-2 pt-1">
+                {{ base_vol }} BBL
+            </div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col-3 pl-2 pt-1 bg-light">
+                Plan Yield:
+            </div>
+            <div class="col-3 pl-2 pt-1">
+                {{ total_plan_yield|floatformat:2 }}%
+            </div>
+            <div class="col-3 pl-2 pt-1 bg-light">
+                Plan Vol:
+            </div>
+            <div class="col-3 pl-2 pt-1">
+                {{ total_pkg_vol|floatformat:2 }} BBL
+            </div>
+        </div>
+        {% if not package_plan %}
+            <div class="row no-gutters">
+                <div class="col-12 pl-2">
+                    No Package Plan Available.
+                </div>
+            </div>
+        {% else %}
+            <div class="row no-gutters pt-2">
+                <div class="col-12 pl-2 border bg-light">
+                    Halfs <span style="font-size: 8pt;">(total={{ total_half }})</span>
+                </div>
+            </div>
+            <div class="row no-gutters">
+                <div class="col-1"></div>
+                <div class="col-11 border pl-2">Alementary <span style="font-size: 8pt;">(total={{ total_ale_half }})</span></div>
+            </div>
+            <div class="row no-gutters">
+                <div class="col-1"></div>
+                <div class="col-1"></div>
+                <div class="col-2 border pl-2">Owned</div>
+                <div class="col-8 border pl-2">{{ package_plan.kg_half_owned }}</div>
+            </div>
+            <div class="row no-gutters">
+                <div class="col-1"></div>
+                <div class="col-1"></div>
+                <div class="col-2 border pl-2">Oneway</div>
+                <div class="col-8 border pl-2">{{ package_plan.kg_half_oneway }}</div>
+            </div>
+            <div class="row no-gutters">
+                <div class="col-1"></div>
+                <div class="col-11 border pl-2">Client <span style="font-size: 8pt;">(total={{ total_client_half }})</span></div>
+            </div>
+            <div class="row no-gutters">
+                <div class="col-1"></div>
+                <div class="col-1"></div>
+                <div class="col-2 border pl-2">Owned</div>
+                <div class="col-8 border pl-2">{{ package_plan.kg_half_client }}</div>
+            </div>
+            <div class="row no-gutters">
+                <div class="col-1"></div>
+                <div class="col-1"></div>
+                <div class="col-2 border pl-2">Oneway</div>
+                <div class="col-8 border pl-2">{{ package_plan.kg_half_client_oneway }}</div>
+            </div>
+            <div class="row no-gutters">
+                <div class="col-12 pl-2 border bg-light">
+                    Sixths <span style="font-size: 8pt;">(total={{ total_sixth }})</span>
+                </div>
+            </div>
+            <div class="row no-gutters">
+                <div class="col-1"></div>
+                <div class="col-11 border pl-2">Alementary <span style="font-size: 8pt;">(total={{ total_ale_sixth }})</span></div>
+            </div>
+            <div class="row no-gutters">
+                <div class="col-1"></div>
+                <div class="col-1"></div>
+                <div class="col-2 border pl-2">Owned</div>
+                <div class="col-8 border pl-2">{{ package_plan.kg_sixth_owned}}</div>
+            </div>
+            <div class="row no-gutters">
+                <div class="col-1"></div>
+                <div class="col-1"></div>
+                <div class="col-2 border pl-2">Oneway</div>
+                <div class="col-8 border pl-2">{{ package_plan.kg_sixth_oneway }}</div>
+            </div>
+            <div class="row no-gutters">
+                <div class="col-1"></div>
+                <div class="col-11 border pl-2">Client <span style="font-size: 8pt;">(total={{ total_client_sixth }})</span></div>
+            </div>
+            <div class="row no-gutters">
+                <div class="col-1"></div>
+                <div class="col-1"></div>
+                <div class="col-2 border pl-2">Owned</div>
+                <div class="col-8 border pl-2">{{ package_plan.kg_sixth_client }}</div>
+            </div>
+            <div class="row no-gutters">
+                <div class="col-1"></div>
+                <div class="col-1"></div>
+                <div class="col-2 border pl-2">Oneway</div>
+                <div class="col-8 border pl-2">{{ package_plan.kg_sixth_client_oneway }}</div>
+            </div>
+            <div class="row no-gutters">
+                <div class="col-12 pl-2 border bg-light">
+                    Cases <span style="font-size: 8pt;">(total={{ total_sixth }})</span>
+                </div>
+            </div>
+            <div class="row no-gutters">
+                <div class="col-1"></div>
+                <div class="col-3 border pl-2">12oz Cans</div>
+                <div class="col-8 border pl-2">{{ package_plan.cs_12oz }}</div>
+            </div>
+            <div class="row no-gutters">
+                <div class="col-1"></div>
+                <div class="col-3 border pl-2">16oz Cans</div>
+                <div class="col-8 border pl-2">{{ package_plan.cs_16oz }}</div>
+            </div>
+            <div class="row no-gutters">
+                <div class="col-1"></div>
+                <div class="col-3 border pl-2">500ml Btl</div>
+                <div class="col-8 border pl-2">{{ package_plan.cs_500ml }}</div>
+            </div>
+            <div class="row no-gutters">
+                <div class="col-1"></div>
+                <div class="col-3 border pl-2">750ml Btl</div>
+                <div class="col-8 border pl-2">{{ package_plan.cs_750ml }}</div>
+            </div>
+            <div class="row no-gutters">
+                <div class="col-12 pl-2 border bg-light">
+                    NOTES
+                </div>
+            </div>
+            <div class="row no-gutters">
+                <div class="col-12 border pl-2 pt-2 pr-2 pb-2"">{{ package_plan.package_note }}</div>
+            </div>
+        {% endif %}
+        </div>
+        <div class="row no-gutters">
+            {% if not package_plan %}
+                <div class="col-12 text-right float-left  pr-1 pt-2 pb-2">
+                    <a href="/ebs/upcoming/detail/{{ object.id }}/pkgplanline/create">
+                        <button type="button" class="btn btn-warning">
+                            <span class="material-icons" style="vertical-align: middle;">add</span>
+                            <span style="vertical-align: middle;">Add Plan Line</span>
+                        </button>
+                    </a>
+                </div>
+            {% else %}
+                <div class="col-12 text-right float-left  pr-1 pt-2 pb-2">
+                    <a href="/ebs/upcoming/detail/{{ object.id }}/pkgplanline/update/{{ package_plan.id }}">
+                        <button type="button" class="btn btn-warning">
+                            <span class="material-icons" style="vertical-align: middle;">edit</span>
+                            <span style="vertical-align: middle;">Update Plan Line</span>
+                        </button>
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

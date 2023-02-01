@@ -1,6 +1,7 @@
 from django.db import models
 from ebs.models.master_data_partners import *
 
+
 ###
 # Products are the things that are manufactured... individual
 # beers.  Product Types are intented to be things like "ale"
@@ -19,6 +20,7 @@ class ProductType(models.Model):
     def __str__(self):
         return self.product_type
 
+
 ###
 # A product is a thing that is being manufactured, and they
 # are of a type and have an ownership.
@@ -30,6 +32,7 @@ class Product(models.Model):
     ownership = models.ForeignKey(Partner, null=True, on_delete=models.SET_NULL)
     product_type = models.ForeignKey(ProductType, null=True, on_delete=models.SET_NULL)
     product_name = models.CharField(max_length=100, null=False)
+    product_active = models.BooleanField(default=True)
     last_modified_on = models.DateField(auto_now=True)
     last_modified_by = models.ForeignKey(User,
                                          null=True,
@@ -37,4 +40,4 @@ class Product(models.Model):
                                          default=1)
 
     def __str__(self):
-        return self.product_name
+        return self.ownership.partner_short_code + "::" + self.product_name

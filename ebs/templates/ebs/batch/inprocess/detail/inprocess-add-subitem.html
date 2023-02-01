@@ -60,7 +60,7 @@
         </div>
         <div class="row no-gutters pt-3 border pl-3 pr-3 pb-3">
             <div class="col">
-                <form method="POST">
+                <form method="POST" onsubmit="submitBtn.disabled=true; return true;">
                     {% csrf_token %}
                     {% if form.non_field_errors %}
                         <div class="alert alert-danger" role="alert">
@@ -92,13 +92,13 @@
                         <span class="float-left">
                             {% if '/archive' in request.path %}
                                 <a href="/ebs/archive/detail/{{ batch.id }}/rawmaterials/delete/{{ current_material.id }}">
-                                    <button type="button" class="btn btn-danger btn-block btn-sm">
+                                    <button type="button" class="btn btn-danger btn-block btn-sm" onclick="return confirm('Are you sure?');">
                                         <span class="material-icons md-18">delete</span>
                                     </button>
                                 </a>
                             {% else %}
                                 <a href="/ebs/inprocess/detail/{{ batch.id }}/rawmaterials/delete/{{ current_material.id }}">
-                                    <button type="button" class="btn btn-danger btn-block btn-sm">
+                                    <button type="button" class="btn btn-danger btn-block btn-sm" onclick="return confirm('Are you sure?');">
                                         <span class="material-icons md-18">delete</span>
                                     </button>
                                 </a>
@@ -106,9 +106,8 @@
                         </span>
                     {% endif %}
                     <span class="float-right">
-                        {{ request.META.HTTP_REFERER }}
                         <input type="hidden" value="{{ request.META.HTTP_REFERER }}">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button id="submitBtn" type="submit" class="btn btn-primary">Submit</button>
                     </span>
 
                 </form>
