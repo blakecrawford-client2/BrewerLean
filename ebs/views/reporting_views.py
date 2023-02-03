@@ -1,8 +1,13 @@
+import logging
 from django.views.generic import DetailView
 from django.views.generic import TemplateView
 from django.views.generic import ListView
 from ebs.models.brew_sheets import *
 from ebs.models.master_data_facilities import Tank
+
+from common.views.BLViews import *
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.base import TemplateView
 
 ###
 # Status report for the entire brewery, intended to be
@@ -105,3 +110,97 @@ class TankStatusReport(ListView):
         context['batch_transfers'] = BatchTransfer.objects.filter(batch__status='IP')
         return context
 
+
+class InventoryPressureReportUpcomingOnly(LoginRequiredMixin, TemplateView):
+
+    template_name = 'ebs/batch/reports/inventory_pressure_upcoming_only.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # first get all upcoming batches
+        upcoming_batches = Batch.objects.filter(status='PL')
+
+        # Now get a list of all materials
+        all_materials = Material.objects.all()
+        # Create a dict of material_name:quantity, where quantity is zero.
+        all_materials_dict = {}
+        for material in all_materials:
+            all_materials_dict[material.material_name] = 0
+
+        # now put them in buckets relative to completeness for inventory
+        # pressure purposes
+        abstract_complete_batches = []
+        pkgplan_abstract_complete_batches = []
+        no_abstract_batches = []
+        no_pkgplan_batches=[]
+        cc_batches = []
+
+        for upcoming_batch in upcoming_batches:
+
+            # figures out if each batch has a package plan
+            try:
+                pplan = upcoming_batch.package_plan
+            except:
+                pplan = None
+            if not pplan:
+                no_pkgplan_batches.append(upcoming_batch)
+
+            # figures out if each batch has a materials abstract
+            try:
+                matabs = upcoming_batch.batch_product.materials_abstract.all()
+            except:
+                matabs = None
+            if not matabs:
+                no_abstract_batches.append(upcoming_batch)
+
+        # finally makes a list of batches clearing both hurdles.
+        # this is the list of batches that are computationally complete
+        for batch in upcoming_batches:
+            if batch not in no_pkgplan_batches and batch not in no_abstract_batches:
+                cc_batches.append(batch)
+
+        # use the de-duped list to identify all in-common materials and sum
+        # their respective quantities
+        for cc_batch in cc_batches:
+            for cc_batch_materials in cc_batch.batch_product.materials_abstract.all():
+                current_qty = all_materials_dict[cc_batch_materials.material.material_name]
+                add_qty = cc_batch_materials.material_qty
+                sum_qty = float(current_qty) + float(add_qty)
+                all_materials_dict[cc_batch_materials.material.material_name] = sum_qty
+
+        # Treating packaging separately, just for a moment
+        for cc_batch in cc_batches:
+            pkgplan = cc_batch.package_plan
+            cans_12oz_reqd = float(pkgplan.cs_12oz) * 24.0
+            cans_16oz_reqd = float(pkgplan.cs_16oz) * 24.0
+            ends_reqd = cans_12oz_reqd + cans_16oz_reqd
+            short_trays_reqd = pkgplan.cs_12oz
+            tall_trays_reqd = pkgplan.cs_16oz
+            handles_4pk_reqd = float(pkgplan.cs_16oz) * 6.0
+            handles_6pk_reqd = float(pkgplan.cs_12oz) * 4.0
+
+
+
+        context["upcoming_full_count"] = len(upcoming_batches)
+        context["no_pkg_plan"] = len(no_pkgplan_batches)
+        context["no_abstract_batches"] = len(no_abstract_batches)
+        context["complete_config_batches_count"] = len(cc_batches)
+        context["complete_config_batches"] = cc_batches
+        context["materials_dict"] = all_materials_dict
+        context["cans_12oz"] = cans_12oz_reqd
+        context["cant_16oz"] = cans_16oz_reqd
+        context["short_trays"] = short_trays_reqd
+        context["tall_trays"] = tall_trays_reqd
+        context["handles_4pk"] = handles_4pk_reqd
+        context["handles_6pk"] = handles_6pk_reqd
+        context["ends"] = ends_reqd
+        context["ale_halfs"] = pkgplan.kg_half_owned
+        context["ale_sixths"] = pkgplan.kg_sixth_owned
+        context["ale_ow_halfs"] = pkgplan.kg_half_oneway
+        context["ale_ow_sixths"] = pkgplan.kg_sixth_oneway
+        context["client_halfs"] = pkgplan.kg_half_client
+        context["client_sixths"] = pkgplan.kg_sixth_client
+        context["client_ow_halfs"] = pkgplan.kg_half_client_oneway
+        context["client_ow_sixths"] = pkgplan.kg_sixth_client_oneway
+        return context

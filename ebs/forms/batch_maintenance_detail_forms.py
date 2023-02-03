@@ -15,6 +15,7 @@ from ebs.models.brew_sheets import CarbonationQCEntry
 from ebs.models.brew_sheets import PackagingRun
 from ebs.models.brew_sheets import CanningQC
 from ebs.models.brew_sheets import BatchNote
+from ebs.models.brew_sheets import BatchPackagePlan
 
 
 ##########
@@ -387,3 +388,21 @@ class DryHopForm(forms.ModelForm):
     class Meta:
         model = BatchActualDates
         fields = ['dryhop_date']
+
+
+class InProcessBatchPkgPlanForm(forms.ModelForm):
+    class Meta:
+        model = BatchPackagePlan
+        fields = ('kg_half_owned',
+                  'kg_half_oneway',
+                  'kg_half_client',
+                  'kg_half_client_oneway',
+                  'kg_sixth_owned',
+                  'kg_sixth_oneway',
+                  'kg_sixth_client',
+                  'kg_sixth_client_oneway',
+                  'cs_12oz',
+                  'cs_16oz',
+                  'cs_500ml',
+                  'cs_750ml',
+                  'package_note')

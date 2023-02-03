@@ -41,7 +41,7 @@
                         </a>
                     </span>
                 </div>
-                <div class="col-1 pb-5">
+                <div class="col-1">
                     <span class="float-right">
                         <a href="/ebs/upcoming/start/{{ x.id }}">
                             <button type="button" class="btn btn-success">
@@ -50,6 +50,24 @@
                         </a>
                     </span>
                 </div>
+            </div>
+            <div class="row no-gutters pb-5">
+                <div class="col-2"></div>
+                <div class="col-1"></div>
+                <div class="col-6">
+                    {% if not x.package_plan %}
+                        <span class="material-icons" style="color: red; vertical-align: middle;">warning</span>NO PACKAGE PLAN
+                    {% endif %}
+                    {% if not x.batch_product.materials_abstract.first %}
+                        <span class="material-icons" style="color:red; vertical-align: middle;">warning</span>NO MATERIALS
+                    {% endif %}
+                    {% if x.package_plan and x.batch_product.materials_abstract.first %}
+                        <span class="material-icons" style="color: green; vertical-align: middle;">info</span>GOOD TO GO
+                    {% endif %}
+                </div>
+                <div class="col-1"></div>
+                <div class="col-1"></div>
+                <div class="col-1"></div>
             </div>
         {% endfor %}
     </div>

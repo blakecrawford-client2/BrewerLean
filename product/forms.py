@@ -4,6 +4,7 @@ from product.models import ProductServiceInfo
 from product.models import ProductOperationsInfo
 from product.models import ProductMaterialsAbstract
 from ebs.models.master_data_products import Product
+from ebs.models.master_data_rawmaterials import Material
 
 class ProductServiceInfoForm(forms.ModelForm):
     class Meta:
@@ -33,6 +34,7 @@ class ProductOpsInfoForm(forms.ModelForm):
 
 
 class ProductMaterialsAbstractItemForm(forms.ModelForm):
+    material = forms.ModelChoiceField(queryset=Material.objects.filter(material_active=True).order_by('material_type', 'material_name'))
     class Meta:
         model = ProductMaterialsAbstract
         fields = ('material',

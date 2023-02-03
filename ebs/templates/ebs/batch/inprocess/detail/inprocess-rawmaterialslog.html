@@ -29,16 +29,16 @@
             </div>
         </div>
         <div class="row no-gutters">
-            <div class="col-2 text-right float-left border bg-light pr-1">Beer:</div>
+            <div class="col-2 text-right float-left border bg-secondary pr-1 text-white">Beer:</div>
             <div class="col-10 border pl-1">{{ current_batch.batch_product.product_name }}</div>
         </div>
         <div class="row no-gutters">
-            <div class="col-2 text-right float-left border bg-light pr-1">Partner:</div>
+            <div class="col-2 text-right float-left border bg-secondary text-white pr-1">Partner:</div>
             <div class="col-10 border pl-1">{{ current_batch.batch_product.ownership.partner_short_code }}</div>
         </div>
         {% if '/obeer' not in request.path %}
         <div class="row no-gutters">
-            <div class="col-2 text-right float-left border bg-light pr-1">Number:</div>
+            <div class="col-2 text-right float-left border bg-secondary text-white pr-1">Number:</div>
             {% if current_batch.obeer_batch is None %}
                 <div class="col-4 border pl-1">
                     <button type="button" class="btn btn-primary btn-sm">Add</button>
@@ -46,7 +46,7 @@
             {% else %}
                 <div class="col-4 border pl-1">{{ current_batch.obeer_batch }}</div>
             {% endif %}
-            <div class="col-2 text-right border bg-light pr-1">MPN:</div>
+            <div class="col-2 text-right border bg-secondary text-white pr-1">MPN:</div>
             {% if current_batch.obeer_batch is None %}
                 <div class="col-4 border pl-1">
                     <button type="button" class="btn btn-primary btn-sm">Add</button>
@@ -59,8 +59,55 @@
 
         <div class="row no-gutters">
             <br/>
-            <div class="col-10 border-left pt-2 pl-1"><h3>Raw Materials</h3></div>
-            <div class="col-2 border-right pt-2 pr-1 pb-2">
+            <div class="col-10 pt-3 pl-1"><h3>Raw Materials Abstract</h3></div>
+        </div>
+        <div class="row no-gutters">
+            <div class="col border bg-light pl-1">Phase</div>
+            <div class="col border bg-light pl-1">Material</div>
+            <div class="col border bg-light pl-1">Qty</div>
+            <div class="col-2"></div>
+        </div>
+        {% if abstract %}
+            {% for msh in abstract %}
+                {% if msh.material_phase == "MSH" %}
+                    <div class="row no-gutters">
+                        <div class="col border pl-1">{{ msh.material_phase }}</div>
+                        <div class="col border pl-1">{{ msh.material.material_name }}</div>
+                        <div class="col border pl-1">{{ msh.material_qty}}</div>
+                        <div class="col-2"></div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            {% for hsd in abstract %}
+                {% if hsd.material_phase == "HSD" %}
+                    <div class="row no-gutters">
+                        <div class="col border pl-1">{{ hsd.material_phase }}</div>
+                        <div class="col border pl-1">{{ hsd.material.material_name }}</div>
+                        <div class="col border pl-1">{{ hsd.material_qty }}</div>
+                        <div class="col-2"></div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            {% for csd in abstract %}
+                {% if csd.material_phase == "CSD" %}
+                    <div class="row no-gutters">
+                        <div class="col border pl-1">{{ csd.material_phase }}</div>
+                        <div class="col border pl-1">{{ csd.material.material_name }}</div>
+                        <div class="col border pl-1">{{ csd.material_qty }}</div>
+                        <div class="col-2"></div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <div class="row no-gutters">
+                <div class="col-12 pl-1 pt-2">
+                    No Materials Abstract Is Available!
+                </div>
+            </div>
+        {% endif %}
+        <div class="row no-gutters">
+            <div class="col-10 pt-5 pl-1"><h3>Raw Materials Actual</h3></div>
+            <div class="col-2 pt-5 pr-1 pb-2">
                 <span class="float-right">
                     {% if '/archive' in request.path %}
                         <a href="/ebs/archive/detail/{{ current_batch.pk }}/rawmaterials/add/">
@@ -186,8 +233,8 @@
             </div>
         </div>
 
-        <div class="row no-gutters">
-            <div class="col-12 pl-1">Things Not Listed</div>
+        <div class="row no-gutters pt-5">
+            <div class="col-12 pl-1"><h3>Things Not Listed</h3></div>
         </div>
 
         <div class="row no-gutters">
@@ -220,13 +267,13 @@
             <div class="col-12 pt-2 pb-1">
                 <span class="float-right">
                     {% if '/archive' in request.path %}
-                        <a href="/ebs/archive/detail/{{ current_batch.pk }}/batchnot/add/">
+                        <a href="/ebs/archive/detail/{{ current_batch.pk }}/batchnote/add/">
                             <button type="button" class="btn btn-primary">
                                 <i class="material-icons">add</i>
                             </button>
                         </a>
                     {% else %}
-                         <a href="/ebs/inprocess/detail/{{ current_batch.pk }}/rawmaterials/add/">
+                         <a href="/ebs/inprocess/detail/{{ current_batch.pk }}/batchnote/add/">
                             <button type="button" class="btn btn-primary">
                                 <i class="material-icons">add</i>
                             </button>

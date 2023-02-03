@@ -105,7 +105,6 @@ class UpcomingBatchDetailView(LoginRequiredMixin, BLDetailView):
             context['total_client_sixth'] = total_client_sixth
             context['total_pkg_vol'] = total_pkg_vol
 
-
         batch = self.get_object()
         product = batch.batch_product
 

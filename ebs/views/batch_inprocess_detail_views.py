@@ -5,6 +5,7 @@ from django.views.generic.edit import FormView
 from common.views.BLViews import BLCreateView, BLUpdateView, BLDeleteWithoutConfirmationView
 from ebs.forms.batch_maintenance_detail_forms import *
 from ebs.models.brew_sheets import *
+from product.views import ProductMaterialsAbstract
 
 
 ###
@@ -83,6 +84,12 @@ class RawMaterialsLogView(LoginRequiredMixin, BLUpdateView):
         other = BatchRawMaterialsLog.objects.filter(batch=batch.id, material__material_type='OT').order_by(
             'material__material_name')
         not_listed = BatchNote.objects.filter(batch=batch.id, note_type='UM')
+
+        try:
+            abstract = ProductMaterialsAbstract.objects.filter(product=batch.batch_product.id)
+        except:
+            abstract = None
+
         context = super(RawMaterialsLogView, self).get_context_data(**kwargs)
         context['batch'] = batch
         context['grain'] = grain
@@ -90,6 +97,7 @@ class RawMaterialsLogView(LoginRequiredMixin, BLUpdateView):
         context['other'] = other
         context['materials'] = materials
         context['not_listed'] = not_listed
+        context['abstract'] = abstract
         return context
 
 
@@ -148,6 +156,7 @@ class UpdateRawMaterialsLogView(LoginRequiredMixin, BLUpdateView):
 class DeleteRawMaterialsLogView(LoginRequiredMixin, BLDeleteWithoutConfirmationView):
     model = BatchRawMaterialsLog
     context_object_name = 'current_material'
+    template_name = "common/common_confirm_delete.html"
 
     def get_success_url(self):
         request_path = self.request.get_full_path()
@@ -958,3 +967,76 @@ class CreateDryhopDateView(LoginRequiredMixin, BLUpdateView):
         def form_valid(self, form):
             form.instance.batch = Batch.objects.get(pk=self.kwargs.get('pk'))
             return super(CreateDryhopDateView, self).form_valid(form)
+
+
+###
+# Detail view to manage the package plan for a
+# particular batch
+class PackagePlanView(LoginRequiredMixin, BLUpdateView):
+    model = Batch
+    template_name = 'ebs/batch/inprocess/detail/inprocess_batch_pkgplan.html'
+    form_class = AddRawMaterialsForm
+    context_object_name = 'current_batch'
+
+    def get_success_url(self):
+        request_path = self.request.get_full_path()
+        if '/archive' in request_path:
+            return reverse_lazy('maintenance-archive', kwargs={'pk': self.kwargs.get('bpk')})
+        else:
+            return reverse_lazy('maintenance', kwargs={'pk': self.kwargs.get('bpk')})
+
+    def get_context_data(self, **kwargs):
+        context = super(PackagePlanView, self).get_context_data(**kwargs)
+        try:
+            package_plan = BatchPackagePlan.objects.get(batch__id=self.kwargs.get('pk'))
+        except:
+            package_plan = None
+        if package_plan:
+            total_kegs = package_plan.kg_half_owned \
+                         + package_plan.kg_half_oneway \
+                         + package_plan.kg_sixth_owned \
+                         + package_plan.kg_sixth_oneway \
+                         + package_plan.kg_half_client \
+                         + package_plan.kg_half_client_oneway \
+                         + package_plan.kg_sixth_client \
+                         + package_plan.kg_sixth_client_oneway
+            total_half = package_plan.kg_half_owned + package_plan.kg_half_oneway + package_plan.kg_half_client + package_plan.kg_half_client_oneway
+            total_sixth = package_plan.kg_sixth_owned + package_plan.kg_sixth_oneway + package_plan.kg_sixth_client + package_plan.kg_sixth_client_oneway
+            total_ale_half = package_plan.kg_half_owned + package_plan.kg_half_oneway
+            total_client_half = package_plan.kg_half_client + package_plan.kg_half_client_oneway
+            total_ale_sixth = package_plan.kg_sixth_owned + package_plan.kg_sixth_oneway
+            total_client_sixth = package_plan.kg_sixth_client + package_plan.kg_sixth_client_oneway
+
+            total_pkg_vol = ((total_half * 15.5) \
+                             + (total_sixth * 5.2) \
+                             + (package_plan.cs_12oz * 2.25) \
+                             + (package_plan.cs_16oz * 3) \
+                             + (package_plan.cs_500ml * 1.58) \
+                             + (package_plan.cs_750ml * 2.38)) / 31
+
+            context['total_kegs'] = total_kegs
+            context['total_half'] = total_half
+            context['total_sixth'] = total_sixth
+            context['total_ale_half'] = total_ale_half
+            context['total_client_half'] = total_client_half
+            context['total_ale_sixth'] = total_ale_sixth
+            context['total_client_sixth'] = total_client_sixth
+            context['total_pkg_vol'] = total_pkg_vol
+
+        batch = self.get_object()
+        product = batch.batch_product
+
+        try:
+            base_yield = product.ops_info.first().default_package_yield
+        except:
+            base_yield = 80.0
+
+        base_vol = float(batch.total_batch_size.batch_size_name) * (float(base_yield) / 100.0)
+        context['base_yield'] = base_yield
+        context['base_vol'] = base_vol
+        if package_plan:
+            context['total_plan_yield'] = (float(total_pkg_vol) / float(batch.total_batch_size.batch_size_name)) * 100
+        else:
+            context['total_plan_yield'] = 'NaN'
+        context['package_plan'] = package_plan
+        return context

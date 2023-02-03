@@ -9,7 +9,9 @@ from ebs.models.brew_sheets import BatchDOEntry
 from ebs.models.brew_sheets import BatchTransfer
 from ebs.models.brew_sheets import CarbonationQCEntry
 from ebs.models.brew_sheets import PackagingRun
+from ebs.models.brew_sheets import BatchPackagePlan
 from ebs.forms.batch_upcoming_forms import MakeUpcomingBatchForm
+from ebs.forms.batch_maintenance_detail_forms import InProcessBatchPkgPlanForm
 
 ###
 # See a full list of in-process batches
@@ -66,6 +68,10 @@ class InprocessBatchDetailView(LoginRequiredMixin, TemplateView):
             packaging = PackagingRun.objects.get(batch=batch.id)
         except PackagingRun.DoesNotExist:
             packaging = None
+        try:
+            package_plan = BatchPackagePlan.objects.get(batch=batch.id)
+        except BatchPackagePlan.DoesNotExist:
+            package_plan = None
 
         context = super(InprocessBatchDetailView, self).get_context_data(**kwargs)
         context['batch'] = batch
@@ -75,4 +81,39 @@ class InprocessBatchDetailView(LoginRequiredMixin, TemplateView):
         context['xfer'] = xfer
         context['carb'] = carb
         context['packaging'] = packaging
+        context['package_plan'] = package_plan
         return context
+
+
+class InProcessBatchPkgPlanCreateView(LoginRequiredMixin, BLCreateView):
+    model = BatchPackagePlan
+    template_name = 'ebs/batch/inprocess/detail/inprocess_batch_pkgplan_adjust.html'
+    form_class = InProcessBatchPkgPlanForm
+
+    def get_success_url(self):
+        if ('/detail/' in self.request.get_full_path()):
+            success_url = '/ebs/inprocess/detail/' + str(self.kwargs.get('bpk')) + '/pkgplanline/'
+        else:
+            success_url = '/ebs/inprocess/'
+        return success_url
+
+    def form_valid(self, form):
+        form.instance.batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
+        return super(InProcessBatchPkgPlanCreateView, self).form_valid(form)
+
+
+class InProcessBatchPkgPlanUpdateView(LoginRequiredMixin, BLUpdateView):
+    model = BatchPackagePlan
+    template_name = 'ebs/batch/inprocess/detail/inprocess_batch_pkgplan_adjust.html'
+    form_class = InProcessBatchPkgPlanForm
+
+    def get_success_url(self):
+        if ('/detail/' in self.request.get_full_path()):
+            success_url = '/ebs/inprocess/detail/' + str(self.kwargs.get('bpk')) + '/pkgplanline/'
+        else:
+            success_url = '/ebs/inprocess/'
+        return success_url
+
+    def form_valid(self, form):
+        form.instance.batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
+        return super(InProcessBatchPkgPlanUpdateView, self).form_valid(form)

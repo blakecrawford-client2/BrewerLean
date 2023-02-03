@@ -10,7 +10,9 @@ from ebs.views.batch_upcoming_views import UpcomingBatchList, \
     UpcomingBatchPkgPlanUpdateView
 from ebs.views.batch_inprocess_views import InprocessBatchList, \
     InprocessBatchCreateView, \
-    InprocessBatchDetailView
+    InprocessBatchDetailView, \
+    InProcessBatchPkgPlanCreateView, \
+    InProcessBatchPkgPlanUpdateView
 from ebs.views.batch_inprocess_detail_views import AddObeerDataView
 from ebs.views.batch_inprocess_detail_views import RawMaterialsLogView
 from ebs.views.batch_inprocess_detail_views import AddRawMaterialsLogView
@@ -44,6 +46,7 @@ from ebs.views.batch_inprocess_detail_views import ChangeFVView
 from ebs.views.batch_inprocess_detail_views import CreateYeastCrashHarvestView
 from ebs.views.batch_inprocess_detail_views import CreateFinalCrashDateView
 from ebs.views.batch_inprocess_detail_views import CreateDryhopDateView
+from ebs.views.batch_inprocess_detail_views import PackagePlanView
 from ebs.views.batch_close_views import ArchiveBatchListView
 from ebs.views.batch_close_views import ArchiveBatchView
 from ebs.views.batch_close_views import ArchiveBatchFullView
@@ -53,6 +56,7 @@ from ebs.views.reporting_views import BatchRawMaterialsRecord
 from ebs.views.reporting_views import BatchFermentationQCRecord
 from ebs.views.reporting_views import BigTVStatusReport
 from ebs.views.reporting_views import TankStatusReport
+from ebs.views.reporting_views import InventoryPressureReportUpcomingOnly
 
 urlpatterns = [
     ##########
@@ -100,6 +104,9 @@ urlpatterns = [
     path('inprocess/detail/<int:bpk>/canqc/update/<int:pk>', UpdateCanningQCView.as_view()),
     path('inprocess/detail/<int:bpk>/package/', CreatePackagingRunView.as_view()),
     path('inprocess/detail/<int:bpk>/package/update/<int:pk>', UpdatePackagingRunView.as_view()),
+    path('inprocess/detail/<int:pk>/pkgplanline/',PackagePlanView.as_view()),
+    path('inprocess/detail/<int:bpk>/pkgplanline/create/', InProcessBatchPkgPlanCreateView.as_view()),
+    path('inprocess/detail/<int:bpk>/pkgplanline/update/<int:pk>', InProcessBatchPkgPlanUpdateView.as_view()),
     path('inprocess/detail/<int:pk>/batchnote/', BatchNoteView.as_view(), name='batchnotes'),
     path('inprocess/detail/<int:bpk>/batchnote/add/', AddBatchNoteView.as_view()),
     path('inprocess/detail/<int:bpk>/batchnote/update/<int:pk>', UpdateBatchNoteView.as_view()),
@@ -147,4 +154,5 @@ urlpatterns = [
     path('reports/<int:pk>/fermentationqc/', BatchFermentationQCRecord.as_view()),
     path('reports/bigtvstatus/', BigTVStatusReport.as_view()),
     path('reports/tankstatus/', TankStatusReport.as_view()),
+    path('reports/invpressupcomingonlycomplete', InventoryPressureReportUpcomingOnly.as_view()),
 ]

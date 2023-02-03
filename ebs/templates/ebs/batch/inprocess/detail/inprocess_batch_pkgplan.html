@@ -4,94 +4,108 @@
 {% block extrahead %}
     {{ form.media }}
 {% endblock %}
-{% block title %}Upcoming Batch Detail{% endblock %}
+{% block title %}Batch Package Plan{% endblock %}
 {% block content %}
-    <div class="container-fluid px-2">
+    <div class="container-fluid float-left px-2">
         <div class="row no-gutters pt-3">
-            <div class="col bg-light ">
-                <h3>Upcoming Batch Detail</h3>
+            <div class="col-12 pb-2">
+                {% if '/archive' in request.path %}
+                    <span class="float-right">
+                        <a href="/ebs/archive/detail/{{ current_batch.id }}">
+                            <button type="button" class="btn btn-warning">
+                                <span class="material-icons">arrow_back_ios_new</span>
+                            </button>
+                        </a>
+                    </span>
+                {% else %}
+                    <span class="float-right">
+                        <a href="/ebs/inprocess/detail/{{ current_batch.id }}">
+                            <button type="button" class="btn btn-warning">
+                                <span class="material-icons">arrow_back_ios_new</span>
+                            </button>
+                        </a>
+                    </span>
+                {% endif %}
             </div>
         </div>
         <div class="row no-gutters">
-            <div class="col-3 bg-light border pl-2">
-                Beer
-            </div>
-            <div class="col-9 border pl-2">
-                {{ object.batch_product.product_name }}
-            </div>
+            <div class="col-2 text-right float-left border bg-light pr-1">Beer:</div>
+            <div class="col-10 border pl-1">{{ current_batch.batch_product.product_name }}</div>
         </div>
         <div class="row no-gutters">
-            <div class="col-3 bg-light border pl-2">
-                Owner
-            </div>
-            <div class="col-9 border pl-2">
-                {{ object.batch_product.ownership.partner_short_code }} // {{ object.batch_product.ownership.partner_name }}
-            </div>
+            <div class="col-2 text-right float-left border bg-light pr-1">Partner:</div>
+            <div class="col-10 border pl-1">{{ current_batch.batch_product.ownership.partner_short_code }}</div>
         </div>
+        {% if '/obeer' not in request.path %}
         <div class="row no-gutters">
-            <div class="col-3 bg-light border pl-2">
-                Schedule Pattern
-            </div>
-            <div class="col-9 border pl-2">
-                {{ object.schedule_pattern.pattern_name }}
-            </div>
+            <div class="col-2 text-right float-left border bg-light pr-1">Number:</div>
+            {% if current_batch.obeer_batch is None %}
+                <div class="col-4 border pl-1">
+                    <button type="button" class="btn btn-primary btn-sm">Add</button>
+                </div>
+            {% else %}
+                <div class="col-4 border pl-1">{{ current_batch.obeer_batch }}</div>
+            {% endif %}
+            <div class="col-2 text-right border bg-light pr-1">MPN:</div>
+            {% if current_batch.obeer_batch is None %}
+                <div class="col-4 border pl-1">
+                    <button type="button" class="btn btn-primary btn-sm">Add</button>
+                </div>
+            {% else %}
+                <div class="col-4 border pl-1">{{ current_batch.obeer_mpn }}</div>
+            {% endif %}
         </div>
-        <div class="row no-gutters">
-            <div class="col-3 bg-light border pl-2">
-                Plan Start Day
-            </div>
-            <div class="col-9 border pl-2">
-                {{ object.plan_start_day }}
-            </div>
-        </div>
-        <div class="row no-gutters">
-            <div class="col-3 bg-light border pl-2">
-                Batch Size
-            </div>
-            <div class="col-9 border pl-2">
-                {{ object.total_batch_size }}
-            </div>
-        </div>
-        <div class="row no-gutters">
-            <div class="col-3 bg-light border pl-2">
-                Target Fermenter
-            </div>
-            <div class="col-9 border pl-2">
-                {{ object.target_fv.tank_name }}
-            </div>
-        </div>
+        {% endif %}
+
         <div class="row no-gutters pt-5">
-            <div class="col-12 pl-2 pt-1 bg-secondary">
-                <h3 style="color: white;">Package Plan</h3>
-            </div>
+                <div class="col-10 pl-2 pt-1 bg-secondary">
+                    <h3 style="color: white;">Package Plan</h3>
+                </div>
+                {% if package_plan %}
+                    <div class="col-2 pl-2 pt-1 pr-2 bg-secondary text-right float-right">
+                        <a href="/ebs/inprocess/detail/{{ current_batch.id }}/pkgplanline/update/{{ package_plan.id }}">
+                            <button type="button" class="btn btn-warning btn-sm">
+                                <span class="material-icons" style="vertical-align: middle;">edit</span>Edit Plan
+                            </button>
+                        </a>
+                    </div>
+                {% else %}
+                    <div class="col-2 pl-2 pt-1 pr-2 bg-secondary text-right float-right">
+                        <a href="/ebs/inprocess/detail/{{ current_batch.id }}/pkgplanline/create/">
+                            <button type="button" class="btn btn-warning btn-sm">
+                                <span class="material-icons" style="vertical-align: middle;">add</span>Add Plan
+                            </button>
+                        </a>
+                    </div>
+                {% endif %}
         </div>
         <div class="row no-gutters">
-            <div class="col-3 pl-2 pt-1 bg-light">
-                Base Yield:
-            </div>
-            <div class="col-3 pl-2 pt-1 bg-light">
-                {{ base_yield }}%
-            </div>
-            <div class="col-3 pl-2 pt-1 bg-light">
-                Base Vol:
-            </div>
-            <div class="col-3 pl-2 pt-1 bg-light">
-                {{ base_vol }} BBL
-            </div>
+                <div class="col-3 pl-2 pt-1 bg-light">
+                    Base Yield:
+                </div>
+                <div class="col-3 pl-2 pt-1 bg-light">
+                    {{ base_yield }}%
+                </div>
+                <div class="col-3 pl-2 pt-1 bg-light">
+                    Base Vol:
+                </div>
+                <div class="col-3 pl-2 pt-1 bg-light">
+                    {{ base_vol }} BBL
+                </div>
         </div>
         <div class="row no-gutters">
-            <div class="col-3 pl-2 pt-1 bg-light">
-                Plan Yield:
-            </div>
-            <div class="col-3 pl-2 pt-1 bg-light">
-                {{ total_plan_yield|floatformat:2 }}%
-            </div>
-            <div class="col-3 pl-2 pt-1 bg-light">
-                Plan Vol:
-            </div>
-            <div class="col-3 pl-2 pt-1 bg-light">
-                {{ total_pkg_vol|floatformat:2 }} BBL
-            </div>
+                <div class="col-3 pl-2 pt-1 bg-light">
+                    Plan Yield:
+                </div>
+                <div class="col-3 pl-2 pt-1 bg-light">
+                    {{ total_plan_yield|floatformat:2 }}%
+                </div>
+                <div class="col-3 pl-2 pt-1 bg-light">
+                    Plan Vol:
+                </div>
+                <div class="col-3 pl-2 pt-1 bg-light">
+                    {{ total_pkg_vol|floatformat:2 }} BBL
+                </div>
         </div>
         {% if not package_plan %}
             <div class="row no-gutters">
@@ -204,31 +218,10 @@
                     NOTES
                 </div>
             </div>
-            <div class="row no-gutters">
-                <div class="col-12 border pl-2 pt-2 pr-2 pb-2"">{{ package_plan.package_note }}</div>
+            <div class="row no-gutters pb-5">
+                <div class="col-12 border pl-2 pt-2 pr-2 pb-2">{{ package_plan.package_note }}</div>
             </div>
+
         {% endif %}
-        </div>
-        <div class="row no-gutters">
-            {% if not package_plan %}
-                <div class="col-12 text-right float-left  pr-1 pt-2 pb-2">
-                    <a href="/ebs/upcoming/detail/{{ object.id }}/pkgplanline/create">
-                        <button type="button" class="btn btn-warning">
-                            <span class="material-icons" style="vertical-align: middle;">add</span>
-                            <span style="vertical-align: middle;">Add Plan Line</span>
-                        </button>
-                    </a>
-                </div>
-            {% else %}
-                <div class="col-12 text-right float-left  pr-1 pt-2 pb-2">
-                    <a href="/ebs/upcoming/detail/{{ object.id }}/pkgplanline/update/{{ package_plan.id }}">
-                        <button type="button" class="btn btn-warning">
-                            <span class="material-icons" style="vertical-align: middle;">edit</span>
-                            <span style="vertical-align: middle;">Update Plan Line</span>
-                        </button>
-                    </a>
-                </div>
-            {% endif %}
-        </div>
     </div>
 {% endblock %}

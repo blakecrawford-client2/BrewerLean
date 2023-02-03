@@ -170,7 +170,8 @@ class BatchPackagePlan(models.Model):
 
     batch = models.OneToOneField(Batch,
                              null=True,
-                             on_delete=models.SET_NULL)
+                             on_delete=models.SET_NULL,
+                                related_name='package_plan')
     kg_half_owned = models.IntegerField(default=0)
     kg_half_oneway = models.IntegerField(default=0)
     kg_half_client = models.IntegerField(default=0)

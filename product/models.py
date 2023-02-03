@@ -17,7 +17,8 @@ class ProductMaterialsAbstract(models.Model):
     product = models.ForeignKey(Product,
                                 null=True,
                                 blank=True,
-                                on_delete=models.SET_NULL)
+                                on_delete=models.SET_NULL,
+                                related_name='materials_abstract')
     material = models.ForeignKey(Material,
                                  null=True,
                                  blank=True,

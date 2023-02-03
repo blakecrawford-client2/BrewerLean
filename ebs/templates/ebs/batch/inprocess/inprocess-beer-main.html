@@ -157,6 +157,11 @@
                             </a>
                         </div>
                         <div class="col-12 pt-2">
+                                <a href="/ebs/inprocess/detail/{{ batch.id }}/pkgplanline/">
+                                    <button type="button" class="btn btn-primary btn-block">Adjust Pkg Plan</button>
+                                </a>
+                        </div>
+                        <div class="col-12 pt-2">
                             {% if packaging is None %}
                                 <a href="/ebs/inprocess/detail/{{ batch.id }}/package/">
                                     <button type="button" class="btn btn-primary btn-block">Final Pack-Off</button>
