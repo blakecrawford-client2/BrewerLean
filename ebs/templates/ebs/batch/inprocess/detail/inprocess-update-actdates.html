@@ -86,7 +86,7 @@
                 Brew
             </div>
             <div class="col-3 border pl-1 pt-4 pb-3">
-                {{ plan_dates.brew_date }}
+                {{ plan_dates.brew_date|date:"d M Y" }}
             </div>
             <div class="col-6 border pl-1 pt-3 pb-3">
                 {{ form.brew_date }}
@@ -97,7 +97,7 @@
                 Yst Crash
             </div>
             <div class="col-3 border pl-1 pt-4 pb-3">
-                {{ plan_dates.yeast_crash_date }}
+                {{ plan_dates.yeast_crash_date|date:"d M Y" }}
             </div>
             <div class="col-6 border pl-1 pt-3 pb-3">
                 {{ form.yeast_crash_date }}
@@ -108,7 +108,7 @@
                 Harvest
             </div>
             <div class="col-3 border pl-1 pt-4 pb-3">
-                {{ plan_dates.yeast_harvest_date }}
+                {{ plan_dates.yeast_harvest_date|date:"d M Y" }}
             </div>
             <div class="col-6 border pl-1 pt-3 pb-3">
                 {{ form.yeast_harvest_date }}
@@ -119,7 +119,7 @@
                 Dry-Hop
             </div>
             <div class="col-3 border pl-1 pt-4 pb-3">
-                {{ plan_dates.dryhop_date }}
+                {{ plan_dates.dryhop_date|date:"d M Y" }}
             </div>
             <div class="col-6 border pl-1 pt-3 pb-3">
                 {{ form.dryhop_date }}
@@ -130,7 +130,7 @@
                 Final Crash
             </div>
             <div class="col-3 border pl-1 pt-4 pb-3">
-                {{ plan_dates.final_crash_date }}
+                {{ plan_dates.final_crash_date|date:"d M Y" }}
             </div>
             <div class="col-6 border pl-1 pt-3 pt-3">
                 {{ form.final_crash_date }}
@@ -141,7 +141,7 @@
                 Transfer
             </div>
             <div class="col-3 border pl-1 pt-4 pb-3">
-                {{ plan_dates.transfer_date }}
+                {{ plan_dates.transfer_date|date:"d M Y" }}
             </div>
             <div class="col-6 border pl-1 pt-3 pt-3">
                 {{ form.transfer_date }}
@@ -152,7 +152,7 @@
                 Package
             </div>
             <div class="col-3 border pl-1 pt-4 pb-3">
-                {{ plan_dates.package_date }}
+                {{ plan_dates.package_date|date:"d M Y" }}
             </div>
             <div class="col-6 border pl-1 pt-3 pb-3">
                 {{ form.package_date }}
