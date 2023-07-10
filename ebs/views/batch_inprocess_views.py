@@ -21,7 +21,10 @@ class InprocessBatchList(LoginRequiredMixin, ListView):
     context_object_name = 'inprocess_batch_list'
 
     def get_queryset(self):
-        return Batch.objects.filter(status='IP').order_by('-plan_start_day')
+        #return Batch.objects.filter(status='IP').order_by('-plan_start_day').select_related(BatchActualDates)
+        #return Batch.objects.filter(status='IP').select_related(BatchActualDates).order_by('-plan_start_day')
+        return Batch.objects.filter(status='IP', batchactualdates__isnull=False)
+
 
 ##
 # Start a batch, meaning take an upcoming batch and change
