@@ -23,7 +23,7 @@ class InprocessBatchList(LoginRequiredMixin, ListView):
     def get_queryset(self):
         #return Batch.objects.filter(status='IP').order_by('-plan_start_day').select_related(BatchActualDates)
         #return Batch.objects.filter(status='IP').select_related(BatchActualDates).order_by('-plan_start_day')
-        return Batch.objects.filter(status='IP', batchactualdates__isnull=False)
+        return Batch.objects.filter(status='IP', batchactualdates__isnull=False).order_by('-plan_start_day')
 
 
 ##
