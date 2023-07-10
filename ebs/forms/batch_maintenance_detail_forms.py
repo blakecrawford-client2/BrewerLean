@@ -98,6 +98,7 @@ class AddYeastPitchEntryForm(forms.ModelForm):
 # leaving it in for now.
 class UpdateActualDatesForm(forms.ModelForm):
     brew_date = forms.DateField(
+        disabled=True;
         #input_formats=['%d %b %Y'],
         widget=DatePickerInput(
             options={
@@ -107,6 +108,7 @@ class UpdateActualDatesForm(forms.ModelForm):
         )
     )
     yeast_crash_date = forms.DateField(
+        disabled=True,
         required=False,
         #input_formats=['%d %b %Y'],
         widget=DatePickerInput(
@@ -117,6 +119,7 @@ class UpdateActualDatesForm(forms.ModelForm):
         )
     )
     yeast_harvest_date = forms.DateField(
+        disabled=True,
         required=False,
         #input_formats=['%d %b %Y'],
         widget=DatePickerInput(
@@ -127,6 +130,7 @@ class UpdateActualDatesForm(forms.ModelForm):
         )
     )
     dryhop_date = forms.DateField(
+        disabled=True,
         required=False,
         #input_formats=['%d %b %Y'],
         widget=DatePickerInput(
@@ -137,6 +141,7 @@ class UpdateActualDatesForm(forms.ModelForm):
         )
     )
     final_crash_date = forms.DateField(
+        disabled=True,
         required=False,
         #input_formats=['%d %b %Y'],
         widget=DatePickerInput(
@@ -147,6 +152,7 @@ class UpdateActualDatesForm(forms.ModelForm):
         )
     )
     transfer_date = forms.DateField(
+        disabled=True,
         required=False,
         #input_formats=['%d %b %Y'],
         widget=DatePickerInput(
@@ -157,6 +163,7 @@ class UpdateActualDatesForm(forms.ModelForm):
         )
     )
     package_date = forms.DateField(
+        disabled=True,
         required=False,
         #input_formats=['%d %b %Y'],
         widget=DatePickerInput(
