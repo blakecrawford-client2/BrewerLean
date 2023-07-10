@@ -941,12 +941,12 @@ class CreateDryhopDateView(LoginRequiredMixin, BLUpdateView):
         def get_success_url(self):
             request_path = self.request.get_full_path()
             if '/archive' in request_path:
-                return reverse_lazy('maintenance-archive', kwargs={'pk': self.kwargs.get('pk')})
+                return reverse_lazy('maintenance-archive', kwargs={'bpk': self.kwargs.get('bpk')})
             else:
-                return reverse_lazy('maintenance', kwargs={'pk': self.kwargs.get('pk')})
+                return reverse_lazy('maintenance', kwargs={'bpk': self.kwargs.get('bpk')})
 
         def get_context_data(self, **kwargs):
-            batch = Batch.objects.get(pk=self.kwargs.get('pk'))
+            batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
             materials = BatchRawMaterialsLog.objects.filter(batch=batch.id).order_by('material__material_name')
             grain = BatchRawMaterialsLog.objects.filter(batch=batch.id, material__material_type='GR').order_by(
                 'material__material_name')
@@ -966,7 +966,7 @@ class CreateDryhopDateView(LoginRequiredMixin, BLUpdateView):
             return context
 
         def form_valid(self, form):
-            form.instance.batch = Batch.objects.get(pk=self.kwargs.get('pk'))
+            form.instance.batch = Batch.objects.get(pk=self.kwargs.get('bpk'))
             return super(CreateDryhopDateView, self).form_valid(form)
 
 
