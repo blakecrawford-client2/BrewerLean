@@ -98,7 +98,7 @@ class AddYeastPitchEntryForm(forms.ModelForm):
 # leaving it in for now.
 class UpdateActualDatesForm(forms.ModelForm):
     brew_date = forms.DateField(
-        disabled=True;
+        disabled=True,
         #input_formats=['%d %b %Y'],
         widget=DatePickerInput(
             options={
