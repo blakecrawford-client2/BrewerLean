@@ -372,7 +372,8 @@ class FermQCEntriesView(LoginRequiredMixin, BLUpdateView):
         # caution to ensure we don't end up with piles of bad data in the DB
         fermqc_rdf_list = []
         for fermqc in ferm_qc_entries:
-            temp_rdf = (100 * (basis_og - float(fermqc.extract_real)) / basis_og) * (1 / (1 - 0.005161 * float(fermqc.extract_real)))
+            if fermqc.extract_real:
+                temp_rdf = (100 * (basis_og - float(fermqc.extract_real)) / basis_og) * (1 / (1 - 0.005161 * float(fermqc.extract_real)))
             fermqc_rdf_list.append([fermqc.date, fermqc.extract_real, fermqc.ph, fermqc.temp_pv, temp_rdf, fermqc.id])
 
         context = super(FermQCEntriesView, self).get_context_data(**kwargs)

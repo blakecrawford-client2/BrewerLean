@@ -78,10 +78,10 @@
         {% for fqc in fermqcentries %}
         <div class="row no-gutters">
             <div class="col border pl-1">{{ fqc.0|date:'dM' }}</div>
-            <div class="col border pl-1">{{ fqc.1 }}</div>
-            <div class="col border pl-1">{{ fqc.2 }}</div>
-            <div class="col border pl-1">{{ fqc.3 }}</div>
-            <div class="col border pl-1">{{ fqc.4|floatformat:1 }}%</div>
+            <div class="col border pl-1">{% if fqc.1 %}{{ fqc.1 }}{% endif %}</div>
+            <div class="col border pl-1">{% if fqc.2 %}{{ fqc.2 }}{% endif %}</div>
+            <div class="col border pl-1">{% if fqc.3 %}{{ fqc.3 }}{% endif %}</div>
+            <div class="col border pl-1">{% if fqc.4 %}{{ fqc.4|floatformat:1 }}%{% endif %}</div>
             <div class="col-2 border">
                 {% if '/archive' in request.path %}
                     <a href="/ebs/archive/detail/{{ batch.pk }}/fermqc/update/{{ fqc.5 }}">
