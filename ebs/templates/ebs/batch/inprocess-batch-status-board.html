@@ -1,0 +1,89 @@
+{% extends "ebs/base.html" %}
+{% block title %}In Process Batch Status Board{% endblock %}
+{% block content %}
+<div class="container-fluid px-2">
+        <div class="row no-gutters pt-3">
+            <div class="col-12 bg-light"><h3>Batch Status Board</h3></div>
+        </div>
+        <div class="row no-gutters pt-2 pb-2 border-bottom bg-secondary">
+            <div class="col-2 pl-1 text-white font-weight-bold">Fermenter</div>
+            <div class="col-1 pl-1 text-white font-weight-bold">Batch #</div>
+            <div class="col-4 pl-1 text-white font-weight-bold">Product</div>
+            <div class="col-2 pl-1 text-white font-weight-bold">Status</div>
+            <div class="col-2 pl-1 text-white font-weight-bold">L.A.D.</div>
+            <div class="col-1 pl-1 text-white font-weight-bold"></div>
+        </div>
+        {% for x in inprocess_batch_list %}
+            {% if x.batchactualdates_set.first.transfer_date %}
+                <div class="row no-gutters pt-2 pl-1 pb-2 border-bottom bg-primary text-white">
+            {% elif x.batchactualdates_set.first.final_crash_date %}
+                <div class="row no-gutters pt-2 pb-2 pl-1 border-bottom bg-primary text-white">
+            {% elif x.batchactualdates_set.first.dryhop_date %}
+                <div class="row no-gutters pt-2 pb-2 pl-1 border-bottom bg-warning text-white">
+            {% elif x.batchactualdates_set.first.yeast_harvest_date %}
+                <div class="row no-gutters pt-2 pb-2 pl-1 border-bottom bg-info text-white">
+            {% elif x.batchactualdates_set.first.yeast_crash_date %}
+                <div class="row no-gutters pt-2 pb-2 pl-1 border-bottom bg-info text-white">
+            {% elif x.batchyeastpitch_set.first %}
+                <div class="row no-gutters pt-2 pb-2 pl-1 border-bottom bg-success text-white">
+            {% elif x.batchactualdates_set.first.brew_date %}
+                <div class="row no-gutters pt-2 pb-2 pl-1 border-bottom bg-danger text-white">
+            {% else %}
+                <div class="row no-gutters pt-2 pb-2 pl-1 border-bottom bg-danger text-white">
+            {% endif %}
+            <div class="col-2">{{ x.target_fv }}</div>
+            <div class="col-1">{% if x.obeer_batch %}
+                                    {{ x.obeer_batch }}
+                                {% endif %}
+            </div>
+            <div class="col-4">{{ x.batch_product.product_name}}</div>
+            <div class="col-2">
+                {% if x.batchactualdates_set.first.transfer_date %}
+                    XFERRED
+                {% elif x.batchactualdates_set.first.final_crash_date %}
+                    F.CRASHED
+                {% elif x.batchactualdates_set.first.dryhop_date %}
+                    DRY-HOPPED
+                {% elif x.batchactualdates_set.first.yeast_harvest_date %}
+                    HARVESTED
+                {% elif x.batchactualdates_set.first.yeast_crash_date %}
+                    Y.CRASHED
+                {% elif x.batchyeastpitch_set.first %}
+                    PITCHED
+                {% elif x.batchactualdates_set.first.brew_date %}
+                    BREWED
+                {% endif %}
+            </div>
+            <div class="col-2">
+                {% if x.batchactualdates_set.first.transfer_date %}
+                    {{ x.batchactualdates_set.first.transfer_date|date:"dM" }}
+                {% elif x.batchactualdates_set.first.final_crash_date %}
+                    {{ x.batchactualdates_set.first.final_crash_date|date:"dM" }}
+                {% elif x.batchactualdates_set.first.dryhop_date %}
+                    {{ x.batchactualdates_set.first.dryhop_date|date:"dM" }}
+                {% elif x.batchactualdates_set.first.yeast_harvest_date %}
+                    {{ x.batchactualdates_set.first.yeast_harvest_date|date:"dM" }}
+                {% elif x.batchactualdates_set.first.yeast_crash_date %}
+                    {{ x.batchactualdates_set.first.yeast_crash_date|date:"dM" }}
+                {% elif x.batchyeastpitch_set.first %}
+                    {{ x.batchyeastpitch_set.first.last_modified_on|date:"dM" }}
+                {% elif x.batchactualdates_set.first.brew_date %}
+                    {{ x.batchactualdates_set.first.brew_date|date:"dM" }}
+                {% endif %}
+
+
+
+            </div>
+            <div class="col-1">
+                <span class="float-right">
+                    <a href="/ebs/inprocess/detail/{{ x.id }}">
+                        <button type="button" class="btn btn-warning btn-sm">
+                            <span class="material-icons">mode_edit</span>
+                        </button>
+                    </a>
+                </span>
+            </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

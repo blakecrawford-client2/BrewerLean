@@ -12,7 +12,8 @@ from ebs.views.batch_inprocess_views import InprocessBatchList, \
     InprocessBatchCreateView, \
     InprocessBatchDetailView, \
     InProcessBatchPkgPlanCreateView, \
-    InProcessBatchPkgPlanUpdateView
+    InProcessBatchPkgPlanUpdateView, \
+    InprocessBatchStatusBoardList
 from ebs.views.batch_inprocess_detail_views import AddObeerDataView
 from ebs.views.batch_inprocess_detail_views import RawMaterialsLogView
 from ebs.views.batch_inprocess_detail_views import AddRawMaterialsLogView
@@ -72,6 +73,7 @@ urlpatterns = [
     ##########
     ## Inprocess URLs
     path('inprocess/', InprocessBatchList.as_view()),
+    path('batchboard/', InprocessBatchStatusBoardList.as_view()),
     path('inprocess/create/', InprocessBatchCreateView.as_view()),
     path('inprocess/detail/<int:pk>/', InprocessBatchDetailView.as_view(), name='maintenance'),
     path('inprocess/detail/<int:pk>/changefv/', ChangeFVView.as_view()),

@@ -23,7 +23,19 @@ class InprocessBatchList(LoginRequiredMixin, ListView):
     def get_queryset(self):
         #return Batch.objects.filter(status='IP').order_by('-plan_start_day').select_related(BatchActualDates)
         #return Batch.objects.filter(status='IP').select_related(BatchActualDates).order_by('-plan_start_day')
-        return Batch.objects.filter(status='IP', batchactualdates__isnull=False).order_by('-plan_start_day')
+        #return Batch.objects.filter(status='IP', batchactualdates__isnull=False).order_by('-plan_start_day')
+        return Batch.objects.filter(status='IP', batchactualdates__isnull=False).order_by('-batchactualdates__brew_date')
+
+
+###
+# full list of in-process batches ordered for the status board
+class InprocessBatchStatusBoardList(LoginRequiredMixin, ListView):
+    model = Batch
+    template_name = 'ebs/batch/inprocess-batch-status-board.html'
+    context_object_name = 'inprocess_batch_list'
+
+    def get_queryset(self):
+        return Batch.objects.filter(status='IP', batchactualdates__isnull=False).order_by('target_fv__tank_name')
 
 
 ##
