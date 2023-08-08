@@ -14,7 +14,9 @@
             <div class="col-1 pl-1 text-white font-weight-bold"></div>
         </div>
         {% for x in inprocess_batch_list %}
-            {% if x.batchactualdates_set.first.transfer_date %}
+            {% if x.packagingrun_set.first.date %}
+                <div class="row no-gutters pt-2 pl-1 pb-2 border-bottom bg-dark text-white">
+            {% elif x.batchactualdates_set.first.transfer_date %}
                 <div class="row no-gutters pt-2 pl-1 pb-2 border-bottom bg-primary text-white">
             {% elif x.batchactualdates_set.first.final_crash_date %}
                 <div class="row no-gutters pt-2 pb-2 pl-1 border-bottom bg-primary text-white">
@@ -38,7 +40,9 @@
             </div>
             <div class="col-4">{{ x.batch_product.product_name}}</div>
             <div class="col-2">
-                {% if x.batchactualdates_set.first.transfer_date %}
+                {% if x.packagingrun_set.first.date %}
+                    PKGRUN
+                {% elif x.batchactualdates_set.first.transfer_date %}
                     XFERRED
                 {% elif x.batchactualdates_set.first.final_crash_date %}
                     F.CRASHED
@@ -55,7 +59,9 @@
                 {% endif %}
             </div>
             <div class="col-2">
-                {% if x.batchactualdates_set.first.transfer_date %}
+                {% if x.packagingrun_set.first.date %}
+                    {{ x.packagingrun_set.first.date }}
+                {% elif x.batchactualdates_set.first.transfer_date %}
                     {{ x.batchactualdates_set.first.transfer_date|date:"dM" }}
                 {% elif x.batchactualdates_set.first.final_crash_date %}
                     {{ x.batchactualdates_set.first.final_crash_date|date:"dM" }}
